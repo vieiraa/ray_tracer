@@ -10,7 +10,7 @@ class Primitive
 {
 public:
 
-    typedef std::unique_ptr< Primitive > PrimitiveUniquePtr;
+    typedef Primitive* PrimitiveUniquePtr;
 
     Primitive( void );
 
