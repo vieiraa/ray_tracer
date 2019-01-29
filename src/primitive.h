@@ -9,8 +9,11 @@
 class Primitive
 {
 public:
-
+#if __cplusplus < 201103L
     typedef Primitive* PrimitiveUniquePtr;
+#else
+    typedef std::unique_ptr<Primitive> PrimitiveUniquePtr;
+#endif
 
     Primitive( void );
 
