@@ -1,5 +1,10 @@
 #include "triangle.h"
 
+#define KU modulo[acc.k + 1]
+#define KV modulo[acc.k + 2]
+
+unsigned int modulo[] = {0, 1, 2, 0, 1};
+
 Triangle::Triangle(const glm::vec3 &v1,
 		   const glm::vec3 &v2,
 		   const glm::vec3 &v3)
@@ -7,48 +12,68 @@ Triangle::Triangle(const glm::vec3 &v1,
     vertices[0] = v1;
     vertices[1] = v2;
     vertices[2] = v3;
+
+    glm::vec3 b = vertices[2] - vertices[0];
+    glm::vec3 c = vertices[1] - vertices[0];
+
+    glm::vec3 normal = glm::cross(c, b);
+
+    glm::vec3 aux = glm::abs(normal);
+    if (aux.x > aux.y) {
+	if (aux.x > aux.z)
+	    acc.k = 0;
+	else
+	    acc.k = 2;
+    } else if (aux.y > aux.z)
+	acc.k = 1;
+    else
+	acc.k = 2;
+
+    normal /= normal[acc.k];
+    acc.n_u = normal[modulo[acc.k + 1]];
+    acc.n_v = normal[modulo[acc.k + 2]];
+    acc.n_d = glm::dot(vertices[0], normal);
+    
+    float temp = b.x * c.y - b.y * c.x;
+    acc.b_nu = -b.y / temp;
+    acc.b_nv = b.x / temp;
+    acc.b_d = (b.y * vertices[0].x - b.x * vertices[0].y) / temp;
+
+    acc.c_nu = c.y / temp;
+    acc.c_nv = -c.x / temp;
+    acc.c_d = (c.x * vertices[0].y - c.y * vertices[0].x) / temp;
 }
 
 bool Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
 {
-    float a = vertices[0].x - vertices[1].x;
-    float b = vertices[0].y - vertices[1].y;
-    float c = vertices[0].z - vertices[1].z;
-    float d = vertices[0].x - vertices[2].x;
-    float e = vertices[0].y - vertices[2].y;
-    float f = vertices[0].z - vertices[2].z;
-    float g = ray.direction_.x;
-    float h = ray.direction_.y;
-    float i = ray.direction_.z;
-    float j = vertices[0].x - ray.origin_.x;
-    float k = vertices[0].y - ray.origin_.y;
-    float l = vertices[0].z - ray.origin_.z;
+    float nd = 1.0f /
+	(ray.direction_[acc.k] + acc.n_u * ray.direction_[KU] +
+	 acc.n_v * ray.direction_[KV]);
 
-    float ei_hf = e * i - h * f;
-    float gf_di = g * f - d * i;
-    float dh_eg = d * h - e * g;
-    float ak_jb = a * k - j * b;
-    float jc_al = j * c - a * l;
-    float bl_kc = b * l - k * c;
+    float t = (acc.n_d - ray.origin_[acc.k] -
+		     acc.n_u * ray.origin_[KU] -
+		     acc.n_v * ray.origin_[KV]) * nd;
 
-    float M = a * ei_hf + b * gf_di + c * dh_eg;
-
-    float t = -(f * ak_jb + e * jc_al + d * bl_kc) / M;
-    if (t < 0.0f)
-    	return false;
-
-    float gamma = (i * ak_jb + h * jc_al + g * bl_kc) / M;
-    if (gamma < 0.0f || gamma > 1.0f)
+    if (!(ir.t_ > t && t > 0.000001f))
 	return false;
 
-    float beta = (j * ei_hf + k * gf_di + l * dh_eg) / M;
-    if (beta < 0.0f || beta > (1.0f - gamma))
+    float hu = ray.origin_[KU] + t * ray.direction_[KU];
+    float hv = ray.origin_[KV] + t * ray.direction_[KV];
+
+    float beta = hu * acc.b_nu + hv * acc.b_nv + acc.b_d;
+    if (beta < 0.0f)
 	return false;
-        
+
+    float gamma = hu * acc.c_nu + hv * acc.c_nv + acc.c_d;
+    if (gamma < 0.0f)
+	return false;
+
+    if ((beta + gamma) > 1.0f)
+	return false;
+    
     ir.t_ = t;
     ir.position_ = ray.origin_ + ir.t_ * ray.direction_;
-    ir.normal_ = glm::normalize(glm::cross(vertices[1] - vertices[0],
-					   vertices[2] - vertices[0]));
+    ir.normal_ = glm::vec3(beta, gamma, 1);
 
     return true;
 }

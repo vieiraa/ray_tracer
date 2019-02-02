@@ -9,6 +9,22 @@
 class Triangle : public Primitive
 {
     glm::vec3 vertices[3];
+    struct {
+	float n_u;
+	float n_v;
+	float n_d;
+	int k;
+
+	float b_nu;
+	float b_nv;
+	float b_d;
+	int pad;
+
+	float c_nu;
+	float c_nv;
+	float c_d;
+	int pad2;
+    } acc;
 
 public:
     Triangle();
