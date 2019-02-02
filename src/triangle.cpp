@@ -30,8 +30,8 @@ Triangle::Triangle(const glm::vec3 &v1,
 	acc.k = 2;
 
     normal /= normal[acc.k];
-    acc.n_u = normal[modulo[acc.k + 1]];
-    acc.n_v = normal[modulo[acc.k + 2]];
+    acc.n_u = normal[KU];
+    acc.n_v = normal[KV];
     acc.n_d = glm::dot(vertices[0], normal);
     
     float temp = b.x * c.y - b.y * c.x;
@@ -47,7 +47,7 @@ Triangle::Triangle(const glm::vec3 &v1,
 bool Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
 {
     float nd = 1.0f /
-	(ray.direction_[acc.k] + acc.n_u * ray.direction_[KU] +
+	(-ray.direction_[acc.k] + acc.n_u * ray.direction_[KU] +
 	 acc.n_v * ray.direction_[KV]);
 
     float t = (acc.n_d - ray.origin_[acc.k] -
