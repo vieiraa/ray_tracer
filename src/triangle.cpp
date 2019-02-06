@@ -7,6 +7,9 @@ Triangle::Triangle(const glm::vec3 &v1,
     vertices[0] = v1;
     vertices[1] = v2;
     vertices[2] = v3;
+
+    normal = glm::normalize(glm::cross(vertices[1] - vertices[0],
+				       vertices[2] - vertices[0]));
 }
 
 bool Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
@@ -42,8 +45,7 @@ bool Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
 
     ir.t_ = t;
     ir.position_ = ray.origin_ + ir.t_ * ray.direction_;
-    ir.normal_ = glm::normalize(glm::cross(vertices[1] - vertices[0],
-					   vertices[2] - vertices[0]));
+    ir.normal_ = normal;
 
     return true;
 }

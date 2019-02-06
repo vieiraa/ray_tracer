@@ -8,6 +8,7 @@
 
 class Triangle : public Primitive {
     glm::vec3 vertices[3];
+    glm::vec3 normal;
 
 public:
     Triangle();
