@@ -9,7 +9,8 @@
 
 #include "primitive.h"
 #include "sphere.h"
-#include "triangle.h"
+#include "triangle_naive.h"
+#include "triangle_fast.h"
 
 class Scene
 {

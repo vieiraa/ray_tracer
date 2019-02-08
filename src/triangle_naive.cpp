@@ -1,6 +1,6 @@
-#include "triangle.h"
+#include "triangle_naive.h"
 
-Triangle::Triangle(const glm::vec3 &v1,
+Naive_Triangle::Naive_Triangle(const glm::vec3 &v1,
 		   const glm::vec3 &v2,
 		   const glm::vec3 &v3)
 {
@@ -9,7 +9,7 @@ Triangle::Triangle(const glm::vec3 &v1,
     vertices[2] = v3;
 }
 
-bool Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
+bool Naive_Triangle:: intersect(const Ray &ray, IntersectionRecord &ir) const
 {
     float a = vertices[0].x - vertices[1].x;
     float b = vertices[0].y - vertices[1].y;
@@ -44,7 +44,7 @@ bool Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
     float beta = (j * ei_hf + k * gf_di + l * dh_eg) / M;
     if (beta < 0.0f || beta > (1.0f - gamma))
 	return false;
-        
+
     ir.t_ = t;
     ir.position_ = ray.origin_ + ir.t_ * ray.direction_;
     ir.normal_ = glm::normalize(glm::cross(vertices[1] - vertices[0],
