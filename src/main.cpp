@@ -1,4 +1,5 @@
 #include "main.h"
+#include <chrono>
 
 int main( void )
 {
@@ -26,7 +27,14 @@ int main( void )
                   background_color,
                   rendering_buffer );
 
+    auto start = std::chrono::high_resolution_clock::now();
+    
     rt.integrate(); // Renders the final image.
+
+    auto duration = std::chrono::
+	duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
+
+    std::cout << "Elapsed time: " << duration.count() / 1000.0 << "s" << std::endl;
 
     // Save the rendered image to a .ppm file.
     rendering_buffer.save( "output_image.ppm" );
