@@ -1,5 +1,10 @@
 #include "main.h"
+
+#if __cplusplus < 201103L
+#include <ctime>
+#else
 #include <chrono>
+#endif
 
 int main( void )
 {
@@ -27,14 +32,22 @@ int main( void )
                   background_color,
                   rendering_buffer );
 
+#if __cplusplus < 201103L
+    clock_t start = clock();
+#else
     auto start = std::chrono::high_resolution_clock::now();
+#endif
     
     rt.integrate(); // Renders the final image.
 
+#if __cplusplus < 201103L
+    clock_t duration = (float)(clock() - start) / 1000.0;
+#else
     auto duration = std::chrono::
-	duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start);
+	duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count();
+#endif
 
-    std::cout << "Elapsed time: " << duration.count() / 1000.0 << "s" << std::endl;
+    std::cout << "Elapsed time: " << duration / 1000.0 << "s" << std::endl;
 
     // Save the rendered image to a .ppm file.
     rendering_buffer.save( "output_image.ppm" );
