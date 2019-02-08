@@ -41,7 +41,7 @@ int main( void )
     rt.integrate(); // Renders the final image.
 
 #if __cplusplus < 201103L
-    clock_t duration = (float)(clock() - start) / 1000.0;
+    clock_t duration = (float)(clock() - start) * 1000.0 / CLOCKS_PER_SEC;
 #else
     auto duration = std::chrono::
 	duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count();
