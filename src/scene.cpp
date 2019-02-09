@@ -38,7 +38,7 @@ void Scene::load( void )
     }*/
 
 void Scene::load() {
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 10000; i++) {
 	glm::vec3 v1(drand48() * 10);
 	glm::vec3 v2(drand48() * 10);
 	glm::vec3 v3(drand48() * 10);
