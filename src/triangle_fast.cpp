@@ -7,17 +7,18 @@ Fast_Triangle::Fast_Triangle(const glm::vec3 &v1,
     vertices[0] = v1;
     vertices[1] = v2;
     vertices[2] = v3;
-}
-
-
-bool Fast_Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
-{
-    glm::vec3 edge1, edge2, aux, p, q;
-    float det;
-    float u, v, t;
 
     edge1 = vertices[1] - vertices[0];
     edge2 = vertices[2] - vertices[0];
+    
+    normal = glm::normalize(glm::cross(edge1, edge2));
+}
+
+bool Fast_Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
+{
+    glm::vec3 aux, p, q;
+    float det;
+    float u, v, t;
 
     p = glm::cross(ray.direction_, edge2);
     det = glm::dot(edge1, p);
@@ -43,8 +44,7 @@ bool Fast_Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
 
     ir.t_ = t;
     ir.position_ = ray.origin_ + ir.t_ * ray.direction_;
-    ir.normal_ = glm::normalize(glm::cross(vertices[1] - vertices[0],
-					   vertices[2] - vertices[0]));
+    ir.normal_ = normal;
 
     return true;
 }

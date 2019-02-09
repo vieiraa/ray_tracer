@@ -1,4 +1,6 @@
 #include "scene.h"
+#include <time.h>
+#include <stdlib.h>
 
 Scene::Scene( void )
 {}
@@ -24,7 +26,7 @@ bool Scene::intersect( const Ray &ray,
 
     return intersection_result;
 }
-
+/*
 void Scene::load( void )
 {
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.0f,  0.0f }, 0.2f } ) );
@@ -33,5 +35,15 @@ void Scene::load( void )
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.5f, -3.0f }, 0.2f } ) );
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{0.25f, 0.5f, -1.0f}, glm::vec3(0.5f, 0, 0), glm::vec3(0, 0, 0)}));
 
+    }*/
+
+void Scene::load() {
+    for (int i = 0; i < 1000; i++) {
+	glm::vec3 v1(drand48() * 10);
+	glm::vec3 v2(drand48() * 10);
+	glm::vec3 v3(drand48() * 10);
+
+	primitives_.push_back(Primitive::PrimitiveUniquePtr(new Fast_Triangle(v1, v2, v3)));
+    }
 }
 
