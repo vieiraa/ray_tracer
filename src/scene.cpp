@@ -34,6 +34,9 @@ void Scene::load( void )
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f,-0.5f, -2.0f }, 0.2f } ) );
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.5f, -3.0f }, 0.2f } ) );
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{0.25f, 0.5f, -1.0f}, glm::vec3(0.5f, 0, 0), glm::vec3(0, 0, 0)}));
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{-0.5f,-0.25f,0}, glm::vec3(-0.5f,-0.75,0), glm::vec3(0.5,-0.5,0)}));
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{0.25f,-0.25f,0}, glm::vec3(-0.25f,-0.25, 0), glm::vec3(0,-0.5,-1.0)}));
+    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{-0.25f,0.25f,-4.0f}, glm::vec3(-0.75f,0.25,-4.0), glm::vec3(-0.5,-0.25,-4.0)}));
 
     }*/
 
