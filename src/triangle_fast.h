@@ -9,6 +9,8 @@
 class Fast_Triangle : public Primitive
 {
     glm::vec3 vertices[3];
+    glm::vec3 normal;
+    glm::vec3 edge1, edge2;
 
 public:
     Fast_Triangle();
