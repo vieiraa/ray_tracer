@@ -4,6 +4,7 @@ A very simple C++11 template code for the development of ray tracers.
 
 # Equipe
 Jordy Vieira Gomes - 11508377
+
 Lucca Ramos Peregrino - 2016003240
 
 # Dependencies
