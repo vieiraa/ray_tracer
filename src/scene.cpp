@@ -3,9 +3,14 @@
 #include <stdlib.h>
 
 #ifdef WIN32
-srand((long) time(NULL));
-
 double drand48() {
+    static bool first = true;
+    
+    if (first) {
+	srand((long) time(NULL));
+	first = false;
+    }
+    
     return (double)rand() / RAND_MAX;
 }
 #endif
