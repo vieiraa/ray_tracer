@@ -5,8 +5,8 @@
 #ifdef WIN32
 srand((long) time(NULL));
 
-float drand48() {
-    return rand() / RAND_MAX;
+double drand48() {
+    return (double)rand() / RAND_MAX;
 }
 #endif
 
