@@ -2,6 +2,14 @@
 #include <time.h>
 #include <stdlib.h>
 
+#ifdef WIN32
+srand((long) time(NULL));
+
+float drand48() {
+    return rand() / RAND_MAX;
+}
+#endif
+
 Scene::Scene( void )
 {}
 
