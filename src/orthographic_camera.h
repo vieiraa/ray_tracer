@@ -21,6 +21,10 @@ public:
 
     Ray getWorldSpaceRay( const glm::vec2 &pixel_coord ) const;
 
+    Ray getWorldSpaceRay2( const glm::vec2 &pixel_coord ) const;
+
+    glm::vec3 ray_origin_;
+
     float min_x_;
 
     float max_x_;

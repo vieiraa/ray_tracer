@@ -37,7 +37,7 @@ int main( void )
 #else
     auto start = std::chrono::high_resolution_clock::now();
 #endif
-    
+
     rt.integrate(); // Renders the final image.
 
 #if __cplusplus < 201103L

@@ -5,12 +5,12 @@
 #ifdef WIN32
 double drand48() {
     static bool first = true;
-    
+
     if (first) {
 	srand((long) time(NULL));
 	first = false;
     }
-    
+
     return (double)rand() / RAND_MAX;
 }
 #endif
@@ -59,7 +59,7 @@ void Scene::load() {
 	glm::vec3 v2(drand48() * 10);
 	glm::vec3 v3(drand48() * 10);
 
-	primitives_.push_back(Primitive::PrimitiveUniquePtr(new Fast_Triangle(v1, v2, v3)));
+	primitives_.push_back(Primitive::PrimitiveUniquePtr(new Naive_Triangle(v1, v2, v3)));
     }
 }
 
