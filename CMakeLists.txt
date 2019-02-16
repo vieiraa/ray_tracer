@@ -11,9 +11,12 @@ include_directories(${CMAKE_SOURCE_DIR}/lib/glm)
 
 set(ASSIMP_LIBRARY_DIR "lib/assimp/code")
 set(ASSIMP_INCLUDE_DIR "lib/assimp/include")
+
 include_directories(${ASSIMP_INCLUDE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/build/lib/assimp/include)
-link_directories(${ASSIMP_LIBRARY_DIR})
+SET(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "")
+SET(ASSIMP_BUILD_TESTS OFF CACHE BOOL "")
+add_subdirectory("lib/assimp")
 
 file(GLOB sources src/*.cpp)
 add_executable(ray_tracer ${sources})
+target_link_libraries(ray_tracer PUBLIC assimp)
