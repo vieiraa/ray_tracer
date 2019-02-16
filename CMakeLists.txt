@@ -11,7 +11,10 @@ include_directories(${CMAKE_SOURCE_DIR}/lib/glm)
 
 set(ASSIMP_LIBRARY_DIR "lib/assimp/code")
 set(ASSIMP_INCLUDE_DIR "lib/assimp/include")
+
 include_directories(${ASSIMP_INCLUDE_DIR})
+SET(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE BOOL "")
+SET(ASSIMP_BUILD_TESTS OFF CACHE BOOL "")
 add_subdirectory("lib/assimp")
 
 file(GLOB sources src/*.cpp)
