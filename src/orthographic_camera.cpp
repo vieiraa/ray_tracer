@@ -23,7 +23,7 @@ OrthographicCamera::OrthographicCamera( const float min_x,
         max_y_{ max_y }
 {}
 
-Ray OrthographicCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord ) const
+/*Ray OrthographicCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord ) const
 {
     float width = max_x_ - min_x_;
     float height = max_y_ - min_y_;
@@ -34,14 +34,14 @@ Ray OrthographicCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord ) const
 
     return Ray{ onb_.getBasisMatrix() * origin + position_,
                 glm::normalize( onb_.getBasisMatrix() * glm::vec3{ 0.0f, 0.0f, -1.0f } ) };
-}
+}*/
 
-Ray OrthographicCamera::getWorldSpaceRay2( const glm::vec2 &pixel_coord ) const
+Ray OrthographicCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord ) const
 {
 
     glm::vec3 direction( pixel_coord[0] - ray_origin_[0],
                         pixel_coord[1] - ray_origin_[1],
-                        glm::vec3{0.0f, 0.0f, -1.0f} - ray_origin_[2]);
+                        -1.0f - ray_origin_[2]);
 
     return Ray{ onb_.getBasisMatrix() * ray_origin_ + position_,
                 glm::normalize( onb_.getBasisMatrix() * direction) };

@@ -2,13 +2,13 @@
 #include <time.h>
 #include <stdlib.h>
 
-#ifdef WIN32
+#ifdef __MINGW32__
 double drand48() {
     static bool first = true;
 
     if (first) {
-	srand((long) time(NULL));
-	first = false;
+        srand((long) time(NULL));
+        first = false;
     }
 
     return (double)rand() / RAND_MAX;
@@ -39,7 +39,7 @@ bool Scene::intersect( const Ray &ray,
 
     return intersection_result;
 }
-/*
+
 void Scene::load( void )
 {
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.0f,  0.0f }, 0.2f } ) );
@@ -51,15 +51,15 @@ void Scene::load( void )
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{0.25f,-0.25f,0}, glm::vec3(-0.25f,-0.25, 0), glm::vec3(0,-0.5,-1.0)}));
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{-0.25f,0.25f,-4.0f}, glm::vec3(-0.75f,0.25,-4.0), glm::vec3(-0.5,-0.25,-4.0)}));
 
-    }*/
-
+}
+/*
 void Scene::load() {
     for (int i = 0; i < 10000; i++) {
-	glm::vec3 v1(drand48() * 10);
-	glm::vec3 v2(drand48() * 10);
-	glm::vec3 v3(drand48() * 10);
+        glm::vec3 v1(drand48() * 10);
+        glm::vec3 v2(drand48() * 10);
+        glm::vec3 v3(drand48() * 10);
 
-	primitives_.push_back(Primitive::PrimitiveUniquePtr(new Naive_Triangle(v1, v2, v3)));
+        primitives_.push_back(Primitive::PrimitiveUniquePtr(new Naive_Triangle(v1, v2, v3)));
     }
-}
+}*/
 

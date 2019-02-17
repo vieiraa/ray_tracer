@@ -19,7 +19,7 @@ if(CMAKE_COMPILER_IS_MINGW)
     message(STATUS "SMD importer disabled")
     #add_definitions(-DASSIMP_BUILD_NO_IFC_IMPORTER)
     add_definitions(-DASSIMP_BUILD_NO_SMD_IMPORTER)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -Wall -O3 -Wa,-mbig-obj -std=gnu++11" )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -Wall -O3 -Wa,-mbig-obj -std=c++14" )
 endif()
 add_subdirectory("lib/assimp")
 

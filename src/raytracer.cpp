@@ -33,7 +33,7 @@ void RayTracer::integrate( void )
         {
            intersection_record.t_ = std::numeric_limits< double >::max();
 
-            Ray ray( camera_.getWorldSpaceRay2( glm::vec2{ x + 0.5f, y + 0.5f } ) );
+            Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x + 0.5f, y + 0.5f } ) );
 
             if ( scene_.intersect( ray, intersection_record ) )
                 //buffer_.buffer_data_[x][y] = glm::vec3{ 1.0f, 0.0f, 0.0f };
