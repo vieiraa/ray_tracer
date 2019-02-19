@@ -55,11 +55,11 @@ void Scene::load( void )
 /*
 void Scene::load() {
     for (int i = 0; i < 10000; i++) {
-        glm::vec3 v1(drand48() * 10);
-        glm::vec3 v2(drand48() * 10);
-        glm::vec3 v3(drand48() * 10);
+        glm::vec3 v1(drand48() * 10, drand48() * 10, drand48() * 10);
+	glm::vec3 v2(drand48() * 10, drand48() * 10, drand48() * 10);
+	glm::vec3 v3(drand48() * 10, drand48() * 10, drand48() * 10);
 
-        primitives_.push_back(Primitive::PrimitiveUniquePtr(new Naive_Triangle(v1, v2, v3)));
+        primitives_.push_back(Primitive::PrimitiveUniquePtr(new Fast_Triangle(v1, v2, v3)));
     }
-}*/
+    }*/
 
