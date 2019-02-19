@@ -8,8 +8,6 @@
 
 class Fast_Triangle : public Triangle
 {
-    glm::vec3 edge1, edge2;
-
 public:
     Fast_Triangle();
     Fast_Triangle(const glm::vec3 &v1,

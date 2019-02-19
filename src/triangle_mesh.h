@@ -1,17 +1,14 @@
-#ifndef MESH_H_
-#define MESH_H_
+#ifndef TRIANGLE_MESH_H_
+#define TRIANGLE_MESH_H_
 
 #include "primitive.h"
 #include "triangle.h"
 #include <vector>
-#include <assimp/Importer.hpp>
 #include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
 class TriangleMesh : public Primitive
 {
-    unsigned int num_tr_;
-    
+    std::vector<Triangle> triangles_;
     
 public:
     TriangleMesh();
@@ -24,7 +21,9 @@ public:
     bool loadMesh(const std::string &filename);
     void initMesh(unsigned int index, const aiMesh *aiMesh);
     bool initMaterials(const aiScene *s, const std::string &filename);
+    bool initFromScene(const aiScene *scene, const std::string &filename);
     void clear();
+    bool intersect(const Ray &ray, IntersectionRecord &ir);
 };
 
 #endif

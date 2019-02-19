@@ -3,14 +3,13 @@
 Naive_Triangle::Naive_Triangle(const glm::vec3 &v1,
 		   const glm::vec3 &v2,
 		   const glm::vec3 &v3)
+    : Triangle(v1, v2, v3)
 {
-    vertices[0] = v1;
-    vertices[1] = v2;
-    vertices[2] = v3;
 }
 
 bool Naive_Triangle:: intersect(const Ray &ray, IntersectionRecord &ir) const
 {
+    std::vector<glm::vec3> vertices = getVertices();
     float a = vertices[0].x - vertices[1].x;
     float b = vertices[0].y - vertices[1].y;
     float c = vertices[0].z - vertices[1].z;

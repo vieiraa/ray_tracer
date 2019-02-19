@@ -2,14 +2,12 @@
 #define TRIANGLE_NAIVE_H_
 
 #include <glm/glm.hpp>
-#include "primitive.h"
+#include "triangle.h"
 #include "ray.h"
 #include "intersection_record.h"
 
-class Naive_Triangle : public Primitive
+class Naive_Triangle : public Triangle
 {
-    glm::vec3 vertices[3];
-
 public:
     Naive_Triangle();
     Naive_Triangle(const glm::vec3 &v1,
@@ -17,7 +15,6 @@ public:
 	     const glm::vec3 &v3);
 
     bool intersect(const Ray &ray, IntersectionRecord &ir) const;
-
 };
 
 #endif
