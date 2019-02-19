@@ -1,17 +1,14 @@
 #include "triangle_fast.h"
 
 Fast_Triangle::Fast_Triangle(const glm::vec3 &v1,
-		   const glm::vec3 &v2,
-		   const glm::vec3 &v3)
+			     const glm::vec3 &v2,
+			     const glm::vec3 &v3)
+    : Triangle({v1,v2,v3})
 {
-    vertices[0] = v1;
-    vertices[1] = v2;
-    vertices[2] = v3;
-
-    edge1 = vertices[1] - vertices[0];
-    edge2 = vertices[2] - vertices[0];
+    edge1 = getVertices()[1] - getVertices()[0];
+    edge2 = getVertices()[2] - getVertices()[0];
     
-    normal = glm::normalize(glm::cross(edge1, edge2));
+    setNormal(glm::normalize(glm::cross(edge1, edge2)));
 }
 
 bool Fast_Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
@@ -28,7 +25,7 @@ bool Fast_Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
 
     det = 1.0f / det;
 
-    aux = ray.origin_ - vertices[0];
+    aux = ray.origin_ - getVertices()[0];
 
     u = glm::dot(aux, p) * det;
     if (u < 0.0f || u > 1.0f)

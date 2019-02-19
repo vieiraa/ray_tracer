@@ -2,14 +2,12 @@
 #define TRIANGLE_FAST_H_
 
 #include <glm/glm.hpp>
-#include "primitive.h"
+#include "triangle.h"
 #include "ray.h"
 #include "intersection_record.h"
 
-class Fast_Triangle : public Primitive
+class Fast_Triangle : public Triangle
 {
-    glm::vec3 vertices[3];
-    glm::vec3 normal;
     glm::vec3 edge1, edge2;
 
 public:

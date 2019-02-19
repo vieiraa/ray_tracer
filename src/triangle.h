@@ -16,6 +16,10 @@ public:
 	     const glm::vec3 &v2,
 	     const glm::vec3 &v3);
 
+    void setNormal(glm::vec3 n) { normal = n; }
+    glm::vec3* getVertices() { return vertices; }
+    glm::vec3 getNormal() { return normal; }
+
     bool intersect(const Ray &ray, IntersectionRecord &ir) const;
 };
 
