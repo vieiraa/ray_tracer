@@ -11,7 +11,7 @@ int main( void )
     unsigned int x_resolution = 512;
     unsigned int y_resolution = 512;
 
-    OrthographicCamera camera( -1.25f,
+    PinholeCamera camera( -1.25f,
                                 1.25f,
                                -1.25f,
                                 1.25f,

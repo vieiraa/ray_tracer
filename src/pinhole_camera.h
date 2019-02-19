@@ -1,16 +1,16 @@
-#ifndef ORTHOGRAPHIC_CAMERA_H_
-#define ORTHOGRAPHIC_CAMERA_H_
+#ifndef PINHOLE_CAMERA_H_
+#define PINHOLE_CAMERA_H_
 
 #include "camera.h"
 #include "ray.h"
 
-class OrthographicCamera : public Camera
+class PinholeCamera : public Camera
 {
 public:
 
-    OrthographicCamera( void );
+    PinholeCamera( void );
 
-    OrthographicCamera( const float min_x,
+    PinholeCamera( const float min_x,
                         const float max_x,
                         const float min_y,
                         const float max_y,
@@ -21,7 +21,7 @@ public:
 
     Ray getWorldSpaceRay( const glm::vec2 &pixel_coord ) const;
 
-    glm::vec3 ray_origin_;
+    glm:: vec3 position_;
 
     float min_x_;
 
@@ -33,5 +33,5 @@ public:
 
 };
 
-#endif /* ORTHOGRAPHIC_CAMERA_H_ */
+#endif /* PINHOLE_CAMERA_H_ */
 
