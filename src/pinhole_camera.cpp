@@ -35,9 +35,9 @@ Ray PinholeCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord ) const
     float u = (pixel_coord.x + 0.5) / resolution_.x;
     float v = (pixel_coord.y + 0.5) / resolution_.y;
     glm::vec3 s = c + u * a + v * b;
-    glm::vec3 direction = s - position_;
+    glm::vec3 direction = s;// - position_;
 
-    return Ray{ onb_.getBasisMatrix() * position_,
+    return Ray{ position_,
                 glm::normalize( onb_.getBasisMatrix() * direction) };
 }
 
