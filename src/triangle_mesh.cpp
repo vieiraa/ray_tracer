@@ -66,7 +66,6 @@ bool TriangleMesh::intersect(const Ray &ray, IntersectionRecord &ir) const {
 	    ir.t_ = t;
 	    ir.normal_ = tr->getNormal();
 	    isect = true;
-	    std::cout << "hit\n";
 	}
     }
 
