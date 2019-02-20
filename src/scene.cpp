@@ -65,5 +65,10 @@ void Scene::load() {
 
 void Scene::load() {
     TriangleMesh *mesh = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/bin/obj.obj");
-    primitives_.push_back(Primitive::PrimitiveUniquePtr(mesh));
+    auto triangles = mesh->getTriangles();
+    //primitives_.push_back(Primitive::PrimitiveUniquePtr(mesh));
+    
+    for (auto tr : triangles) {
+	primitives_.push_back(Primitive::PrimitiveUniquePtr(tr));
+    }
 }

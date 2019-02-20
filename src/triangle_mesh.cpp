@@ -55,19 +55,6 @@ TriangleMesh::TriangleMesh(const std::string &filename) {
 
 TriangleMesh::TriangleMesh() = default;
 
-bool TriangleMesh::intersect(const Ray &ray, IntersectionRecord &ir) const {
-    bool isect = false;
-    
-    for (auto tr : triangles_) {
-	std::vector<glm::vec3> verts = tr->getVertices();
-	float t = ir.t_, u, v;
-	if (tr->intersect(ray, ir) && t < ir.t_) {
-	    ir.position_ = ray.origin_ + ir.t_ * ray.direction_;
-	    ir.t_ = t;
-	    ir.normal_ = tr->getNormal();
-	    isect = true;
-	}
-    }
-
-    return isect;
+std::vector<Triangle *> TriangleMesh::getTriangles() {
+    return triangles_;
 }
