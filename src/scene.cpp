@@ -40,7 +40,7 @@ bool Scene::intersect( const Ray &ray,
     return intersection_result;
 }
 
-void Scene::load( void )
+/*void Scene::load( void )
 {
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.0f,  0.0f }, 0.2f } ) );
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.0f, -1.0f }, 0.2f } ) );
@@ -51,7 +51,7 @@ void Scene::load( void )
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{0.25f,-0.25f,0}, glm::vec3(-0.25f,-0.25, 0), glm::vec3(0,-0.5,-1.0)}));
     primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{-0.25f,0.25f,-4.0f}, glm::vec3(-0.75f,0.25,-4.0), glm::vec3(-0.5,-0.25,-4.0)}));
 
-}
+}*/
 /*
 void Scene::load() {
     for (int i = 0; i < 10000; i++) {
@@ -63,3 +63,7 @@ void Scene::load() {
     }
     }*/
 
+void Scene::load() {
+    TriangleMesh *mesh = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/bin/obj.obj");
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(mesh));
+}

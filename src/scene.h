@@ -11,6 +11,7 @@
 #include "sphere.h"
 #include "triangle_naive.h"
 #include "triangle_fast.h"
+#include "triangle_mesh.h"
 
 class Scene
 {
