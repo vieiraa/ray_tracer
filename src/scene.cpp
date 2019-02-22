@@ -1,19 +1,5 @@
 #include "scene.h"
-#include <time.h>
 #include <stdlib.h>
-
-#ifdef __MINGW32__
-double drand48() {
-    static bool first = true;
-
-    if (first) {
-        srand((long) time(NULL));
-        first = false;
-    }
-
-    return (double)rand() / RAND_MAX;
-}
-#endif
 
 Scene::Scene( void )
 {}
@@ -67,7 +53,7 @@ void Scene::load() {
     TriangleMesh *mesh = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/bin/lowpolycat/cat.obj");
     auto triangles = mesh->getTriangles();
     //primitives_.push_back(Primitive::PrimitiveUniquePtr(mesh));
-    
+
     for (auto tr : triangles) {
 	primitives_.push_back(Primitive::PrimitiveUniquePtr(tr));
     }

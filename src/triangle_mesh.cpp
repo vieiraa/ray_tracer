@@ -6,6 +6,20 @@
 #include "triangle_naive.h"
 #include <iostream>
 
+#ifdef __MINGW32__
+#include <time.h>
+double drand48() {
+    static bool first = true;
+
+    if (first) {
+        srand((long) time(NULL));
+        first = false;
+    }
+
+    return (double)rand() / RAND_MAX;
+}
+#endif
+
 const float KINFINITY = std::numeric_limits<float>::max();
 const float EPSILON = 1e-8;
 
@@ -40,7 +54,7 @@ bool TriangleMesh::loadMesh(const std::string &filename) {
 	    glm::vec3 normal = glm::vec3(mesh->mNormals[v[0].second].x,
 					 mesh->mNormals[v[1].second].y,
 					 mesh->mNormals[v[2].second].z);
-	    
+
 	    t->normal_ = normal;
 	    t->color_ = glm::vec3(drand48(), drand48(), drand48());
 	    triangles.push_back(t);
@@ -48,7 +62,7 @@ bool TriangleMesh::loadMesh(const std::string &filename) {
     }
 
     triangles_ = triangles;
-    
+
     return true;
 }
 
