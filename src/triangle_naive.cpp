@@ -9,19 +9,19 @@ Naive_Triangle::Naive_Triangle(const glm::vec3 &v1,
 
 bool Naive_Triangle:: intersect(const Ray &ray, IntersectionRecord &ir) const
 {
-    std::vector<glm::vec3> vertices = getVertices();
-    float a = vertices[0].x - vertices[1].x;
-    float b = vertices[0].y - vertices[1].y;
-    float c = vertices[0].z - vertices[1].z;
-    float d = vertices[0].x - vertices[2].x;
-    float e = vertices[0].y - vertices[2].y;
-    float f = vertices[0].z - vertices[2].z;
+    
+    float a = vertices_[0].x - vertices_[1].x;
+    float b = vertices_[0].y - vertices_[1].y;
+    float c = vertices_[0].z - vertices_[1].z;
+    float d = vertices_[0].x - vertices_[2].x;
+    float e = vertices_[0].y - vertices_[2].y;
+    float f = vertices_[0].z - vertices_[2].z;
     float g = ray.direction_.x;
     float h = ray.direction_.y;
     float i = ray.direction_.z;
-    float j = vertices[0].x - ray.origin_.x;
-    float k = vertices[0].y - ray.origin_.y;
-    float l = vertices[0].z - ray.origin_.z;
+    float j = vertices_[0].x - ray.origin_.x;
+    float k = vertices_[0].y - ray.origin_.y;
+    float l = vertices_[0].z - ray.origin_.z;
 
     float ei_hf = e * i - h * f;
     float gf_di = g * f - d * i;
@@ -46,8 +46,7 @@ bool Naive_Triangle:: intersect(const Ray &ray, IntersectionRecord &ir) const
 
     ir.t_ = t;
     ir.position_ = ray.origin_ + ir.t_ * ray.direction_;
-    ir.normal_ = glm::normalize(glm::cross(vertices[1] - vertices[0],
-					   vertices[2] - vertices[0]));
+    ir.normal_ = normal_;
 
     return true;
 }

@@ -36,12 +36,13 @@ bool TriangleMesh::loadMesh(const std::string &filename) {
 		v.push_back({aux, index[k]});
 	    }
 
-	    Naive_Triangle *t = new Naive_Triangle(v[0].first, v[1].first, v[2].first);
+	    Fast_Triangle *t = new Fast_Triangle(v[0].first, v[1].first, v[2].first);
 	    glm::vec3 normal = glm::vec3(mesh->mNormals[v[0].second].x,
 					 mesh->mNormals[v[1].second].y,
 					 mesh->mNormals[v[2].second].z);
 	    
-	    t->setNormal(normal);
+	    t->normal_ = normal;
+	    t->color_ = glm::vec3(drand48(), drand48(), drand48());
 	    triangles.push_back(t);
 	}
     }
