@@ -64,7 +64,7 @@ void Scene::load() {
     }*/
 
 void Scene::load() {
-    TriangleMesh *mesh = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/bin/obj.obj");
+    TriangleMesh *mesh = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/bin/a/lowpolydeer/deer.obj");
     auto triangles = mesh->getTriangles();
     //primitives_.push_back(Primitive::PrimitiveUniquePtr(mesh));
     

@@ -17,10 +17,10 @@ int main( void )
 			  2.5f,
 			  -2.5f,
 			  2.5f,
-			  2.0f,
+			  4.0f,
 			  glm::ivec2{ x_resolution, y_resolution },
-			  glm::vec3{ 0.48113f, -6.5191f,  3.34367f },     // position
-			  glm::vec3{ 0.0f, 1.0f,  0.0f },     // up
+			  glm::vec3{ 6.03659f, 1.35192f,  5.42361f },     // position
+			  glm::vec3{ 0.0f, -1.0f,  0.0f },     // up
 			  glm::vec3{ 0.0f, 0.0f, -1.0f } );   // look at
     
     Scene scene;
