@@ -17,18 +17,18 @@ int main( void )
 			  2.5f,
 			  -2.5f,
 			  2.5f,
-			  6.0f,
+			  5.0f,
 			  glm::ivec2{ x_resolution, y_resolution },
-			  glm::vec3{ 7.48113, 2.58115f,  3.06472f },     // position
+			  glm::vec3{ 3.48113, 3.58115f, 4.06472f },     // position
 			  glm::vec3{ 0.0f, -1.0f,  0.0f },     // up
 			  glm::vec3{ 0.0f, 0.0f, -1.0f } );   // look at
-    
+
     Scene scene;
 
     scene.load();
 
     Buffer rendering_buffer( x_resolution, y_resolution );
-    glm::vec3 background_color( 0.0f, 0.0f, 0.0f );
+    glm::vec3 background_color( 1.0f, 1.0f, 1.0f );
 
     // Set up the renderer.
     RayTracer rt( camera,
@@ -54,7 +54,7 @@ int main( void )
     std::cout << "Elapsed time: " << duration / 1000.0 << "s" << std::endl;
 
     // Save the rendered image to a .ppm file.
-    rendering_buffer.save( "output_image.ppm" );
+    rendering_buffer.save( "output_image2.ppm" );
 
     return 0;
 }
