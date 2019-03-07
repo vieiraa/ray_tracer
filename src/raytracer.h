@@ -1,5 +1,4 @@
-#ifndef RAYTRACER_H_
-#define RAYTRACER_H_
+#pragma once
 
 #include <sstream>
 #include <iomanip>
@@ -31,6 +30,4 @@ private:
     Buffer &buffer_;
 
 };
-
-#endif /* RAYTRACER_H_ */
 

@@ -1,5 +1,4 @@
-#ifndef BUFFER_H_
-#define BUFFER_H_
+#pragma once
 
 #include <iostream>
 #include <iomanip>
@@ -33,6 +32,4 @@ private:
         return ( x < 0.0f ) ? 0.0f : ( x > 1.0f ) ? 1.0f : x;
     }
 };
-
-#endif /* BUFFER_H_ */
 

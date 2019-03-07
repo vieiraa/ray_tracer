@@ -1,5 +1,4 @@
-#ifndef RAY_H_
-#define RAY_H_
+#pragma once
 
 #include <glm/glm.hpp>
 
@@ -16,6 +15,4 @@ public:
 
     glm::vec3 direction_{ 0.0f, 0.0f, -1.0f };
 };
-
-#endif /* RAY_H_ */
 

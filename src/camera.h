@@ -1,5 +1,4 @@
-#ifndef CAMERA_H_
-#define CAMERA_H_
+#pragma once
 
 #include <iostream>
 #include <iomanip>
@@ -41,6 +40,4 @@ public:
 
     ONB onb_;                                   //  orthonormal RHS basis
 };
-
-#endif /* CAMERA_H_ */
 

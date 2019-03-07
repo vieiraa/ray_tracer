@@ -1,5 +1,4 @@
-#ifndef ONB_H_
-#define ONB_H_
+#pragma once
 
 #include <glm/glm.hpp>
 
@@ -41,6 +40,4 @@ private:
     glm::mat3x3 m_;
 
 };
-
-#endif /* ONB_H_ */
 

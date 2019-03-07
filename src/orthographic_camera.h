@@ -1,5 +1,4 @@
-#ifndef ORTHOGRAPHIC_CAMERA_H_
-#define ORTHOGRAPHIC_CAMERA_H_
+#pragma once
 
 #include "camera.h"
 #include "ray.h"
@@ -32,6 +31,4 @@ public:
     float max_y_;
 
 };
-
-#endif /* ORTHOGRAPHIC_CAMERA_H_ */
 

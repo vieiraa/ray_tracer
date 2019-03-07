@@ -1,5 +1,4 @@
-#ifndef TRIANGLE_FAST_H_
-#define TRIANGLE_FAST_H_
+#pragma once
 
 #include <glm/glm.hpp>
 #include "triangle.h"
@@ -18,4 +17,3 @@ public:
 
 };
 
-#endif

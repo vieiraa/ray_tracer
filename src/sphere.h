@@ -1,5 +1,4 @@
-#ifndef SPHERE_H_
-#define SPHERE_H_
+#pragma once
 
 #include <glm/glm.hpp>
 #include "primitive.h"
@@ -26,6 +25,4 @@ private:
 
     static const float kIntersectionTestEpsilon_;
 };
-
-#endif /* SPHERE_H_ */
 

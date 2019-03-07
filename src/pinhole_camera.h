@@ -1,5 +1,4 @@
-#ifndef PINHOLE_CAMERA_H_
-#define PINHOLE_CAMERA_H_
+#pragma once
 
 #include "camera.h"
 #include "ray.h"
@@ -35,6 +34,4 @@ public:
     float max_y_;
 
 };
-
-#endif /* PINHOLE_CAMERA_H_ */
 

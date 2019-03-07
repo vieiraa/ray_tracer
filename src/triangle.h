@@ -1,5 +1,4 @@
-#ifndef TRIANGLE_H_
-#define TRIANGLE_H_
+#pragma once
 
 #include <glm/glm.hpp>
 #include <vector>
@@ -21,4 +20,3 @@ public:
     virtual bool intersect(const Ray &ray, IntersectionRecord &ir) const = 0;
 };
 
-#endif

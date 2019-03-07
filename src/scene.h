@@ -1,5 +1,4 @@
-#ifndef SCENE_H_
-#define SCENE_H_
+#pragma once
 
 #include <iostream>
 #include <fstream>
@@ -29,6 +28,4 @@ public:
     std::vector< Primitive::PrimitiveUniquePtr > primitives_;
 
 };
-
-#endif /* SCENE_H_ */
 

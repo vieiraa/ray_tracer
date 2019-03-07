@@ -5,6 +5,7 @@
 
 #include "ray.h"
 #include "intersection_record.h"
+#include "material.h"
 
 class Primitive
 {
@@ -22,7 +23,7 @@ public:
     virtual bool intersect( const Ray &ray,
                             IntersectionRecord &intersection_record ) const = 0;
 
-    glm::vec3 color_;
+    Material material_;
 };
 
 #endif /* PRIMITIVE_H_ */

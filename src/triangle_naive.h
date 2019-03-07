@@ -1,5 +1,4 @@
-#ifndef TRIANGLE_NAIVE_H_
-#define TRIANGLE_NAIVE_H_
+#pragma once
 
 #include <glm/glm.hpp>
 #include "triangle.h"
@@ -17,4 +16,3 @@ public:
     bool intersect(const Ray &ray, IntersectionRecord &ir) const;
 };
 
-#endif

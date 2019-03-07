@@ -1,5 +1,4 @@
-#ifndef TRIANGLE_MESH_H_
-#define TRIANGLE_MESH_H_
+#pragma once
 
 #include "triangle.h"
 #include <vector>
@@ -16,4 +15,3 @@ public:
     bool intersect(const Ray &ray, IntersectionRecord &ir) const;
 };
 
-#endif
