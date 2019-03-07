@@ -50,7 +50,7 @@ void Scene::load() {
     }*/
 
 void Scene::load() {
-    TriangleMesh *mesh = new TriangleMesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\deer.obj");
+    TriangleMesh *mesh = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/cat.obj");
     auto triangles = mesh->getTriangles();
     //primitives_.push_back(Primitive::PrimitiveUniquePtr(mesh));
 

@@ -39,7 +39,7 @@ bool Fast_Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
     ir.t_ = t;
     ir.position_ = ray.origin_ + ir.t_ * ray.direction_;
     ir.normal_ = normal_;
-    ir.color_ = color_;
+    ir.material_ = material_;
 
     return true;
 }

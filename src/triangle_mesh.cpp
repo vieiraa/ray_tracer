@@ -56,7 +56,8 @@ bool TriangleMesh::loadMesh(const std::string &filename) {
 					 mesh->mNormals[v[2].second].z);
 
 	    t->normal_ = normal;
-	    t->color_ = glm::vec3(drand48(), drand48(), drand48());
+            glm::vec3 c = glm::vec3(drand48(), drand48(), drand48());
+	    t->material_ = Material(c, glm::vec3(0, 0, 0));
 	    triangles.push_back(t);
 	}
     }
