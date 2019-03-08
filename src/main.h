@@ -7,6 +7,7 @@
 #include "scene.h"
 #include "buffer.h"
 #include "raytracer.h"
+#include "path_tracer.h"
 
 #endif /* MAIN_H_ */
 

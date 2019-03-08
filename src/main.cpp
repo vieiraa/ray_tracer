@@ -31,7 +31,7 @@ int main( void )
     glm::vec3 background_color( 1.0f, 1.0f, 1.0f );
 
     // Set up the renderer.
-    RayTracer rt( camera,
+    PathTracer rt( camera,
                   scene,
                   background_color,
                   rendering_buffer );

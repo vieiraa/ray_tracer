@@ -1,7 +1,9 @@
+#include "path_tracer.h"
+
 #include "raytracer.h"
 #include "material.h"
 
-RayTracer::RayTracer( Camera &camera,
+PathTracer::PathTracer( Camera &camera,
                       const Scene &scene,
                       const glm::vec3 background_color,
                       Buffer &buffer ) :
@@ -11,7 +13,7 @@ RayTracer::RayTracer( Camera &camera,
         buffer_( buffer )
 {}
 
-void RayTracer::integrate( void )
+void PathTracer::integrate( void )
 {
     IntersectionRecord intersection_record;
 
@@ -32,13 +34,21 @@ void RayTracer::integrate( void )
         // Loops over image columns
         for ( std::size_t x = 0; x < buffer_.h_resolution_; x++ )
         {
-            intersection_record.t_ = std::numeric_limits< double >::max();
+            for (int sample = 0; sample < 50; sample++) {
+                intersection_record.t_ = std::numeric_limits< double >::max();
 
-            Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
+                Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
 
-            if ( scene_.intersect( ray, intersection_record ) )
-                //buffer_.buffer_data_[x][y] = glm::vec3{ 1.0f, 0.0f, 0.0f };
-                buffer_.buffer_data_[x][y] = intersection_record.material_.reflected_;
+                if (scene_.intersect( ray, intersection_record ))
+                    buffer_.buffer_data_[x][y] += intersection_record.material_.reflected_;
+                else
+                    buffer_.buffer_data_[x][y] += glm::vec3(0,0,0);
+                        
+                    
+            }
+
+            buffer_.buffer_data_[x][y] /= 50;
+            
         }
     }
 
