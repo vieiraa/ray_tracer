@@ -19,11 +19,9 @@ public:
                Buffer &buffer );
 
     void integrate( void );
-    glm::vec3 L(Ray &r, int curr_depth);
+    glm::vec3 L(const Ray &r, int curr_depth);
 
 private:
-    Random random;
-
     Camera &camera_;
 
     const Scene &scene_;
@@ -31,5 +29,7 @@ private:
     glm::dvec3 background_color_;
 
     Buffer &buffer_;
+
+    Random random;
 
 };

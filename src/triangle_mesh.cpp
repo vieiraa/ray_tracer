@@ -57,7 +57,7 @@ bool TriangleMesh::loadMesh(const std::string &filename) {
 					 mesh->mNormals[v[2].second].z);
 
 	    t->normal_ = normal;
-            glm::vec3 c = glm::vec3(50,50,50);
+            glm::vec3 c = glm::vec3(0.25f,0.25f,0.25f);
 	    t->material_ = new Diffuse(c, glm::vec3(0, 0, 0));
 	    triangles.push_back(t);
 	}

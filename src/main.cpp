@@ -19,7 +19,7 @@ int main( void )
 			  2.5f,
 			  5.0f,
 			  glm::ivec2{ x_resolution, y_resolution },
-			  glm::vec3{ 3.48113, 3.58115f, 4.06472f },     // position
+			  glm::vec3{ 3, 0, 3 },     // position
 			  glm::vec3{ 0.0f, -1.0f,  0.0f },     // up
 			  glm::vec3{ 0.0f, 0.0f, -1.0f } );   // look at
 

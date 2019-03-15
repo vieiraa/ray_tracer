@@ -1,4 +1,5 @@
 #include "scene.h"
+#include "diffuse.h"
 #include <stdlib.h>
 
 Scene::Scene( void )
@@ -19,6 +20,8 @@ bool Scene::intersect( const Ray &ray,
         if ( primitives_[primitive_id]->intersect( ray, tmp_intersection_record ) )
             if ( ( tmp_intersection_record.t_ < intersection_record.t_ ) && ( tmp_intersection_record.t_ > 0.0 ) )
             {
+                
+                std::cerr << "id = " << primitive_id << "\n";
                 intersection_record = tmp_intersection_record;
                 intersection_result = true; // the ray intersects a primitive!
             }
@@ -50,11 +53,23 @@ void Scene::load() {
     }*/
 
 void Scene::load() {
-    TriangleMesh *mesh = new TriangleMesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\cat.obj");
+    Sphere *s = new Sphere(glm::vec3(-2, 0.25f, 3.0f), 1);
+    s->material_ = new Diffuse(glm::vec3(0, 0, 0), glm::vec3(40, 40, 40));
+    Fast_Triangle *t1 = new Fast_Triangle(glm::vec3(0,1,0), glm::vec3(-1, 1, 0), glm::vec3(0.5f, 0, 0));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(t1));
+    /*TriangleMesh *light = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/sphere.obj");
+    for (auto tr : light->getTriangles()) {
+        tr->material_->emitted_ = glm::vec3(15, 15, 15);
+        tr->material_->reflected_ = glm::vec3(0,0,0);
+        primitives_.push_back(Primitive::PrimitiveUniquePtr(tr));
+        }*/
+    /*
+    TriangleMesh *mesh = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/cat.obj");
     auto triangles = mesh->getTriangles();
     //primitives_.push_back(Primitive::PrimitiveUniquePtr(mesh));
 
     for (auto tr : triangles) {
 	primitives_.push_back(Primitive::PrimitiveUniquePtr(tr));
-    }
-    }
+        }*/
+}
