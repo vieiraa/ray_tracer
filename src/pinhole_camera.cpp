@@ -30,7 +30,7 @@ PinholeCamera::PinholeCamera( const float min_x,
 {}
 
 
-Ray PinholeCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord ) const
+Ray PinholeCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord )
 {
     float x = random.get();
     float y = random.get();

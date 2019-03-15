@@ -12,5 +12,5 @@ class Random {
 public:
     Random();
 
-    float get() const;
+    float get();
 };

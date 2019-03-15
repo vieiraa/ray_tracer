@@ -6,6 +6,7 @@ Random::Random() {
     rng = std::mt19937(seed);
 }
 
-float Random::get() const {
-    return dist(rng);
+float Random::get() {
+    auto ret = dist(rng);
+    return ret;
 }

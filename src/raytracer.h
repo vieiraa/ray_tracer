@@ -21,7 +21,7 @@ public:
 
 private:
 
-    const Camera &camera_;
+    Camera &camera_;
 
     const Scene &scene_;
 

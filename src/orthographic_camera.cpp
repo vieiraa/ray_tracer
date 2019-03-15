@@ -23,8 +23,7 @@ OrthographicCamera::OrthographicCamera( const float min_x,
         max_y_{ max_y }
 {}
 
-Ray OrthographicCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord ) const
-{
+Ray OrthographicCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord ){
     float width = max_x_ - min_x_;
     float height = max_y_ - min_y_;
 

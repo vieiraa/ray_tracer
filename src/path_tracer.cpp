@@ -79,7 +79,7 @@ void PathTracer::integrate( void )
             for (int sample = 0; sample < 5; sample++) {
                 intersection_record.t_ = std::numeric_limits< double >::max();
 
-                Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
+                Ray ray = ( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
 
                 buffer_.buffer_data_[x][y] += L(ray, 0);
 

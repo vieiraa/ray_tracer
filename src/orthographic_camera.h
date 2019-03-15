@@ -18,7 +18,7 @@ public:
                         const glm::vec3 &up_vector,
                         const glm::vec3 &look_at );
 
-    Ray getWorldSpaceRay( const glm::vec2 &pixel_coord ) const;
+    Ray getWorldSpaceRay( const glm::vec2 &pixel_coord );
 
     glm::vec3 ray_origin_;
 

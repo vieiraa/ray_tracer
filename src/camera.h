@@ -26,7 +26,7 @@ public:
 
     void setLookAt( const glm::vec3 &look_at );
 
-    virtual Ray getWorldSpaceRay( const glm::vec2 &pixel_coord ) const = 0;
+    virtual Ray getWorldSpaceRay( const glm::vec2 &pixel_coord )  = 0;
 
     glm::ivec2 resolution_;
 
