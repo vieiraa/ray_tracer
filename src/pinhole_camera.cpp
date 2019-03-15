@@ -1,11 +1,7 @@
 #include <random>
 #include <chrono>
 #include "pinhole_camera.h"
-
-std::random_device device;
-std::uniform_real_distribution<float> dist(0.0f, 1.0f);
-auto seed = std::chrono::system_clock::now().time_since_epoch().count();
-std::mt19937 rng(seed);
+#include "random.h"
 
 PinholeCamera::PinholeCamera( void )
 {}
@@ -36,14 +32,14 @@ PinholeCamera::PinholeCamera( const float min_x,
 
 Ray PinholeCamera::getWorldSpaceRay( const glm::vec2 &pixel_coord ) const
 {
-    auto x = dist(rng);
-    auto y = dist(rng);
+    float x = random.get();
+    float y = random.get();
     while (x == 1.0f)
-        x = dist(rng);
+        x = random.get();
 
     while (y == 1.0f)
-        y = dist(rng);
-    
+        y = random.get();
+
     glm::vec3 a(max_x_ - min_x_, 0, 0);
     glm::vec3 b(0, max_y_ - min_y_, 0);
     glm::vec3 c(min_x_, min_y_, -focal_distance_);

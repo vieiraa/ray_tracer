@@ -7,6 +7,7 @@
 #include "camera.h"
 #include "scene.h"
 #include "buffer.h"
+#include "random.h"
 
 class PathTracer
 {
@@ -18,8 +19,10 @@ public:
                Buffer &buffer );
 
     void integrate( void );
+    glm::vec3 L(Ray &r, int curr_depth);
 
 private:
+    Random random;
 
     const Camera &camera_;
 

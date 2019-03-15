@@ -9,7 +9,7 @@ struct IntersectionRecord
     float t_;
     glm::vec3 position_;
     glm::vec3 normal_;
-    Material material_;
+    Material *material_;
 };
 
 #endif /* INTERSECTION_RECORD_H_ */

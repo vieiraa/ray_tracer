@@ -2,9 +2,11 @@
 
 #include "camera.h"
 #include "ray.h"
+#include "random.h"
 
 class PinholeCamera : public Camera
 {
+    Random random;
 public:
 
     PinholeCamera( void );

@@ -2,6 +2,13 @@
 
 #include "raytracer.h"
 #include "material.h"
+#include "onb.h"
+#include "random.h"
+#include <math.h>
+
+const float pi = 3.14159265358979323846;
+
+Random random;
 
 PathTracer::PathTracer( Camera &camera,
                       const Scene &scene,
@@ -12,6 +19,41 @@ PathTracer::PathTracer( Camera &camera,
         background_color_{ background_color },
         buffer_( buffer )
 {}
+
+glm::vec3 PathTracer::L(Ray &r, int curr_depth) {
+    glm::vec3 Lo;
+    IntersectionRecord ir;
+
+    if (curr_depth < 5) {
+        if (scene_.intersect(r, ir)) {
+            float r1 = random.get();
+            float r2 = random.get();
+            while (r1 == 1.0f)
+                r1 = random.get();
+            while (r2 == 1.0f)
+                r2 = random.get();
+
+            auto theta = acos(1 - r1);
+            auto phi = 2 * pi * r2;
+            auto radius = 1;
+
+            float x = radius * sin(theta) * cos(phi);
+            float y = radius * sin(theta) * sin(phi);
+            float z = radius * cos(theta);
+
+            glm::vec3 dir(x, y, z);
+            ONB onb;
+            onb.setFromV(ir.normal_);
+            dir = glm::normalize(dir * onb.getBasisMatrix());
+
+            Ray refl_ray(ir.position_, dir);
+
+            Lo = ir.material_->emitted_ + ir.material_->fr() * L(refl_ray, curr_depth++) * glm::dot(ir.normal_, refl_ray.direction_);
+        }
+    }
+
+    return Lo;
+}
 
 void PathTracer::integrate( void )
 {
@@ -34,21 +76,17 @@ void PathTracer::integrate( void )
         // Loops over image columns
         for ( std::size_t x = 0; x < buffer_.h_resolution_; x++ )
         {
-            for (int sample = 0; sample < 50; sample++) {
+            for (int sample = 0; sample < 5; sample++) {
                 intersection_record.t_ = std::numeric_limits< double >::max();
 
                 Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
 
-                if (scene_.intersect( ray, intersection_record ))
-                    buffer_.buffer_data_[x][y] += intersection_record.material_.reflected_;
-                else
-                    buffer_.buffer_data_[x][y] += glm::vec3(0,0,0);
-                        
-                    
+                buffer_.buffer_data_[x][y] += L(ray, 0);
+
             }
 
-            buffer_.buffer_data_[x][y] /= 50;
-            
+            buffer_.buffer_data_[x][y] /= 5;
+
         }
     }
 
