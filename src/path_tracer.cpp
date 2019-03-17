@@ -19,22 +19,26 @@ PathTracer::PathTracer( Camera &camera,
 {}
 
 glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
-    glm::vec3 Lo;
+    glm::vec3 Lo = {0,0,0};
     IntersectionRecord ir;
+    ir.t_ = std::numeric_limits<double>::max();
 
     if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
+            std::cerr << "aaaaaaaaaaaa" << "\n";
             float r1 = random.get();
+            std::cerr << "random1 = " << r1<< "\n";
             float r2 = random.get();
-            
+            std::cerr << "random2 = " << r2 << "\n";
+
             while (r1 == 1.0f)
                 r1 = random.get();
             while (r2 == 1.0f)
                 r2 = random.get();
 
-            auto theta = glm::acos(1 - r1);
-            auto phi = 2 * pi * r2;
-            auto radius = 1;
+            float theta = glm::acos(1 - r1);
+            float phi = 2.0f * pi * r2;
+            float radius = 1.0f;
 
             float x = radius * glm::sin(theta) * glm::cos(phi);
             float y = radius * glm::sin(theta) * glm::sin(phi);
@@ -43,17 +47,17 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
             glm::vec3 dir(x, y, z);
             ONB onb;
             onb.setFromV(ir.normal_);
-            dir = glm::normalize(dir * onb.getBasisMatrix());
+            dir = dir * onb.getBasisMatrix();
 
             Ray refl_ray(ir.position_, dir);
-            float dot = glm::dot(ir.normal_, refl_ray.direction_);
+            float dot = glm::dot(refl_ray.direction_,ir.normal_);
 
             if (dot < 0) {
-                refl_ray.direction_ *= -1;
+                refl_ray.direction_ = - refl_ray.direction_;
                 dot = -dot;
             }
 
-            Lo = ir.material_->emitted_ + ir.material_->fr() * L(refl_ray, curr_depth++) * glm::dot(ir.normal_, refl_ray.direction_);
+            Lo = ir.material_->emitted_ + 2.0f * pi * ir.material_->fr() * L(refl_ray,curr_depth++) * dot;
         }
     }
 
