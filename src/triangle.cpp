@@ -10,6 +10,6 @@ Triangle::Triangle(const glm::vec3 &v1,
     edge2_ = vertices_[2] - vertices_[0];
     edge1_ = vertices_[1] - vertices_[0];
 
-    //normal = glm::normalize(glm::cross(edge2, edge1));
+    normal_ = glm::normalize(glm::cross(edge2_, edge1_));
 }
 

@@ -5,6 +5,7 @@
 #include "onb.h"
 #include "random.h"
 #include <math.h>
+#include <assert.h>
 
 const float pi = 3.14159265358979323846;
 
@@ -18,18 +19,30 @@ PathTracer::PathTracer( Camera &camera,
         buffer_( buffer )
 {}
 
+
+std::ostream& operator<<(std::ostream& os, glm::mat3x3 m) {
+    for (int i = 0; i < 3; i++) {
+        os << m[i].x << " " << m[i].y << " " << m[i].z << "\n";
+    }
+
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, glm::vec3 v) {
+    os << v.x << " " << v.y << " " << v.z << "\n";
+
+    return os;
+}
+
 glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
-    glm::vec3 Lo = {0,0,0};
+    glm::vec3 Lo(0, 0, 0);
     IntersectionRecord ir;
     ir.t_ = std::numeric_limits<double>::max();
 
     if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
-            std::cerr << "aaaaaaaaaaaa" << "\n";
             float r1 = random.get();
-            std::cerr << "random1 = " << r1<< "\n";
             float r2 = random.get();
-            std::cerr << "random2 = " << r2 << "\n";
 
             while (r1 == 1.0f)
                 r1 = random.get();
@@ -47,7 +60,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
             glm::vec3 dir(x, y, z);
             ONB onb;
             onb.setFromV(ir.normal_);
-            dir = dir * onb.getBasisMatrix();
+            dir = glm::normalize(dir * onb.getBasisMatrix());
 
             Ray refl_ray(ir.position_, dir);
             float dot = glm::dot(refl_ray.direction_,ir.normal_);
@@ -57,7 +70,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
                 dot = -dot;
             }
 
-            Lo = ir.material_->emitted_ + 2.0f * pi * ir.material_->fr() * L(refl_ray,curr_depth++) * dot;
+            Lo = ir.material_->emitted_ + ir.material_->fr() * L(refl_ray, curr_depth++) * dot;
         }
     }
 
@@ -88,10 +101,9 @@ void PathTracer::integrate( void )
             for (int sample = 0; sample < 5; sample++) {
                 intersection_record.t_ = std::numeric_limits< double >::max();
 
-                Ray ray = ( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
+                Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
 
                 buffer_.buffer_data_[x][y] += L(ray, 0);
-
             }
 
             buffer_.buffer_data_[x][y] /= 5;
