@@ -70,7 +70,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
                 dot = -dot;
             }
 
-            Lo = ir.material_->emitted_ + ir.material_->fr() * L(refl_ray, curr_depth++) * dot;
+            Lo = ir.material_->emitted_ + 2 * pi * ir.material_->fr() * L(refl_ray, curr_depth++) * dot;
         }
     }
 
@@ -98,7 +98,7 @@ void PathTracer::integrate( void )
         // Loops over image columns
         for ( std::size_t x = 0; x < buffer_.h_resolution_; x++ )
         {
-            for (int sample = 0; sample < 5; sample++) {
+            for (int sample = 0; sample < 10; sample++) {
                 intersection_record.t_ = std::numeric_limits< double >::max();
 
                 Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
@@ -106,7 +106,7 @@ void PathTracer::integrate( void )
                 buffer_.buffer_data_[x][y] += L(ray, 0);
             }
 
-            buffer_.buffer_data_[x][y] /= 5;
+            buffer_.buffer_data_[x][y] /= 10;
 
         }
     }
