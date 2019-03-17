@@ -55,23 +55,23 @@ void Scene::load() {
 
 void Scene::load() {
     Sphere *s = new Sphere(glm::vec3(-2, 0.25f, 3.0f), 1.0f);
-    s->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 10.0f, 10.0f));
+    s->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
     Fast_Triangle *t1 = new Fast_Triangle(glm::vec3(0.25f, 0.5f, -1.0f), glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     t1->material_ = new Diffuse(glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s));
-    primitives_.push_back(Primitive::PrimitiveUniquePtr(t1));
+    //primitives_.push_back(Primitive::PrimitiveUniquePtr(t1));
     /*TriangleMesh *light = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/sphere.obj");
     for (auto tr : light->getTriangles()) {
         tr->material_->emitted_ = glm::vec3(15, 15, 15);
         tr->material_->reflected_ = glm::vec3(0,0,0);
         primitives_.push_back(Primitive::PrimitiveUniquePtr(tr));
         }*/
-    /*
+    
     TriangleMesh *mesh = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/cat.obj");
     auto triangles = mesh->getTriangles();
     //primitives_.push_back(Primitive::PrimitiveUniquePtr(mesh));
 
     for (auto tr : triangles) {
 	primitives_.push_back(Primitive::PrimitiveUniquePtr(tr));
-        }*/
+    }
 }
