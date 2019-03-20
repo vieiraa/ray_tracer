@@ -22,6 +22,7 @@ if(CMAKE_COMPILER_IS_MINGW)
     #add_definitions(-DASSIMP_BUILD_NO_IFC_IMPORTER)
     add_definitions(-DASSIMP_BUILD_NO_SMD_IMPORTER)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wa,-mbig-obj" )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--stack,8388608") #set stack size to 8mb
 endif()
 add_subdirectory("lib/assimp")
 
