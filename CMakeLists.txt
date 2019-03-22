@@ -6,7 +6,11 @@ set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -Wall -O3 -std=c++14" )
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /O3 /std:c++14 /bigobj")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -Wall -O3 -std=c++14" )
+endif()
 
 include_directories("${PROJECT_SOURCE_DIR}")
 include_directories(${CMAKE_SOURCE_DIR}/lib/glm)
@@ -22,7 +26,7 @@ if(CMAKE_COMPILER_IS_MINGW)
     #add_definitions(-DASSIMP_BUILD_NO_IFC_IMPORTER)
     add_definitions(-DASSIMP_BUILD_NO_SMD_IMPORTER)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wa,-mbig-obj" )
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--stack,8388608") #set stack size to 8mb
+    #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wl,--stack,8388608") #set stack size to 8mb
 endif()
 add_subdirectory("lib/assimp")
 
