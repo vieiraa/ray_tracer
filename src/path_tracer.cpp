@@ -6,8 +6,10 @@
 #include "random.h"
 #include <math.h>
 #include <assert.h>
+#include <glm/ext/scalar_constants.hpp>
 
-const float pi = 3.14159265358979323846;
+const float PI = glm::pi<float>();
+const int NUM_SAMPLES = 100;
 
 PathTracer::PathTracer( Camera &camera,
                       const Scene &scene,
@@ -37,7 +39,7 @@ std::ostream& operator<<(std::ostream& os, glm::vec3 v) {
 glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
     glm::vec3 Lo(0, 0, 0);
     IntersectionRecord ir;
-    ir.t_ = std::numeric_limits<double>::max();
+    ir.t_ = std::numeric_limits<float>::max();
 
     if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
@@ -50,7 +52,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
                 r2 = random.get();
 
             float theta = glm::acos(1 - r1);
-            float phi = 2.0f * pi * r2;
+            float phi = 2.0f * PI * r2;
             float radius = 1.0f;
 
             float x = radius * glm::sin(theta) * glm::cos(phi);
@@ -70,7 +72,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
                 dot = -dot;
             }
 
-            Lo = ir.material_->emitted_ + 2 * pi * ir.material_->fr() * L(refl_ray, curr_depth++) * dot;
+            Lo = ir.material_->emitted_ + 2 * PI * ir.material_->fr() * L(refl_ray, ++curr_depth) * dot;
         }
     }
 
@@ -79,8 +81,6 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
 void PathTracer::integrate( void )
 {
-    IntersectionRecord intersection_record;
-
     // Image space origin (i.e. x = 0 and y = 0) at the top left corner.
 
     // Loops over image rows
@@ -98,16 +98,13 @@ void PathTracer::integrate( void )
         // Loops over image columns
         for ( std::size_t x = 0; x < buffer_.h_resolution_; x++ )
         {
-            for (int sample = 0; sample < 10; sample++) {
-                intersection_record.t_ = std::numeric_limits< double >::max();
-
+            for (int sample = 0; sample < NUM_SAMPLES; sample++) {
                 Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
 
                 buffer_.buffer_data_[x][y] += L(ray, 0);
             }
 
-            buffer_.buffer_data_[x][y] /= 10;
-
+            buffer_.buffer_data_[x][y] /= NUM_SAMPLES;
         }
     }
 
