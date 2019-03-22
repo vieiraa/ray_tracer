@@ -7,7 +7,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /O3 /std:c++14 /bigobj")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14 /bigobj")
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -Wall -O3 -std=c++14" )
 endif()
