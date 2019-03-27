@@ -7,6 +7,7 @@
 #include <math.h>
 #include <assert.h>
 #include <glm/ext/scalar_constants.hpp>
+#include <thread>
 
 const float PI = glm::pi<float>();
 const int NUM_SAMPLES = 100;
@@ -20,21 +21,6 @@ PathTracer::PathTracer( Camera &camera,
         background_color_{ background_color },
         buffer_( buffer )
 {}
-
-
-std::ostream& operator<<(std::ostream& os, glm::mat3x3 m) {
-    for (int i = 0; i < 3; i++) {
-        os << m[i].x << " " << m[i].y << " " << m[i].z << "\n";
-    }
-
-    return os;
-}
-
-std::ostream& operator<<(std::ostream& os, glm::vec3 v) {
-    os << v.x << " " << v.y << " " << v.z << "\n";
-
-    return os;
-}
 
 glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
     glm::vec3 Lo(0, 0, 0);
@@ -81,31 +67,32 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
 void PathTracer::integrate( void )
 {
-    // Image space origin (i.e. x = 0 and y = 0) at the top left corner.
+    int num_threads = std::thread::hardware_concurrency();
+    num_threads = num_threads ? num_threads : 4;
+    std::vector<std::thread> threads(num_threads);
+    int jump = buffer_.h_resolution_ / num_threads;
+    auto worker = [&](int begin, int end) {
+                      for (auto y = begin; y < end; ++y) {
+                          for (auto x = 0; x < buffer_.h_resolution_; ++x) {
+                              for (int sample = 0; sample < NUM_SAMPLES; sample++) {
+                                  Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
 
-    // Loops over image rows
-    for ( std::size_t y = 0; y < buffer_.v_resolution_; y++ )
-    {
-        std::stringstream progress_stream;
-        progress_stream << "\r  progress .........................: "
-                        << std::fixed << std::setw( 6 )
-                        << std::setprecision( 2 )
-                        << 100.0 * y / ( buffer_.v_resolution_ - 1 )
-                        << "%";
+                                  buffer_.buffer_data_[x][y] += L(ray, 0);
+                              }
 
-        std::clog << progress_stream.str();
+                              buffer_.buffer_data_[x][y] /= NUM_SAMPLES;
+                          }
+                      }
+                  };
+    
+    auto begin = 0;
+    for (auto &t : threads) {
+        t = std::thread(worker, begin + 0, begin + jump);
+        begin += jump;
+    }
 
-        // Loops over image columns
-        for ( std::size_t x = 0; x < buffer_.h_resolution_; x++ )
-        {
-            for (int sample = 0; sample < NUM_SAMPLES; sample++) {
-                Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
-
-                buffer_.buffer_data_[x][y] += L(ray, 0);
-            }
-
-            buffer_.buffer_data_[x][y] /= NUM_SAMPLES;
-        }
+    for (auto &&t : threads) {
+        t.join();
     }
 
     std::clog << std::endl;
