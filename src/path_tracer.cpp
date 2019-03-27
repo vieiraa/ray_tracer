@@ -50,7 +50,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
             onb.setFromV(ir.normal_);
             dir = glm::normalize(dir * onb.getBasisMatrix());
 
-            Ray refl_ray(ir.position_, dir);
+            Ray refl_ray(ir.position_ + dir * 1e-3f, dir);
             float dot = glm::dot(refl_ray.direction_,ir.normal_);
 
             if (dot < 0) {
@@ -69,21 +69,33 @@ void PathTracer::integrate( void )
 {
     int num_threads = std::thread::hardware_concurrency();
     num_threads = num_threads ? num_threads : 4;
+    std::cerr << "Threads = " << num_threads << "\n";
     std::vector<std::thread> threads(num_threads);
     int jump = buffer_.h_resolution_ / num_threads;
+    float progress = 0.0f;
     auto worker = [&](int begin, int end) {
-                      for (auto y = begin; y < end; ++y) {
-                          for (auto x = 0; x < buffer_.h_resolution_; ++x) {
-                              for (int sample = 0; sample < NUM_SAMPLES; sample++) {
-                                  Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
+        for (auto y = begin; y < end; ++y) {
+            progress += (1.0f / num_threads) * y / (end - 1);
+            std::stringstream progress_stream;
+            progress_stream << "\r  progress .........................: "
+                << std::fixed << std::setw(6)
+                << std::setprecision(2)
+                << progress
+                << "%";
 
-                                  buffer_.buffer_data_[x][y] += L(ray, 0);
-                              }
+            std::clog << progress_stream.str();
 
-                              buffer_.buffer_data_[x][y] /= NUM_SAMPLES;
-                          }
-                      }
-                  };
+            for (auto x = 0; x < buffer_.h_resolution_; ++x) {
+                for (int sample = 0; sample < NUM_SAMPLES; sample++) {
+                    Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
+
+                    buffer_.buffer_data_[x][y] += L(ray, 0);
+                }
+
+                buffer_.buffer_data_[x][y] /= NUM_SAMPLES;
+            }
+        }
+    };
     
     auto begin = 0;
     for (auto &t : threads) {
