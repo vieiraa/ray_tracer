@@ -19,7 +19,7 @@ int main( void )
 			  2.5f,
 			  5.0f,
 			  glm::ivec2{ x_resolution, y_resolution },
-			  glm::vec3{ 3, 0, 3 },     // position
+			  glm::vec3{ 0.0f, 1.5f, 5.0f },     // position
 			  glm::vec3{ 0.0f, -1.0f,  0.0f },     // up
 			  glm::vec3{ 0.0f, 0.0f, -1.0f } );   // look at
 
@@ -54,7 +54,7 @@ int main( void )
     std::cout << "Elapsed time: " << duration / 1000.0 << "s" << std::endl;
 
     // Save the rendered image to a .ppm file.
-    rendering_buffer.save( "output_image10.ppm" );
+    rendering_buffer.save( "output_image10000.ppm" );
 
     return 0;
 }

@@ -54,20 +54,50 @@ void Scene::load() {
     }*/
 
 void Scene::load() {
-    Sphere *s = new Sphere(glm::vec3(-2, 0.25f, 3.0f), 1.0f);
-    s->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
-    Fast_Triangle *t1 = new Fast_Triangle(glm::vec3(0.25f, 0.5f, -1.0f), glm::vec3(0.5f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-    t1->material_ = new Diffuse(glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-    primitives_.push_back(Primitive::PrimitiveUniquePtr(s));
-    //primitives_.push_back(Primitive::PrimitiveUniquePtr(t1));
+/*
+    Sphere *s1 = new Sphere(glm::vec3(2.75f, 4.0f, -6.75f), 0.25f);
+    s1->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s1));
+
+    Sphere *s2 = new Sphere(glm::vec3(2.75f, 4.0f, -1.5f), 0.25f);
+    s2->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s2));
+
+    Sphere *s3 = new Sphere(glm::vec3(-2.75f, 4.0f, -6.75f), 0.25f);
+    s3->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s3));
+
+    Sphere *s4 = new Sphere(glm::vec3(-2.75f, 4.0, -1.5f), 0.25f);
+    s4->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s4));
+
+    Sphere *s5 = new Sphere(glm::vec3(2.75f, -1.5f, -6.75f), 0.25f);
+    s5->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s5));
+
+    Sphere *s6 = new Sphere(glm::vec3(0.0f, 3.1f, 0.0f), 0.25f);
+    s6->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(20.0f, 20.0f, 20.0f));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s6));
+*/
+    Sphere *s7 = new Sphere(glm::vec3(0.0f, 3.1f, -1.0f), 1.0f);
+    s7->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(20.0f, 20.0f, 20.0f));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s7));
+
+    Sphere *s8 = new Sphere(glm::vec3(0.0f, 3.1f, -4.25f), 1.0f);
+    s8->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(20.0f, 20.0f, 20.0f));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s8));
+
+    Sphere *s9 = new Sphere(glm::vec3(0.0f, 0, -2.5f), 1.0f);
+    s9->material_ = new Diffuse(glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s9));
     /*TriangleMesh *light = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/sphere.obj");
     for (auto tr : light->getTriangles()) {
         tr->material_->emitted_ = glm::vec3(15, 15, 15);
         tr->material_->reflected_ = glm::vec3(0,0,0);
         primitives_.push_back(Primitive::PrimitiveUniquePtr(tr));
         }*/
-    
-    TriangleMesh *mesh = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/cat.obj");
+
+    TriangleMesh *mesh = new TriangleMesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\scene.obj");
     auto triangles = mesh->getTriangles();
     //primitives_.push_back(Primitive::PrimitiveUniquePtr(mesh));
 
