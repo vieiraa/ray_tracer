@@ -35,10 +35,11 @@ void RayTracer::integrate( void )
             intersection_record.t_ = std::numeric_limits< double >::max();
 
             Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
+            auto aux = intersection_record.material_.lock();
 
             if ( scene_.intersect( ray, intersection_record ) )
                 //buffer_.buffer_data_[x][y] = glm::vec3{ 1.0f, 0.0f, 0.0f };
-                buffer_.buffer_data_[x][y] = intersection_record.material_->reflected_;
+                buffer_.buffer_data_[x][y] = aux->reflected_;
         }
     }
 

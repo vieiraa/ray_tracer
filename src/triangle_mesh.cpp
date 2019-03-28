@@ -26,15 +26,16 @@ const float EPSILON = 1e-8;
 
 bool TriangleMesh::loadMesh(const std::string &filename) {
     Assimp::Importer importer;
-    std::vector<Triangle *> triangles;
     const aiScene *scene = importer.ReadFile(filename,
 					     aiProcess_CalcTangentSpace |
 					     aiProcess_Triangulate |
 					     aiProcess_JoinIdenticalVertices |
 					     aiProcess_SortByPType);
 
-    if (!scene)
+    if (!scene) {
+        std::cerr << "File " << filename << " not found.\nExiting...\n";
 	std::exit(1);
+    }
 
     for (int i = 0; i < scene->mNumMeshes; i++) {
 	aiMesh *mesh = scene->mMeshes[i];
@@ -51,19 +52,13 @@ bool TriangleMesh::loadMesh(const std::string &filename) {
 		v.push_back({aux, index[k]});
 	    }
 
-	    Fast_Triangle *t = new Fast_Triangle(v[0].first, v[1].first, v[2].first);
-	    glm::vec3 normal = glm::vec3(mesh->mNormals[v[0].second].x,
-					 mesh->mNormals[v[1].second].y,
-					 mesh->mNormals[v[2].second].z);
+            std::unique_ptr<Triangle> t = std::make_unique<FastTriangle>(v[0].first, v[1].first, v[2].first);
 
-	    //t->normal_ = normal;
             glm::vec3 c = glm::vec3(0.4f,0.4f,0.4f);
-	    t->material_ = new Diffuse(c, glm::vec3(0, 0, 0));
-	    triangles.push_back(t);
+            t->material_ = std::make_shared<Diffuse>(c, glm::vec3(0, 0, 0));
+	    triangles_.push_back(std::move(t));
 	}
     }
-
-    triangles_ = triangles;
 
     return true;
 }
@@ -74,6 +69,6 @@ TriangleMesh::TriangleMesh(const std::string &filename) {
 
 TriangleMesh::TriangleMesh() = default;
 
-std::vector<Triangle *> TriangleMesh::getTriangles() {
+std::vector<std::unique_ptr<Triangle>>& TriangleMesh::getTriangles() {
     return triangles_;
 }

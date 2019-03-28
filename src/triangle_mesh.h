@@ -2,14 +2,15 @@
 
 #include "triangle.h"
 #include <vector>
+#include <memory>
 
 class TriangleMesh
 {
-    std::vector<Triangle *> triangles_;
+    std::vector<std::unique_ptr<Triangle>> triangles_;
     
 public:
     TriangleMesh();
-    std::vector<Triangle *> getTriangles();
+    std::vector<std::unique_ptr<Triangle>>& getTriangles();
     explicit TriangleMesh(const std::string &filename);
     bool loadMesh(const std::string &filename);
     bool intersect(const Ray &ray, IntersectionRecord &ir) const;

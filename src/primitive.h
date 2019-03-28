@@ -23,7 +23,7 @@ public:
     virtual bool intersect( const Ray &ray,
                             IntersectionRecord &intersection_record ) const = 0;
 
-    Material *material_;
+    std::shared_ptr<Material> material_;
 };
 
 #endif /* PRIMITIVE_H_ */

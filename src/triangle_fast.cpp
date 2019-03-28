@@ -1,6 +1,6 @@
 #include "triangle_fast.h"
 
-Fast_Triangle::Fast_Triangle(const glm::vec3 &v1,
+FastTriangle::FastTriangle(const glm::vec3 &v1,
 			     const glm::vec3 &v2,
 			     const glm::vec3 &v3)
     : Triangle(v1,v2,v3)
@@ -8,7 +8,7 @@ Fast_Triangle::Fast_Triangle(const glm::vec3 &v1,
 
 }
 
-bool Fast_Triangle::intersect(const Ray &ray, IntersectionRecord &ir) const
+bool FastTriangle::intersect(const Ray &ray, IntersectionRecord &ir) const
 {
     glm::vec3 aux, p, q;
     float det;

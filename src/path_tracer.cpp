@@ -4,13 +4,11 @@
 #include "material.h"
 #include "onb.h"
 #include "random.h"
-#include <math.h>
-#include <assert.h>
 #include <glm/ext/scalar_constants.hpp>
 #include <thread>
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 4000;
+const int NUM_SAMPLES = 128;
 
 PathTracer::PathTracer( Camera &camera,
                       const Scene &scene,
@@ -58,7 +56,9 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
                 dot = -dot;
             }
 
-            Lo = ir.material_->emitted_ + 2 * PI * ir.material_->fr() * L(refl_ray, ++curr_depth) * dot;
+            auto aux = ir.material_.lock();
+
+            Lo = aux->emitted_ + 2 * PI * aux->fr() * L(refl_ray, ++curr_depth) * dot;
         }
     }
 
