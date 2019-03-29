@@ -44,15 +44,24 @@ bool TriangleMesh::loadMesh(const std::string &filename) {
 	    aiFace face = mesh->mFaces[j];
 	    unsigned int *index = face.mIndices;
 	    std::vector<std::pair<glm::vec3, unsigned int>> v;
+            glm::vec3 normal;
 
 	    for (int k = 0; k < face.mNumIndices; k++) {
 		glm::vec3 aux = glm::vec3(mesh->mVertices[index[k]].x,
 					  mesh->mVertices[index[k]].y,
 					  mesh->mVertices[index[k]].z);
 		v.push_back({aux, index[k]});
+                normal = glm::vec3(mesh->mNormals[index[k]].x,
+                                   mesh->mNormals[index[k]].y,
+                                   mesh->mNormals[index[k]].z);
 	    }
 
             std::unique_ptr<Triangle> t = std::make_unique<FastTriangle>(v[0].first, v[1].first, v[2].first);
+
+            if (mesh->HasNormals())
+                t->normal_ = normal;
+            else
+                t->normal_ = glm::normalize(glm::cross(t->edge1_, t->edge2_));
 
             glm::vec3 c = glm::vec3(0.4f,0.4f,0.4f);
             t->material_ = std::make_shared<Diffuse>(c, glm::vec3(0, 0, 0));
