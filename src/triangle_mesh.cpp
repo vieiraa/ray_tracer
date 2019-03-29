@@ -60,8 +60,6 @@ bool TriangleMesh::loadMesh(const std::string &filename) {
 
             if (mesh->HasNormals())
                 t->normal_ = normal;
-            else
-                t->normal_ = glm::normalize(glm::cross(t->edge1_, t->edge2_));
 
             glm::vec3 c = glm::vec3(0.4f,0.4f,0.4f);
             t->material_ = std::make_shared<Diffuse>(c, glm::vec3(0, 0, 0));

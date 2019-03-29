@@ -8,7 +8,7 @@
 #include <thread>
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 128;
+const int NUM_SAMPLES = 10;
 
 PathTracer::PathTracer( Camera &camera,
                       const Scene &scene,
@@ -37,14 +37,14 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
             onb.setFromV(ir.normal_);
             dir = glm::normalize(dir * onb.getBasisMatrix());
 
-            Ray refl_ray(ir.position_ + dir * 0.0001f, dir);
-            float dot = glm::dot(refl_ray.direction_,ir.normal_);
-
+            float dot = glm::dot(dir,ir.normal_);
             if (dot < 0) {
-                refl_ray.direction_ = - refl_ray.direction_;
+                dir = -dir;
                 dot = -dot;
             }
-
+            
+            Ray refl_ray(ir.position_ + dir * 0.0001f, dir);
+            
             auto aux = ir.material_.lock();
 
             Lo = aux->emitted_ + 2 * PI * aux->fr() * L(refl_ray, ++curr_depth) * dot;
