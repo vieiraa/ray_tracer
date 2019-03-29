@@ -27,23 +27,12 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
     if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
-            float r1 = random.get();
-            float r2 = random.get();
+            glm::vec3 dir;
 
-            while (r1 == 1.0f)
-                r1 = random.get();
-            while (r2 == 1.0f)
-                r2 = random.get();
+            do {
+                dir = 2.0f * glm::vec3(random.get(), random.get(), random.get()) - glm::vec3(1, 1, 1);
+            } while (glm::dot(dir, dir) >= 1);
 
-            float theta = glm::acos(1 - r1);
-            float phi = 2.0f * PI * r2;
-            float radius = 1.0f;
-
-            float x = radius * glm::sin(theta) * glm::cos(phi);
-            float y = radius * glm::sin(theta) * glm::sin(phi);
-            float z = radius * glm::cos(theta);
-
-            glm::vec3 dir(x, y, z);
             ONB onb;
             onb.setFromV(ir.normal_);
             dir = glm::normalize(dir * onb.getBasisMatrix());

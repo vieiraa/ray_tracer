@@ -54,15 +54,6 @@ void Scene::load() {
     }*/
 
 void Scene::load() {
-/*
-    Sphere *s1 = new Sphere(glm::vec3(2.75f, 4.0f, -6.75f), 0.25f);
-    s1->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
-    primitives_.push_back(Primitive::PrimitiveUniquePtr(s1));
-
-    Sphere *s2 = new Sphere(glm::vec3(2.75f, 4.0f, -1.5f), 0.25f);
-    s2->material_ = new Diffuse(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(100.0f, 100.0f, 100.0f));
-    primitives_.push_back(Primitive::PrimitiveUniquePtr(s2));
-*/
     Sphere *s3 = new Sphere(glm::vec3(0.0f, 0.0f, -1.0f), 0.75f);
     s3->material_ = std::make_shared<Diffuse>(glm::vec3(153.0f, 50.0f, 204.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s3));
@@ -90,14 +81,10 @@ void Scene::load() {
     Sphere *s9 = new Sphere(glm::vec3(-1.5f, 0, -2.5f), 0.75f);
     s9->material_ = std::make_shared<Diffuse>(glm::vec3(175.0f, 238.0f, 238.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s9));
-    /*TriangleMesh *light = new TriangleMesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/sphere.obj");
-    for (auto tr : light->getTriangles()) {
-        tr->material_->emitted_ = glm::vec3(15, 15, 15);
-        tr->material_->reflected_ = glm::vec3(0,0,0);
-        primitives_.push_back(Primitive::PrimitiveUniquePtr(tr));
-        }*/
 
-    TriangleMesh mesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/scene.obj");
-    primitives_.insert(primitives_.end(), std::make_move_iterator(mesh.getTriangles().begin()), std::make_move_iterator(mesh.getTriangles().end()));
-    //primitives_.push_back(Primitive::PrimitiveUniquePtr(mesh));
+    TriangleMesh mesh("C:\\Users\\notebook2\\Documents\\code\\ray_tracer\\3d_models\\scene.obj");
+
+    for (auto &t : mesh.getTriangles()) {
+        primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
+    }
 }
