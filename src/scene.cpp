@@ -30,18 +30,6 @@ bool Scene::intersect( const Ray &ray,
     return intersection_result;
 }
 
-/*void Scene::load( void )
-{
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.0f,  0.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{ -0.5f, 0.0f, -1.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f,-0.5f, -2.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Sphere{ glm::vec3{  0.0f, 0.5f, -3.0f }, 0.2f } ) );
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{0.25f, 0.5f, -1.0f}, glm::vec3(0.5f, 0, 0), glm::vec3(0, 0, 0)}));
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{-0.5f,-0.25f,0}, glm::vec3(-0.5f,-0.75,0), glm::vec3(0.5,-0.5,0)}));
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{0.25f,-0.25f,0}, glm::vec3(-0.25f,-0.25, 0), glm::vec3(0,-0.5,-1.0)}));
-    primitives_.push_back( Primitive::PrimitiveUniquePtr( new Naive_Triangle{ glm::vec3{-0.25f,0.25f,-4.0f}, glm::vec3(-0.75f,0.25,-4.0), glm::vec3(-0.5,-0.25,-4.0)}));
-
-}*/
 /*
 void Scene::load() {
     for (int i = 0; i < 3; i++) {
@@ -54,35 +42,38 @@ void Scene::load() {
     }*/
 
 void Scene::load() {
-    Sphere *s3 = new Sphere(glm::vec3(0.0f, 0.0f, -1.0f), 0.75f);
-    s3->material_ = std::make_shared<Diffuse>(glm::vec3(153.0f, 50.0f, 204.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+
+	//scene objects
+	Sphere *s1 = new Sphere(glm::vec3(-1.5f, 0, -2.5f), 0.75f);
+	s1->material_ = std::make_shared<Diffuse>(glm::vec3(175.0f, 238.0f, 238.0f) / 255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+	primitives_.push_back(Primitive::PrimitiveUniquePtr(s1));
+
+    Sphere *s2 = new Sphere(glm::vec3(0.0f, 0.0f, -1.0f), 0.75f);
+    s2->material_ = std::make_shared<Diffuse>(glm::vec3(153.0f, 50.0f, 204.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s2));
+
+    Sphere *s3 = new Sphere(glm::vec3(1.5f, 0, -2.5f), 0.75f);
+    s3->material_ = std::make_shared<Diffuse>(glm::vec3(250.0f, 128.0f, 114.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s3));
 
-    Sphere *s4 = new Sphere(glm::vec3(1.5f, 0, -2.5f), 0.75f);
-    s4->material_ = std::make_shared<Diffuse>(glm::vec3(250.0f, 128.0f, 114.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+	//Lights
+    Sphere *s4 = new Sphere(glm::vec3(0.0f, 4.0f, 1.0f), 1.5f);
+    s4->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s4));
 
-    Sphere *s5 = new Sphere(glm::vec3(0.0f, 4.0f, 1.0f), 1.5f);
-    s5->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 10.0f, 10.0f));
+    Sphere *s5 = new Sphere(glm::vec3(0.0f, 4.0f, -0.75f), 1.5f);
+    s5->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s5));
 
-    Sphere *s6 = new Sphere(glm::vec3(0.0f, 4.0f, -0.75f), 1.5f);
-    s6->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 10.0f, 10.0f));
+    Sphere *s6 = new Sphere(glm::vec3(0.0f, 4.0f, -2.5f), 1.5f);
+    s6->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s6));
 
-    Sphere *s7 = new Sphere(glm::vec3(0.0f, 4.0f, -2.5f), 1.5f);
-    s7->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 10.0f, 10.0f));
+    Sphere *s7 = new Sphere(glm::vec3(0.0f, 4.0f, -4.25f), 1.5f);
+    s7->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s7));
-
-    Sphere *s8 = new Sphere(glm::vec3(0.0f, 4.0f, -4.25f), 1.5f);
-    s8->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(20.0f, 20.0f, 20.0f));
-    primitives_.push_back(Primitive::PrimitiveUniquePtr(s8));
-
-    Sphere *s9 = new Sphere(glm::vec3(-1.5f, 0, -2.5f), 0.75f);
-    s9->material_ = std::make_shared<Diffuse>(glm::vec3(175.0f, 238.0f, 238.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
-    primitives_.push_back(Primitive::PrimitiveUniquePtr(s9));
-
-    TriangleMesh mesh("C:\\Users\\notebook2\\Documents\\code\\ray_tracer\\3d_models\\scene.obj");
+	
+    TriangleMesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\scene.obj");
 
     for (auto &t : mesh.getTriangles()) {
         primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
