@@ -1,4 +1,5 @@
 #include "buffer.h"
+#include <glm/gtc/color_space.hpp>
 
 // Creates a image buffer with default size (512 x 512 pixels)
 Buffer::Buffer( void )
@@ -36,7 +37,7 @@ void Buffer::save( const std::string &filename ) const
 
     std::ofstream rendering_file;
 
-    rendering_file.open( filename.c_str() );
+    rendering_file.open(filename.c_str());
 
     // Header of the PPM file. More on this filetype in:
     //     http://netpbm.sourceforge.net/doc/ppm.html
@@ -58,9 +59,11 @@ void Buffer::save( const std::string &filename ) const
             //         from [0.0, 1.0] to [0.0, 255.0], then
             //         from [0.0, 255.0] to [0.5, 255.5], then
             //         from [0.5, 255.5] to [0, 255] with round to nearest.
-            rendering_file << static_cast< int >( clamp( buffer_data_[x][y][0] ) * 255.0f + 0.5f ) << " ";
-            rendering_file << static_cast< int >( clamp( buffer_data_[x][y][1] ) * 255.0f + 0.5f ) << " ";
-            rendering_file << static_cast< int >( clamp( buffer_data_[x][y][2] ) * 255.0f + 0.5f ) << " ";
+            glm::vec3 color(buffer_data_[x][y]);
+            color = glm::convertLinearToSRGB(color);
+            rendering_file << static_cast<int>(clamp(color.r) * 255.0f + 0.5f) << " ";
+            rendering_file << static_cast<int>(clamp(color.g) * 255.0f + 0.5f) << " ";
+            rendering_file << static_cast<int>(clamp(color.b) * 255.0f + 0.5f) << " ";
         }
     }
 
