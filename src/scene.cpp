@@ -45,7 +45,7 @@ void Scene::load() {
 
 	//scene objects
 	Sphere *s1 = new Sphere(glm::vec3(-1.5f, 0, -2.5f), 0.75f);
-	s1->material_ = std::make_shared<Diffuse>(glm::vec3(175.0f, 238.0f, 238.0f) / 255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+	s1->material_ = std::make_shared<Diffuse>(glm::vec3(175.0f, 238.0f, 238.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 	primitives_.push_back(Primitive::PrimitiveUniquePtr(s1));
 
     Sphere *s2 = new Sphere(glm::vec3(0.0f, 0.0f, -1.0f), 0.75f);

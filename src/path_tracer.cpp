@@ -8,7 +8,7 @@
 #include <thread>
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 10;
+const int NUM_SAMPLES = 4096;
 
 PathTracer::PathTracer( Camera &camera,
                       const Scene &scene,

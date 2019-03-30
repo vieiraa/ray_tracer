@@ -54,7 +54,7 @@ int main( void )
     std::cout << "Elapsed time: " << duration / 1000.0 << "s" << std::endl;
 
     // Save the rendered image to a .ppm file.
-    rendering_buffer.save( "output_image100000.ppm" );
+    rendering_buffer.save( "output_image1.ppm" );
 
     return 0;
 }
