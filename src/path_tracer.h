@@ -21,6 +21,8 @@ public:
     void integrate( void );
     glm::vec3 L(const Ray &r, int curr_depth);
 
+	void thread_colors(void);
+
 private:
     Camera &camera_;
 

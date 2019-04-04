@@ -5,10 +5,11 @@
 #include "onb.h"
 #include "random.h"
 #include <glm/ext/scalar_constants.hpp>
-#include <thread>
+#include <omp.h>
+
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 4096;
+const int NUM_SAMPLES = 40;
 
 PathTracer::PathTracer( Camera &camera,
                       const Scene &scene,
@@ -54,36 +55,23 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
     return Lo;
 }
 
-void PathTracer::integrate( void )
-{
-    int num_threads = std::thread::hardware_concurrency();
-    num_threads = num_threads ? num_threads : 4;
-    std::vector<std::thread> threads(num_threads);
-    int jump = buffer_.h_resolution_ / num_threads;
-    auto worker = [&](int begin, int end) {
-                      for (auto y = begin; y < end; ++y) {
-                          for (auto x = 0; x < buffer_.h_resolution_; ++x) {
-                              for (int sample = 0; sample < NUM_SAMPLES; sample++) {
-                                  Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
+void PathTracer::integrate( void ){
+	//int num_threads = omp_get_num_threads();
 
-                                  buffer_.buffer_data_[x][y] += L(ray, 0);
-                              }
+	for (auto y = 0; y < buffer_.h_resolution_; ++y) {
 
-                              buffer_.buffer_data_[x][y] /= NUM_SAMPLES;
-                          }
-                      }
-                  };
-    
-    auto begin = 0;
-    for (auto &t : threads) {
-        t = std::thread(worker, begin + 0, begin + jump);
-        begin += jump;
+		#pragma omp parallel for schedule( dynamic, 1 )
+        for (auto x = 0; x < buffer_.h_resolution_; ++x) {
+			for (int sample = 0; sample < NUM_SAMPLES; sample++) {
+				
+				Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
+				buffer_.buffer_data_[x][y] += L(ray, 0);
+            }
+
+			buffer_.buffer_data_[x][y] /= NUM_SAMPLES;
+		}
     }
-
-    for (auto &&t : threads) {
-        t.join();
-    }
+                  
 
     std::clog << std::endl;
 }
-
