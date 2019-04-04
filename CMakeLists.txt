@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.9)
 
 project("ray_tracer")
 
@@ -30,6 +30,12 @@ if(CMAKE_COMPILER_IS_MINGW)
 endif()
 add_subdirectory("lib/assimp")
 
+find_package(OpenMP REQUIRED)
+if(NOT OPENMP_FOUND)
+    message(FATAL_ERROR "Please install OpenMP")
+endif()
+
 file(GLOB sources src/*.cpp)
-add_executable(ray_tracer ${sources})
-target_link_libraries(ray_tracer PUBLIC assimp)
+add_executable(${CMAKE_PROJECT_NAME} ${sources})
+target_link_libraries(${CMAKE_PROJECT_NAME} PUBLIC assimp)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE OpenMP::OpenMP_CXX)
