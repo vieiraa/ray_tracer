@@ -11,6 +11,8 @@ class Diffuse : public Material
 
         glm::vec3 fr();
 
+		glm::vec3 getDirection();
+
     protected:
 
     private:

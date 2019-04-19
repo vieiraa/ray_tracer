@@ -9,7 +9,7 @@
 
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 40;
+const int NUM_SAMPLES = 10;
 
 PathTracer::PathTracer( Camera &camera,
                       const Scene &scene,
@@ -28,11 +28,9 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
     if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
-            glm::vec3 dir;
-
-            do {
-                dir = 2.0f * glm::vec3(random.get(), random.get(), random.get()) - glm::vec3(1, 1, 1);
-            } while (glm::dot(dir, dir) >= 1);
+			
+			glm::vec3 dir;
+			dir = ir.material_.lock()->getDirection();
 
             ONB onb;
             onb.setFromV(ir.normal_);
@@ -60,7 +58,7 @@ void PathTracer::integrate(void) {
 	int num_threads;
 	omp_set_num_threads(8);
 
-	#pragma omp parallel for schedule( dynamic, 1 )		
+	#pragma omp parallel for schedule( dynamic, 1 )
 	for (auto y = 0; y < buffer_.h_resolution_; ++y) {
 		for (auto x = 0; x < buffer_.h_resolution_; ++x) {
 			for (int sample = 0; sample < NUM_SAMPLES; sample++) {
