@@ -1,5 +1,4 @@
-#ifndef PRIMITIVE_H_
-#define PRIMITIVE_H_
+#pragma once
 
 #include <memory>
 
@@ -16,15 +15,13 @@ public:
     typedef std::unique_ptr<Primitive> PrimitiveUniquePtr;
 #endif
 
-    Primitive( void );
+    Primitive();
 
-    virtual ~Primitive( void );
+    virtual ~Primitive();
 
-    virtual bool intersect( const Ray &ray,
-                            IntersectionRecord &intersection_record ) const = 0;
+    virtual bool intersect(const Ray &ray,
+                           IntersectionRecord &intersection_record ) const = 0;
 
     std::shared_ptr<Material> material_;
 };
-
-#endif /* PRIMITIVE_H_ */
 

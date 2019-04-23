@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "brdf.h"
+#include "random.h"
 
 class Material {
 public:
@@ -11,9 +12,10 @@ public:
     //BRDF *brdf;
 
     virtual glm::vec3 fr() = 0;
-	virtual glm::vec3 getDirection() = 0;
+    virtual glm::vec3 getDirection() = 0;
     glm::vec3 reflected_;
     glm::vec3 emitted_;
 
-
+protected:
+    Random random;
 };

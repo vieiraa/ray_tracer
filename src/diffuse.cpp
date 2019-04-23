@@ -18,13 +18,12 @@ glm::vec3 Diffuse::fr() {
 }
 
 glm::vec3 Diffuse::getDirection() {
-	Random random;
-	glm::vec3 dir;
+    glm::vec3 dir;
 
-	do {
-		dir = 2.0f * glm::vec3(random.get(), random.get(), random.get()) - glm::vec3(1, 1, 1);
-	} while (glm::dot(dir, dir) >= 1);
+    do {
+        dir = 2.0f * glm::vec3(random.get(), random.get(), random.get()) - glm::vec3(1, 1, 1);
+    } while (glm::dot(dir, dir) >= 1);
 
-	return dir;
+    return dir;
 
 }

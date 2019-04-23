@@ -1,33 +1,33 @@
-#include "aabbBound.h"
+#include "aabb_bound.h"
 #include "ray.h"
 #include <algorithm>    // std::min
 
-aabbBound::aabbBound(void) {};
+AABBBound::AABBBound(void) {};
 
-aabbBound::aabbBound(const glm::vec3 &p1, const glm::vec3 &p2) {
+AABBBound::AABBBound(const glm::vec3 &p1, const glm::vec3 &p2) {
 	pMin = glm::vec3{ std::min(p1.x, p2.x), std::min(p1.y, p2.y), std::min(p1.z, p2.z) };
 	pMax = glm::vec3{ std::max(p1.x, p2.x), std::max(p1.y, p2.y), std::max(p1.z, p2.z) };
 
 };
 
-glm::vec3 aabbBound::diagonal() const {
+glm::vec3 AABBBound::diagonal() const {
 	return pMax - pMin;
 
 }
 
-double aabbBound::getArea() {
+double AABBBound::getArea() {
 	glm::vec3 d = diagonal();
 	return 2 * (d.x * d.y + d.x * d.z + d.y * d.z);
 
 }
 
-double aabbBound::getVolume() {
+double AABBBound::getVolume() {
 	glm::vec3 d = diagonal();
 	return d.x * d.y * d.z;
 
 }
 
-bool aabbBound::intersect(const Ray &ray) const {
+bool AABBBound::intersect(const Ray &ray) const {
 	// An Efficient and Robust Ray–Box Intersection Algorithm,
 	// Peter Shirley
 	

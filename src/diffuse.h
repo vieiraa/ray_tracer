@@ -5,15 +5,11 @@
 
 class Diffuse : public Material
 {
-    public:
-        Diffuse(glm::vec3 r, glm::vec3 e);
-        virtual ~Diffuse();
+public:
+    Diffuse(glm::vec3 r, glm::vec3 e);
+    virtual ~Diffuse();
 
-        glm::vec3 fr();
+    glm::vec3 fr();
 
-		glm::vec3 getDirection();
-
-    protected:
-
-    private:
+    glm::vec3 getDirection();
 };

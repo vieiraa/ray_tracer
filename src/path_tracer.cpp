@@ -2,23 +2,22 @@
 #include "raytracer.h"
 #include "material.h"
 #include "onb.h"
-#include "random.h"
 #include <glm/ext/scalar_constants.hpp>
 #include <omp.h>
 #include <iostream>
-
+#include <thread>
 
 const float PI = glm::pi<float>();
 const int NUM_SAMPLES = 10;
 
-PathTracer::PathTracer( Camera &camera,
-                      const Scene &scene,
-                      const glm::vec3 background_color,
-                      Buffer &buffer ) :
-        camera_( camera ),
-        scene_( scene ),
-        background_color_{ background_color },
-        buffer_( buffer )
+PathTracer::PathTracer(Camera &camera,
+                       const Scene &scene,
+                       const glm::vec3 background_color,
+                       Buffer &buffer ) :
+    camera_(camera),
+    scene_(scene),
+    background_color_(background_color),
+    buffer_(buffer)
 {}
 
 glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
@@ -29,8 +28,8 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
     if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
 			
-			glm::vec3 dir;
-			dir = ir.material_.lock()->getDirection();
+            glm::vec3 dir;
+            dir = ir.material_.lock()->getDirection();
 
             ONB onb;
             onb.setFromV(ir.normal_);
@@ -55,85 +54,86 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
 void PathTracer::integrate(void) {
 	
-	int num_threads;
-	omp_set_num_threads(8);
+    int num_threads = std::thread::hardware_concurrency();
+    omp_set_num_threads(num_threads);
 
-	#pragma omp parallel for schedule( dynamic, 1 )
-	for (auto y = 0; y < buffer_.h_resolution_; ++y) {
-		for (auto x = 0; x < buffer_.h_resolution_; ++x) {
-			for (int sample = 0; sample < NUM_SAMPLES; sample++) {
-				num_threads = omp_get_num_threads();
-				Ray ray(camera_.getWorldSpaceRay(glm::vec2{ x, y }));
-				buffer_.buffer_data_[x][y] += L(ray, 0);
-			}
+#pragma omp parallel for schedule(dynamic, 1)
+    for (unsigned y = 0; y < buffer_.h_resolution_; y++) {
+        for (unsigned x = 0; x < buffer_.h_resolution_; x++) {
+            for (int sample = 0; sample < NUM_SAMPLES; sample++) {
+                
+                Ray ray(camera_.getWorldSpaceRay(glm::vec2{ x, y }));
+                buffer_.buffer_data_[x][y] += L(ray, 0);
+            }
 
-			buffer_.buffer_data_[x][y] /= NUM_SAMPLES;
-		}
-	}
-	std::cout << "o num de threads usados eh: " << num_threads;
-	std::clog << std::endl;	
+            buffer_.buffer_data_[x][y] /= NUM_SAMPLES;
+        }
+        num_threads = omp_get_num_threads();
+    }
+    std::cout << "o num de threads usados eh: " << num_threads;
+    std::clog << std::endl;	
 }
 
 void PathTracer::threads_color(void) {
-		int num_threads;
+    int num_threads;
 
-		omp_set_num_threads(8);
-		#pragma omp parallel for schedule( dynamic, 1 )
-		for (auto y = 0; y < buffer_.h_resolution_; ++y) {
-			for (auto x = 0; x < buffer_.h_resolution_; ++x) {
+    omp_set_num_threads(8);
+#pragma omp parallel for schedule( dynamic, 1 )
+    for (auto y = 0; y < buffer_.h_resolution_; ++y) {
+        for (auto x = 0; x < buffer_.h_resolution_; ++x) {
 
-				switch (int thread_num = omp_get_thread_num())
-				{
-				case(0):
-					buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 0.0f, 0.0f);
-					break;
-				case(1):
-					buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 0.5f, 0.0f);
-					break;
-				case(2):
-					buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 1.0f, 0.0f);
-					break;
-				case(3):
-					buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 1.0f, 0.0f);
-					break;
-				case(4):
-					buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 1.0f, 0.5f);
-					break;
-				case(5):
-					buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 1.0f, 1.0f);
-					break;
-				case(6):
-					buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 0.0f, 1.0f);
-					break;
-				case(7):
-					buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 1.0f, 1.0f);
-					break;
-				default:
-					buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 0.0f, 0.0f);
-					break;
-				}
-				num_threads = omp_get_num_threads();
-			}
-		}
-		std::cout << "o num de threads usados eh: " << num_threads;
+            switch (int thread_num = omp_get_thread_num())
+                {
+                case(0):
+                    buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 0.0f, 0.0f);
+                    break;
+                case(1):
+                    buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 0.5f, 0.0f);
+                    break;
+                case(2):
+                    buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 1.0f, 0.0f);
+                    break;
+                case(3):
+                    buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 1.0f, 0.0f);
+                    break;
+                case(4):
+                    buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 1.0f, 0.5f);
+                    break;
+                case(5):
+                    buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 1.0f, 1.0f);
+                    break;
+                case(6):
+                    buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 0.0f, 1.0f);
+                    break;
+                case(7):
+                    buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 1.0f, 1.0f);
+                    break;
+                default:
+                    buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 0.0f, 0.0f);
+                    break;
+                }
+            num_threads = omp_get_num_threads();
+        }
+    }
+    std::cout << "o num de threads usados eh: " << num_threads;
 
     std::clog << std::endl;
 }
 
 void PathTracer::normal_color(void) {
-	IntersectionRecord intersection_record;
+    IntersectionRecord intersection_record;
 
-	for (std::size_t y = 0; y < buffer_.v_resolution_; y++){
-		for (std::size_t x = 0; x < buffer_.h_resolution_; x++){
+    for (std::size_t y = 0; y < buffer_.v_resolution_; y++){
+        for (std::size_t x = 0; x < buffer_.h_resolution_; x++){
 			
-			intersection_record.t_ = std::numeric_limits< double >::max();
-			Ray ray(camera_.getWorldSpaceRay(glm::vec2{ x, y }));
-			if (scene_.intersect(ray, intersection_record))
+            intersection_record.t_ = std::numeric_limits< double >::max();
+            Ray ray(camera_.getWorldSpaceRay(glm::vec2{ x, y }));
+            if (scene_.intersect(ray, intersection_record))
 
-				buffer_.buffer_data_[x][y] = glm::vec3(1.0f,0.0f,0.0f)*abs(intersection_record.normal_);
-				//std::cout <<  "normal:"  << intersection_record.normal_.x <<","<<intersection_record.normal_.y<<","<<intersection_record.normal_.z;
-		}
-	}
+                buffer_.buffer_data_[x][y] = glm::vec3(1.0f,0.0f,0.0f)*abs(intersection_record.normal_);
+            //std::cout <<  "normal:"  << intersection_record.normal_.x <<","<<intersection_record.normal_.y<<","<<intersection_record.normal_.z;
+        }
+    }
 
-	std::clog << std::endl;
+    std::clog << std::endl;
 }
