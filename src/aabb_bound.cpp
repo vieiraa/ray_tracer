@@ -5,95 +5,93 @@
 AABBBound::AABBBound(void) {};
 
 AABBBound::AABBBound(const glm::vec3 &p1, const glm::vec3 &p2) {
-	pMin = glm::vec3{ std::min(p1.x, p2.x), std::min(p1.y, p2.y), std::min(p1.z, p2.z) };
-	pMax = glm::vec3{ std::max(p1.x, p2.x), std::max(p1.y, p2.y), std::max(p1.z, p2.z) };
+    pMin = glm::vec3{ std::min(p1.x, p2.x), std::min(p1.y, p2.y), std::min(p1.z, p2.z) };
+    pMax = glm::vec3{ std::max(p1.x, p2.x), std::max(p1.y, p2.y), std::max(p1.z, p2.z) };
 
 };
 
 glm::vec3 AABBBound::diagonal() const {
-	return pMax - pMin;
+    return pMax - pMin;
 
 }
 
 double AABBBound::getArea() {
-	glm::vec3 d = diagonal();
-	return 2 * (d.x * d.y + d.x * d.z + d.y * d.z);
-
+    glm::vec3 d = diagonal();
+    return 2 * (d.x * d.y + d.x * d.z + d.y * d.z);
 }
 
 double AABBBound::getVolume() {
-	glm::vec3 d = diagonal();
-	return d.x * d.y * d.z;
-
+    glm::vec3 d = diagonal();
+    return d.x * d.y * d.z;
 }
 
 bool AABBBound::intersect(const Ray &ray) const {
-	// An Efficient and Robust Ray–Box Intersection Algorithm,
-	// Peter Shirley
-	
-	float txmin;
-	float txmax;
-	float tymin;
-	float tymax;
-	float tzmin;
-	float tzmax;
-	float divx;
-	float divy;
-	float divz;
+    // An Efficient and Robust RayÂ–Box Intersection Algorithm,
+    // Peter Shirley
 
-	divx = 1.0f / ray.direction_.x;
-	if (divx >= 0.0f)
-	{
-		txmin = (pMin.x - ray.origin_.x) * divx;
-		txmax = (pMax.x - ray.origin_.x) * divx;
-	}
-	else
-	{
-		txmin = (pMax.x - ray.origin_.x) * divx;
-		txmax = (pMin.x - ray.origin_.x) * divx;
-	}
+    float txmin;
+    float txmax;
+    float tymin;
+    float tymax;
+    float tzmin;
+    float tzmax;
+    float divx;
+    float divy;
+    float divz;
 
-	divy = 1.0f / ray.direction_.y;
-	if (divy >= 0.0f)
-	{
-		tymin = (pMin.y - ray.origin_.y) * divy;
-		tymax = (pMax.y - ray.origin_.y) * divy;
-	}
-	else
-	{
-		tymin = (pMax.y - ray.origin_.y) * divy;
-		tymax = (pMin.y - ray.origin_.y) * divy;
-	}
+    divx = 1.0f / ray.direction_.x;
+    if (divx >= 0.0f)
+    {
+            txmin = (pMin.x - ray.origin_.x) * divx;
+            txmax = (pMax.x - ray.origin_.x) * divx;
+    }
+    else
+    {
+            txmin = (pMax.x - ray.origin_.x) * divx;
+            txmax = (pMin.x - ray.origin_.x) * divx;
+    }
 
-	if ((txmin > tymax) || (tymin > txmax))
-		return false;
+    divy = 1.0f / ray.direction_.y;
+    if (divy >= 0.0f)
+    {
+            tymin = (pMin.y - ray.origin_.y) * divy;
+            tymax = (pMax.y - ray.origin_.y) * divy;
+    }
+    else
+    {
+            tymin = (pMax.y - ray.origin_.y) * divy;
+            tymax = (pMin.y - ray.origin_.y) * divy;
+    }
 
-	if (tymin > txmin)
-		txmin = tymin;
+    if ((txmin > tymax) || (tymin > txmax))
+        return false;
 
-	if (tymax < txmax)
-		txmax = tymax;
+    if (tymin > txmin)
+        txmin = tymin;
 
-	divz = 1.0f / ray.direction_.z;
-	if (divz >= 0.0f)
-	{
-		tzmin = (pMin.z - ray.origin_.z) * divz;
-		tzmax = (pMax.z - ray.origin_.z) * divz;
-	}
-	else
-	{
-		tzmin = (pMax.z - ray.origin_.z) * divz;
-		tzmax = (pMin.z - ray.origin_.z) * divz;
-	}
+    if (tymax < txmax)
+        txmax = tymax;
 
-	if ((txmin > tzmax) || (tzmin > txmax))
-		return false;
+    divz = 1.0f / ray.direction_.z;
+    if (divz >= 0.0f)
+    {
+            tzmin = (pMin.z - ray.origin_.z) * divz;
+            tzmax = (pMax.z - ray.origin_.z) * divz;
+    }
+    else
+    {
+            tzmin = (pMax.z - ray.origin_.z) * divz;
+            tzmax = (pMin.z - ray.origin_.z) * divz;
+    }
 
-	if (tzmin > txmin)
-		txmin = tzmin;
+    if ((txmin > tzmax) || (tzmin > txmax))
+        return false;
 
-	if (tzmax < txmax)
-		txmax = tzmax;
+    if (tzmin > txmin)
+        txmin = tzmin;
 
-	return true;//tmax > 0.00001f;
+    if (tzmax < txmax)
+        txmax = tzmax;
+
+    return true;//tmax > 0.00001f;
 };
