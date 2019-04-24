@@ -1,12 +1,12 @@
 #include <glm/glm.hpp>
 #include "ray.h"
 
-class AABBBound {
+class AABB {
 
 public:
-    AABBBound(void);
+    AABB(void);
 
-    AABBBound(const glm::vec3 &p1, const glm::vec3 &p2);
+    AABB(const glm::vec3 &p1, const glm::vec3 &p2);
 
     glm::vec3 diagonal() const;
 
