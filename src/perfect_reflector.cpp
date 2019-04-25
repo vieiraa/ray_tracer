@@ -29,17 +29,18 @@ int Perfect_reflector::diracDelta(float in, float out) {
 }
 
 glm::vec3 Perfect_reflector::fr() {
-    //glm::vec3 dir;
+    glm::vec3 dir;
     //float theta = glm::acos(sqrt(pow((dir.x),2)+pow((dir.y),2))/dir.z);
    // float phi = glm::acos(dir.y/dir.x);
 
 
     //return diracDelta(cos(theta),cos(theta))*diracDelta(phi, phi + pi)/cos(theta);
+    return dir;
 }
 
 glm::vec3 Perfect_reflector::getDirection(Ray r) {
     glm::vec3 dir;
     dir = { -r.direction_.x, r.direction_.y, -r.direction_.z };
-
+    
     return dir;
 }

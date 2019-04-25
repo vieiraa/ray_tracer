@@ -8,7 +8,7 @@ class Perfect_reflector : public Material
 {
 public:
     Perfect_reflector(glm::vec3 r, glm::vec3 e);
-    virtual ~Perfect_reflector();
+    ~Perfect_reflector();
 
     glm::vec3 fr();
 
