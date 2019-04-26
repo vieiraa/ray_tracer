@@ -22,6 +22,7 @@ public:
     virtual bool intersect(const Ray &ray,
                            IntersectionRecord &intersection_record ) const = 0;
 
+    virtual void computeBounds(const glm::vec3 &plane_normal, float &near, float &far) const = 0;
+
     std::shared_ptr<Material> material_;
 };
-

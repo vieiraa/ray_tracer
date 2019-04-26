@@ -27,7 +27,6 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
     if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
-
             glm::vec3 dir;
             dir = ir.material_.lock()->getDirection();
 

@@ -7,7 +7,7 @@
 class TriangleMesh
 {
     std::vector<std::unique_ptr<Triangle>> triangles_;
-    
+
 public:
     TriangleMesh();
     std::vector<std::unique_ptr<Triangle>>& getTriangles();
@@ -15,4 +15,3 @@ public:
     bool loadMesh(const std::string &filename);
     bool intersect(const Ray &ray, IntersectionRecord &ir) const;
 };
-

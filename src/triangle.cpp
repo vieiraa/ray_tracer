@@ -13,3 +13,12 @@ Triangle::Triangle(const glm::vec3 &v1,
     normal_ = glm::normalize(glm::cross(edge2_, edge1_));
 }
 
+void Triangle::computeBounds(const glm::vec3 &plane_normal, float &near, float &far) const {
+    for (auto &v : vertices_) {
+        float d = glm::dot(plane_normal, v);
+        if (d < near)
+            near = d;
+        if (d > far)
+            far = d;
+    }
+}

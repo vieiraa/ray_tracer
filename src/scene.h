@@ -11,6 +11,7 @@
 #include "triangle_naive.h"
 #include "triangle_fast.h"
 #include "triangle_mesh.h"
+#include "bvh.h"
 
 class Scene
 {
@@ -27,5 +28,5 @@ public:
 
     std::vector< Primitive::PrimitiveUniquePtr > primitives_;
 
+    BVH *bvh;
 };
-

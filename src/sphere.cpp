@@ -1,4 +1,6 @@
 #include "sphere.h"
+#include <iostream>
+#include "onb.h"
 
 Sphere::Sphere( void )
 {}
@@ -46,3 +48,11 @@ bool Sphere::intersect( const Ray &ray,
     return true;
 }
 
+void Sphere::computeBounds(const glm::vec3 &plane_normal, float &near, float &far) const {
+    glm::vec3 normal = glm::normalize(plane_normal - center_);
+    float d = glm::dot(plane_normal, center_);
+    if (d < near)
+        near = d;
+    if (d > far)
+        far = d;
+}

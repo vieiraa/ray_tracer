@@ -8,33 +8,40 @@
 
 #include <glm/geometric.hpp>
 
-int main( void )
+int main()
 {
     unsigned int x_resolution = 512;
     unsigned int y_resolution = 512;
 
-    PinholeCamera camera( -2.5f,
-			  2.5f,
-			  -2.5f,
-			  2.5f,
-			  5.0f,
-			  glm::ivec2{ x_resolution, y_resolution },
-			  glm::vec3{ 0.0f, 0.0f, 5.0f },     // position
-			  glm::vec3{ 0.0f, -1.0f,  0.0f },     // up
-			  glm::vec3{ 0.0f, 0.0f, -1.0f } );   // look at
+    PinholeCamera camera(-2.5f,
+                         2.5f,
+                         -2.5f,
+                         2.5f,
+                         5.0f,
+                         glm::ivec2(x_resolution, y_resolution),
+                         glm::vec3(0.0f, 0.0f, 5.0f),     // position
+                         glm::vec3(0.0f, -1.0f,  0.0f),     // up
+                         glm::vec3(0.0f, 0.0f, -1.0f));   // look at
 
     Scene scene;
 
     scene.load();
 
-    Buffer rendering_buffer( x_resolution, y_resolution );
-    glm::vec3 background_color( 1.0f, 1.0f, 1.0f );
+    std::vector<Primitive*> primitives;
+    for (auto &t : scene.primitives_) {
+        primitives.push_back(t.get());
+    }
+
+    scene.bvh = new BVH(primitives);
+
+    Buffer rendering_buffer(x_resolution, y_resolution);
+    glm::vec3 background_color(1.0f, 1.0f, 1.0f);
 
     // Set up the renderer.
-    PathTracer rt( camera,
+    PathTracer rt(camera,
                   scene,
                   background_color,
-                  rendering_buffer );
+                  rendering_buffer);
 
 #if __cplusplus < 201103L
     clock_t start = clock();
@@ -58,4 +65,3 @@ int main( void )
 
     return 0;
 }
-

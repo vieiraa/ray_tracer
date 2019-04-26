@@ -18,5 +18,5 @@ public:
 
     glm::vec3 pMin;
     glm::vec3 pMax;
-    glm::vec3 centoid;
+    glm::vec3 centroid() const;
 };

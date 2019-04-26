@@ -59,7 +59,7 @@ bool TriangleMesh::loadMesh(const std::string &filename) {
             std::unique_ptr<Triangle> t = std::make_unique<FastTriangle>(v[0].first, v[1].first, v[2].first);
 
             if (mesh->HasNormals())
-                t->normal_ = normal;
+              t->normal_ = normal;
 
             glm::vec3 c = glm::vec3(0.4f,0.4f,0.4f);
             t->material_ = std::make_shared<Diffuse>(c, glm::vec3(0, 0, 0));
