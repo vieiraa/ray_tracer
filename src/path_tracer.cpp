@@ -8,7 +8,7 @@
 #include <thread>
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 10;
+const int NUM_SAMPLES = 40;
 
 PathTracer::PathTracer(Camera &camera,
                        const Scene &scene,
@@ -28,7 +28,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
     if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
             glm::vec3 dir;
-            dir = ir.material_.lock()->getDirection();
+            dir = ir.material_.lock()->getDirection(r);
 
             ONB onb;
             onb.setFromV(ir.normal_);
@@ -56,8 +56,8 @@ void PathTracer::integrate(void) {
     int num_threads = std::thread::hardware_concurrency();
     omp_set_num_threads(num_threads);
 
-#pragma omp parallel for schedule(dynamic, 1)
-    for (unsigned y = 0; y < buffer_.h_resolution_; y++) {
+    #pragma omp parallel for schedule(dynamic, 1)
+    for (int y = 0; y < buffer_.h_resolution_; y++) {
         for (unsigned x = 0; x < buffer_.h_resolution_; x++) {
             for (int sample = 0; sample < NUM_SAMPLES; sample++) {
 

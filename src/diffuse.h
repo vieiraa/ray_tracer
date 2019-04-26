@@ -2,6 +2,7 @@
 
 #include "material.h"
 #include <glm/glm.hpp>
+#include "ray.h"
 
 class Diffuse : public Material
 {
@@ -11,5 +12,5 @@ public:
 
     glm::vec3 fr();
 
-    glm::vec3 getDirection();
+    glm::vec3 getDirection(Ray r);
 };
