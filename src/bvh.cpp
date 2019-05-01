@@ -1,10 +1,8 @@
 #include "bvh.h"
 #include <iostream>
 
-float numerators[num_planes];
-float denominators[num_planes];
-const float sqrt3 = glm::sqrt(3) / 3.0f;
-const glm::vec3 planes_normals_[] = {
+static const float sqrt3 = glm::sqrt(3) / 3.0f;
+static const glm::vec3 planes_normals_[] = {
     glm::vec3(1, 0, 0),
     glm::vec3(0, 1, 0),
     glm::vec3(0, 0, 1),
@@ -34,6 +32,7 @@ BVH::BVH(std::vector<Primitive*> &primitives) :
         }
 
         volume.extendBy(volumes_[i]);
+        //volume.primitive = primitives_[i];
         volumes_[i].primitive = primitives_[i];
     }
 
@@ -48,22 +47,20 @@ BVH::BVH(std::vector<Primitive*> &primitives) :
 
 bool BVH::intersect(const Ray &ray, IntersectionRecord &ir) const {
     bool hit = false;
-    float inf = std::numeric_limits<float>::max();
+    float inf = std::numeric_limits<float>::infinity();
+    float numerators[num_planes];
+    float denominators[num_planes];
     for (unsigned i = 0; i < num_planes; i++) {
         numerators[i] = glm::dot(planes_normals_[i], ray.origin_);
-        denominators[i] = 1.0f / glm::dot(planes_normals_[i], ray.direction_);
+        denominators[i] = glm::dot(planes_normals_[i], ray.direction_);
     }
 
-    unsigned plane_index = 0;
     float near = -inf, far = inf;
-    if (!octree->root->volume.intersect(near, far, plane_index) ||
+    if (!octree->root->volume.intersect(near, far, numerators, denominators) ||
         (far < 0))
     {
         return false;
     }
-
-    // std::cout << near << "\n";
-    // std::cin.get();
 
     std::priority_queue<BVH::Octree::QueueElement> queue;
     queue.push(BVH::Octree::QueueElement(octree->root, 0));
@@ -73,8 +70,8 @@ bool BVH::intersect(const Ray &ray, IntersectionRecord &ir) const {
         if (node->is_leaf) {
             for (auto &p : node->data) {
                 IntersectionRecord temp_ir;
-                temp_ir.t_ = std::numeric_limits<float>::max();
-                if (p->primitive->intersect(ray, temp_ir) && (temp_ir.t_ < ir.t_) && (temp_ir.t_ > 0)) {
+                temp_ir.t_ = std::numeric_limits<float>::infinity();
+                if (p->primitive->intersect(ray, temp_ir) && (temp_ir.t_ < ir.t_) && (temp_ir.t_ > 0.0f)) {
                     ir = temp_ir;
                     hit = true;
                 }
@@ -85,7 +82,7 @@ bool BVH::intersect(const Ray &ray, IntersectionRecord &ir) const {
             for (unsigned i = 0; i < 8; i++) {
                 if (node->children[i]) {
                     float near_child = -inf, far_child = inf;
-                    if (node->children[i]->volume.intersect(near_child, far_child, plane_index)) {
+                    if (node->children[i]->volume.intersect(near_child, far_child, numerators, denominators)) {
                         float t = (near_child < 0 && far_child >= 0) ? far_child : near_child;
                         queue.push(BVH::Octree::QueueElement(node->children[i], t));
                     }
@@ -115,37 +112,34 @@ void BVH::BoundingVolume::extendBy(const BoundingVolume &v) {
 
 bool BVH::BoundingVolume::intersect(float &near,
                                     float &far,
-                                    unsigned &plane_index) const
+                                    float *numerators,
+                                    float *denominators) const
 {
     for (unsigned i = 0; i < num_planes; i++) {
-        float tn = (dnear[i] - numerators[i]) * denominators[i];
-        float tf = (dfar[i] - numerators[i]) * denominators[i];
+        float tn = (dnear[i] - numerators[i]) / denominators[i];
+        float tf = (dfar[i] - numerators[i]) / denominators[i];
 
         if (denominators[i] < 0) {
             std::swap(tn, tf);
         }
 
-        if (tn > near) {
+        if (tn > near)
             near = tn;
-            plane_index = i;
-        }
 
         if (tf < far)
             far = tf;
 
-        if (near > far) {
-            //std::cout << "nope\n";
+        if (near > far)
             return false;
-        }
     }
 
     return true;
 }
 
 inline glm::vec3 BVH::BoundingVolume::centroid() const {
-    return glm::vec3(dnear[0] + dfar[0] * 0.5f,
-                     dnear[1] + dfar[1] * 0.5f,
-                     dnear[2] + dfar[2] * 0.5f);
+    return glm::vec3((dnear[0] + dfar[0]) * 0.5f,
+                     (dnear[1] + dfar[1]) * 0.5f,
+                     (dnear[2] + dfar[2]) * 0.5f);
 }
 
 BVH::OctreeNode::OctreeNode() : is_leaf(true) {

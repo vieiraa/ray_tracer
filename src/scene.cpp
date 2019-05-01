@@ -19,7 +19,7 @@ bool Scene::intersect( const Ray &ray,
     // Loops over the list of primitives, testing the intersection of each primitive against the given ray
     //std::size_t primitive_id = 0;
 
-#if 0
+#if 1
     for (size_t primitive_id = 0; primitive_id < num_primitives; primitive_id++ ) {
         if ( primitives_[primitive_id]->intersect( ray, tmp_intersection_record ) ) {
             if ( ( tmp_intersection_record.t_ < intersection_record.t_ ) && ( tmp_intersection_record.t_ > 0.0 ) )
@@ -30,10 +30,7 @@ bool Scene::intersect( const Ray &ray,
         }
     }
 #else
-    if (bvh->intersect(ray, tmp_intersection_record)) {
-        intersection_record = tmp_intersection_record;
-        intersection_result = true;
-    }
+    intersection_result = bvh->intersect(ray, intersection_record);
 #endif
 
     return intersection_result;
@@ -52,7 +49,7 @@ void Scene::load() {
 
 void Scene::load() {
 
-    /*//scene objects
+    //scene objects
     Sphere *s1 = new Sphere(glm::vec3(-1.5f, 0, -2.5f), 0.75f);
     s1->material_ = std::make_shared<Diffuse>(glm::vec3(175.0f, 238.0f, 238.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s1));
@@ -80,18 +77,23 @@ void Scene::load() {
 
     Sphere *s7 = new Sphere(glm::vec3(0.0f, 4.0f, -4.25f), 1.5f);
     s7->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
-    primitives_.push_back(Primitive::PrimitiveUniquePtr(s7));*/
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(s7));
 
     //TriangleMesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\cat.obj");
     TriangleMesh mesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/scene.obj");
-    //TriangleMesh spheres("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/spheres.obj");
+    TriangleMesh cat("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/cat.obj");
+    TriangleMesh spheres("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/spheres.obj");
     TriangleMesh lights("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/lights.obj");
 
     for (auto &t : mesh.getTriangles()) {
         primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
     }
-    /*
-    for (auto &t : spheres.getTriangles()) {
+
+    for (auto &t : cat.getTriangles()) {
+        primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
+    }
+
+    /*for (auto &t : spheres.getTriangles()) {
         t->material_->reflected_ = glm::vec3(250, 128, 114) / 255.0f;
         primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
         }*/
@@ -101,5 +103,5 @@ void Scene::load() {
         t->material_->reflected_ = glm::vec3(0,0,0);
 
         primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
-        }
+    }
 }

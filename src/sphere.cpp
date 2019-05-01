@@ -49,10 +49,15 @@ bool Sphere::intersect( const Ray &ray,
 }
 
 void Sphere::computeBounds(const glm::vec3 &plane_normal, float &near, float &far) const {
-    glm::vec3 normal = glm::normalize(plane_normal - center_);
-    float d = glm::dot(plane_normal, center_);
-    if (d < near)
-        near = d;
-    if (d > far)
-        far = d;
+    bool c = (plane_normal == glm::vec3(1, 0, 0)) ||
+             (plane_normal == glm::vec3(0, 1, 0) ||
+             (plane_normal == glm::vec3(0, 0, 1)));
+
+    float dmin = c ? -radius_ : -radius_ * glm::sqrt(2);
+    float dmax = -dmin;
+
+    if (dmin < near)
+        near = dmin;
+    if (dmax > far)
+        far = dmax;
 }

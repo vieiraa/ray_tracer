@@ -15,7 +15,7 @@ public:
 
 private:
     //std::array<glm::vec3, num_planes> planes_normals_;
-    std::vector<Primitive*> &primitives_;
+    std::vector<Primitive*> primitives_;
 
     std::vector<BoundingVolume> volumes_;
     Octree *octree;
@@ -32,7 +32,7 @@ struct BVH::BoundingVolume {
 
     BoundingVolume();
     void extendBy(const BoundingVolume &b);
-    bool intersect(float &near, float &far, unsigned &plane_index) const;
+    bool intersect(float &near, float &far, float *numerators, float *denominators) const;
     glm::vec3 centroid() const;
 };
 
