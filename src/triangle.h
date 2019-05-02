@@ -5,6 +5,7 @@
 #include "primitive.h"
 #include "intersection_record.h"
 #include "ray.h"
+#include "aabb.h"
 
 class Triangle : public Primitive {
 public:
@@ -16,8 +17,9 @@ public:
     Triangle(const glm::vec3 &v1,
 	     const glm::vec3 &v2,
 	     const glm::vec3 &v3);
-
+    
     virtual bool intersect(const Ray &ray, IntersectionRecord &ir) const = 0;
 
-    void computeBounds(const glm::vec3 &plane_normal, float &near, float &far) const;
+    AABB getAABB(void) const;
 };
+

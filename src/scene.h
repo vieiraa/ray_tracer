@@ -28,5 +28,6 @@ public:
 
     std::vector< Primitive::PrimitiveUniquePtr > primitives_;
 
-    BVH *bvh;
+    BVH *bvh_;
 };
+

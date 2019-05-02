@@ -17,13 +17,14 @@ public:
     bool intersect( const Ray &ray,
                     IntersectionRecord &intersection_record ) const;
 
-    void computeBounds(const glm::vec3 &plane_normal, float &near, float &far) const;
-
     glm::vec3 center_ = { 0.0f, 0.0f, 0.0f };
 
     float radius_= 1.0f;
+
+    AABB getAABB(void) const;
 
 private:
 
     static const float kIntersectionTestEpsilon_;
 };
+

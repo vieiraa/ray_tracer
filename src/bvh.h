@@ -1,75 +1,116 @@
-#pragma once
+#ifndef BVH_H_
+#define BVH_H_
 
-#include <array>
-#include <vector>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+#include <deque>
 #include <queue>
+#include <algorithm>
+
 #include "primitive.h"
 
-static const unsigned num_planes = 7;
-
-class BVH {
+class BVH
+{
 public:
-    struct BoundingVolume;
-    struct OctreeNode;
-    struct Octree;
 
-private:
-    //std::array<glm::vec3, num_planes> planes_normals_;
-    std::vector<Primitive*> primitives_;
+    struct BVHNode
+    {
+        ~BVHNode(void)
+        {
+            if (left_)
+            {
+                delete left_;
+                left_ = nullptr;
+            }
 
-    std::vector<BoundingVolume> volumes_;
-    Octree *octree;
+            if (right_)
+            {
+                delete right_;
+                right_ = nullptr;
+            }
+        }
 
-public:
-    explicit BVH(std::vector<Primitive*> &primitives);
-    bool intersect(const Ray &ray, IntersectionRecord &ir) const;
-};
-
-struct BVH::BoundingVolume {
-    Primitive *primitive;
-    std::array<float, num_planes> dnear;
-    std::array<float, num_planes> dfar;
-
-    BoundingVolume();
-    void extendBy(const BoundingVolume &b);
-    bool intersect(float &near, float &far, float *numerators, float *denominators) const;
-    glm::vec3 centroid() const;
-};
-
-struct BVH::OctreeNode {
-    std::array<OctreeNode*, 8> children;
-    std::vector<const BoundingVolume *> data;
-    BoundingVolume volume;
-    bool is_leaf;
-
-    OctreeNode();
-};
-
-struct BVH::Octree {
-    OctreeNode *root;
-    std::array<glm::vec3, 2> bounds;
-
-    explicit Octree(BoundingVolume &volume);
-
-    void insert(const BoundingVolume *volume);
-    void build();
-
-    struct QueueElement {
-        const OctreeNode *node;
-        float t;
-
-        QueueElement(const OctreeNode *n, float hit);
-
-        friend bool operator<(const QueueElement &a, const QueueElement &b);
+        std::size_t first_;                       // index of the first primitive
+        std::size_t last_;                        // number of primitives into this node (whose index start at "first_").
+        AABB aabb_;                               // AABB represeted by the current node.
+        BVHNode *left_ = nullptr;                 // Pointer to the left child node (if the current node is a inner node).
+        BVHNode *right_ = nullptr;                // Pointer to right inner node (if the current node is a inner node).
     };
 
+    struct PrimitiveAABBArea
+    {
+        std::size_t primitive_id_;
+        glm::vec3 centroid_;
+        AABB aabb_;
+        float left_area_;
+        float right_area_;
+
+        AABB left_aabb_;
+        AABB right_aabb_;
+
+    };
+
+    BVH(const std::vector< Primitive::PrimitiveUniquePtr > &primitives);
+
+    ~BVH(void);
+
+    bool intersect(const Ray &ray,
+        IntersectionRecord &intersection_record,
+        unsigned int &num_intersection_tests_,
+        unsigned int &num_intersections_) const;
+
+    void dump(void) const;
+
 private:
-    void insert(OctreeNode *root, const BoundingVolume *volume,
-                glm::vec3 &b_min, glm::vec3 &b_max, int depth);
-    void computeChildBound(const unsigned i, const glm::vec3 &centroid,
-                           const glm::vec3 &b_min, const glm::vec3 &b_max,
-                           glm::vec3 &p_min, glm::vec3 &p_max) const;
-    void build(OctreeNode *node,
-               const glm::vec3 &b_min,
-               const glm::vec3 &b_max);
+
+    struct Comparator
+    {
+        static bool sortInX(const PrimitiveAABBArea &lhs, const PrimitiveAABBArea &rhs)
+        {
+            return lhs.centroid_.x < rhs.centroid_.x;
+        }
+
+        static bool sortInY(const PrimitiveAABBArea &lhs, const PrimitiveAABBArea &rhs)
+        {
+            return lhs.centroid_.y < rhs.centroid_.y;
+        }
+
+        static bool sortInZ(const PrimitiveAABBArea &lhs, const PrimitiveAABBArea &rhs)
+        {
+            return lhs.centroid_.z < rhs.centroid_.z;
+        }
+    };
+
+    float SAH(std::size_t s1_size,
+        float s1_area,
+        std::size_t s2_size,
+        float s2_area,
+        float s_area);
+
+    void splitNode(BVHNode **node,
+        std::deque< PrimitiveAABBArea > &s,
+        std::size_t first,
+        std::size_t last,
+        float s_area);
+
+    bool traverse(const BVHNode *node,
+        const Ray &ray,
+        IntersectionRecord &intersection_record,
+        unsigned int &num_intersection_tests_,
+        unsigned int &num_intersections_) const;
+
+    BVHNode *root_node_ = nullptr;
+
+    float cost_intersec_tri_ = 0.8f;
+
+    float cost_intersec_aabb_ = 0.2f;
+
+    std::deque< unsigned int > primitive_id_;
+
+    const std::vector< Primitive::PrimitiveUniquePtr > &primitives_;
+
+    std::size_t primitives_inserted_ = 0;
 };
+
+#endif /* BVH_H_ */

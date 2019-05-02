@@ -1,3 +1,5 @@
+#pragma once
+
 #include <glm/glm.hpp>
 #include "ray.h"
 
@@ -16,7 +18,9 @@ public:
 
     bool intersect(const Ray &ray) const;
 
-    glm::vec3 pMin;
-    glm::vec3 pMax;
-    glm::vec3 centroid() const;
+    glm::vec3 min_;
+    glm::vec3 max_;
+    glm::vec3 centroid_;
+
+    AABB operator+(AABB &other) const;
 };

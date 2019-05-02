@@ -8,12 +8,12 @@
 #include <thread>
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 10;
+const int NUM_SAMPLES = 100;
 
 PathTracer::PathTracer(Camera &camera,
                        const Scene &scene,
                        const glm::vec3 background_color,
-                       Buffer &buffer) :
+                       Buffer &buffer ) :
     camera_(camera),
     scene_(scene),
     background_color_(background_color),
@@ -27,6 +27,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
     if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
+
             glm::vec3 dir;
             dir = ir.material_.lock()->getDirection(r);
 
@@ -60,11 +61,10 @@ void PathTracer::integrate(void) {
     for (int y = 0; y < buffer_.h_resolution_; y++) {
         std::stringstream progress_stream;
         progress_stream << "\r  progress .........................: "
-                        << std::fixed << std::setw( 6 )
-                        << std::setprecision( 2 )
-                        << 100.0 * y / ( buffer_.v_resolution_ - 1 )
-                        << "%";
-
+            << std::fixed << std::setw(6)
+            << std::setprecision(2)
+            << 100.0f * y / (buffer_.v_resolution_ - 1)
+            << "%";
         std::clog << progress_stream.str();
 
         for (unsigned x = 0; x < buffer_.h_resolution_; x++) {
@@ -78,8 +78,7 @@ void PathTracer::integrate(void) {
         }
         num_threads = omp_get_num_threads();
     }
-    std::clog << std::endl;
-    std::cout << "Threads = " << num_threads << "\n";
+    std::cout << "o num de threads usados eh: " << num_threads;
     std::clog << std::endl;
 }
 

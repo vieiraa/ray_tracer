@@ -13,12 +13,13 @@ Triangle::Triangle(const glm::vec3 &v1,
     normal_ = glm::normalize(glm::cross(edge2_, edge1_));
 }
 
-void Triangle::computeBounds(const glm::vec3 &plane_normal, float &near, float &far) const {
-    for (auto &v : vertices_) {
-        float d = glm::dot(plane_normal, v);
-        if (d < near)
-            near = d;
-        if (d > far)
-            far = d;
-    }
+AABB Triangle::getAABB(void) const
+{
+    AABB aabb;
+
+    aabb.min_ = glm::min(glm::min(vertices_[0], vertices_[1]), vertices_[2]);
+    aabb.max_ = glm::max(glm::max(vertices_[0], vertices_[1]), vertices_[2]);
+    aabb.centroid_ = (1.0f / 3.0f) * (vertices_[0]+ vertices_[1] + vertices_[2]);
+    return aabb;
 }
+

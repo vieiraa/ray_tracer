@@ -1,6 +1,5 @@
 #include "sphere.h"
-#include <iostream>
-#include "onb.h"
+#include "aabb.h"
 
 Sphere::Sphere( void )
 {}
@@ -48,16 +47,14 @@ bool Sphere::intersect( const Ray &ray,
     return true;
 }
 
-void Sphere::computeBounds(const glm::vec3 &plane_normal, float &near, float &far) const {
-    bool c = (plane_normal == glm::vec3(1, 0, 0)) ||
-             (plane_normal == glm::vec3(0, 1, 0) ||
-             (plane_normal == glm::vec3(0, 0, 1)));
+AABB Sphere::getAABB(void) const
+{
+    AABB aabb;
 
-    float dmin = c ? -radius_ : -radius_ * glm::sqrt(2);
-    float dmax = -dmin;
+    aabb.min_ = center_ - radius_;
+    aabb.max_ = center_ + radius_;
+    aabb.centroid_ = center_;
 
-    if (dmin < near)
-        near = dmin;
-    if (dmax > far)
-        far = dmax;
+    return aabb;
 }
+

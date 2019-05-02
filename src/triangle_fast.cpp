@@ -1,4 +1,5 @@
 #include "triangle_fast.h"
+#include "aabb.h"
 
 FastTriangle::FastTriangle(const glm::vec3 &v1,
 			     const glm::vec3 &v2,
@@ -43,3 +44,5 @@ bool FastTriangle::intersect(const Ray &ray, IntersectionRecord &ir) const
 
     return true;
 }
+
+
