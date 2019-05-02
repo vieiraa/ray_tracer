@@ -24,10 +24,9 @@ int main( void )
 			  glm::vec3{ 0.0f, 0.0f, -1.0f } );   // look at
 
     Scene scene;
-    
+
 
     scene.load();
-    std::cout << scene.primitives_.size() << "\n";
     scene.bvh_ = new BVH(scene.primitives_);
 
     Buffer rendering_buffer( x_resolution, y_resolution );
@@ -45,7 +44,7 @@ int main( void )
     auto start = std::chrono::high_resolution_clock::now();
 #endif
 
-    
+
 
     rt.integrate(); // Renders the final image.
     std::cout << "ola mundo\n";
@@ -64,4 +63,3 @@ int main( void )
 
     return 0;
 }
-
