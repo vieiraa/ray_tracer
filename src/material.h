@@ -12,9 +12,10 @@ public:
 
     //BRDF *brdf;
 
-    virtual glm::vec3 fr() = 0;
+    virtual glm::vec3 fr(const glm::vec3 &wi,
+                         const glm::vec3 &wo) = 0;
     virtual float p() = 0;
-    virtual glm::vec3 getDirection(Ray r) = 0;
+    virtual glm::vec3 getDirection(const Ray &r, const glm::vec3 &normal) = 0;
     glm::vec3 reflected_;
     glm::vec3 emitted_;
 

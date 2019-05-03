@@ -27,13 +27,10 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
     if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
+            glm::vec3 wi, wo;
 
             glm::vec3 dir;
-            dir = ir.material_.lock()->getDirection(r);
-
-            ONB onb;
-            onb.setFromV(ir.normal_);
-            dir = glm::normalize(dir * onb.getBasisMatrix());
+            dir = ir.material_.lock()->getDirection(r, ir.normal_);
 
             float dot = glm::dot(dir,ir.normal_);
             if (dot < 0) {
@@ -45,7 +42,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
             auto aux = ir.material_.lock();
 
-            Lo = aux->emitted_ + aux->fr() / aux->p() * L(refl_ray, ++curr_depth) * dot;
+            Lo = aux->emitted_ + (aux->fr(wi, wo) / aux->p()) * L(refl_ray, ++curr_depth) * dot;
         }
     }
 

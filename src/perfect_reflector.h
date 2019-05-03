@@ -4,15 +4,15 @@
 #include "ray.h"
 #include <glm/glm.hpp>
 
-class Perfect_reflector : public Material
+class PerfectReflector : public Material
 {
 public:
-    Perfect_reflector(glm::vec3 r, glm::vec3 e);
-    ~Perfect_reflector();
+    PerfectReflector();
+    ~PerfectReflector();
 
-    glm::vec3 fr();
+    glm::vec3 fr(const glm::vec3 &wi,
+                 const glm::vec3 &wo);
 
-    glm::vec3 getDirection(Ray r);
-
-    int diracDelta(float in, float out);
+    glm::vec3 getDirection(const Ray &r, const glm::vec3 &normal);
+    float p();
 };

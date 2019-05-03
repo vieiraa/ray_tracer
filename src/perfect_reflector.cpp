@@ -2,45 +2,38 @@
 #include <math.h>
 #include <glm/glm.hpp>
 #include "intersection_record.h"
+#include "onb.h"
 
 const float pi = 3.14159265358979323846;
 
-Perfect_reflector::Perfect_reflector(glm::vec3 r, glm::vec3 e) : Material(r, e) {
+PerfectReflector::PerfectReflector() : Material(glm::vec3(0), glm::vec3(0)) {
 
     //ctor
 
-} 
+}
 
-Perfect_reflector::~Perfect_reflector() {
+PerfectReflector::~PerfectReflector() {
 
     //dtor
 }
 
-int Perfect_reflector::diracDelta(float in, float out) {
-
-    if (in - out == 0) {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-    
+glm::vec3 PerfectReflector::fr(const glm::vec3 &wi,
+                               const glm::vec3 &wo)
+{
+    return glm::vec3(1, 1, 1);
 }
 
-glm::vec3 Perfect_reflector::fr() {
-    glm::vec3 dir;
-    //float theta = glm::acos(sqrt(pow((dir.x),2)+pow((dir.y),2))/dir.z);
-   // float phi = glm::acos(dir.y/dir.x);
+glm::vec3 PerfectReflector::getDirection(const Ray &r, const glm::vec3 &normal) {
+    // ONB onb;
+    // onb.setFromV(normal);
+    // glm::vec3 dir = glm::transpose(onb.getBasisMatrix()) * r.direction_;
+    // dir = glm::vec3(-dir.x, dir.y, -dir.z);
 
 
-    //return diracDelta(cos(theta),cos(theta))*diracDelta(phi, phi + pi)/cos(theta);
-    return dir;
+    //return dir;
+    return 2.0f * normal * (glm::dot(r.direction_, normal)) - r.direction_;
 }
 
-glm::vec3 Perfect_reflector::getDirection(Ray r) {
-    glm::vec3 dir;
-    dir = { -r.direction_.x, r.direction_.y, -r.direction_.z };
-    
-    return dir;
+float PerfectReflector::p() {
+    return 1;
 }

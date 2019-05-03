@@ -5,6 +5,7 @@
 #include "triangle_fast.h"
 #include "triangle_naive.h"
 #include "diffuse.h"
+#include "perfect_reflector.h"
 #include <iostream>
 
 #ifdef __MINGW32__
@@ -62,7 +63,7 @@ bool TriangleMesh::loadMesh(const std::string &filename, glm::vec3 color) {
                 t->normal_ = normal;
 
             glm::vec3 c = color;
-            t->material_ = std::make_shared<Diffuse>(c, glm::vec3(0, 0, 0));
+            //t->material_ = std::make_shared<>(c, glm::vec3(0, 0, 0));
 	    triangles_.push_back(std::move(t));
 	}
     }

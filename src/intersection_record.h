@@ -1,5 +1,4 @@
-#ifndef INTERSECTION_RECORD_H_
-#define INTERSECTION_RECORD_H_
+#pragma once
 
 #include <glm/glm.hpp>
 #include <memory>
@@ -12,6 +11,3 @@ struct IntersectionRecord
     glm::vec3 normal_;
     std::weak_ptr<Material> material_;
 };
-
-#endif /* INTERSECTION_RECORD_H_ */
-
