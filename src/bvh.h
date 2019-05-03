@@ -1,5 +1,4 @@
-#ifndef BVH_H_
-#define BVH_H_
+#pragma once
 
 #include <sstream>
 #include <iostream>
@@ -56,11 +55,13 @@ public:
     ~BVH(void);
 
     bool intersect(const Ray &ray,
-        IntersectionRecord &intersection_record,
-        unsigned int &num_intersection_tests_,
-        unsigned int &num_intersections_) const;
+                   IntersectionRecord &intersection_record,
+                   unsigned int &num_intersection_tests_,
+                   unsigned int &num_intersections_) const;
 
     void dump(void) const;
+    unsigned height(BVHNode *node) const;
+    BVHNode* getRoot() const;
 
 private:
 
@@ -83,22 +84,22 @@ private:
     };
 
     float SAH(std::size_t s1_size,
-        float s1_area,
-        std::size_t s2_size,
-        float s2_area,
-        float s_area);
+              float s1_area,
+              std::size_t s2_size,
+              float s2_area,
+              float s_area);
 
     void splitNode(BVHNode **node,
-        std::deque< PrimitiveAABBArea > &s,
-        std::size_t first,
-        std::size_t last,
-        float s_area);
+                   std::deque< PrimitiveAABBArea > &s,
+                   std::size_t first,
+                   std::size_t last,
+                   float s_area);
 
     bool traverse(const BVHNode *node,
-        const Ray &ray,
-        IntersectionRecord &intersection_record,
-        unsigned int &num_intersection_tests_,
-        unsigned int &num_intersections_) const;
+                  const Ray &ray,
+                  IntersectionRecord &intersection_record,
+                  unsigned int &num_intersection_tests_,
+                  unsigned int &num_intersections_) const;
 
     BVHNode *root_node_ = nullptr;
 
@@ -112,5 +113,3 @@ private:
 
     std::size_t primitives_inserted_ = 0;
 };
-
-#endif /* BVH_H_ */
