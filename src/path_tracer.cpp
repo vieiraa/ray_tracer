@@ -45,7 +45,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
             auto aux = ir.material_.lock();
 
-            Lo = aux->emitted_ + 2 * PI * aux->fr() * L(refl_ray, ++curr_depth) * dot;
+            Lo = aux->emitted_ + aux->fr() / aux->p() * L(refl_ray, ++curr_depth) * dot;
         }
     }
 
@@ -138,7 +138,7 @@ void PathTracer::normal_color(void) {
             Ray ray(camera_.getWorldSpaceRay(glm::vec2{ x, y }));
             if (scene_.intersect(ray, intersection_record))
 
-                buffer_.buffer_data_[x][y] = glm::vec3(1.0f,0.0f,0.0f)*abs(intersection_record.normal_);
+                buffer_.buffer_data_[x][y] = (glm::vec3(1.0f,0.0f,0.0f) + 1.0f)/2.0f * abs(intersection_record.normal_);
             //std::cout <<  "normal:"  << intersection_record.normal_.x <<","<<intersection_record.normal_.y<<","<<intersection_record.normal_.z;
         }
     }

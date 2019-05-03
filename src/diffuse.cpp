@@ -2,6 +2,7 @@
 #include "random.h"
 #include "ray.h"
 
+
 const float pi = 3.14159265358979323846;
 
 Diffuse::Diffuse(glm::vec3 r, glm::vec3 e) : Material(r, e)
@@ -16,6 +17,11 @@ Diffuse::~Diffuse()
 
 glm::vec3 Diffuse::fr() {
     return reflected_ / pi;
+}
+
+float Diffuse::p() {
+   
+    return 1/(2 * pi);
 }
 
 glm::vec3 Diffuse::getDirection(Ray r) {

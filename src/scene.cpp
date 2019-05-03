@@ -15,7 +15,7 @@ bool Scene::intersect( const Ray &ray,
     IntersectionRecord tmp_intersection_record;
     std::size_t num_primitives = primitives_.size();
 
-#if 1
+#if 0
     // Loops over the list of primitives, testing the intersection of each primitive against the given ray
     //std::size_t primitive_id = 0;
     for (size_t primitive_id = 0; primitive_id < num_primitives; primitive_id++ ) {
@@ -39,7 +39,7 @@ bool Scene::intersect( const Ray &ray,
 void Scene::load() {
 
 	//scene objects
-	Sphere *s1 = new Sphere(glm::vec3(-1.5f, 0, -2.5f), 0.75f);
+    /* Sphere *s1 = new Sphere(glm::vec3(-1.5f, 0, -2.5f), 0.75f);
 	s1->material_ = std::make_shared<Diffuse>(glm::vec3(175.0f, 238.0f, 238.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 	primitives_.push_back(Primitive::PrimitiveUniquePtr(s1));
 
@@ -50,12 +50,13 @@ void Scene::load() {
     Sphere *s3 = new Sphere(glm::vec3(1.5f, 0, -2.5f), 0.75f);
     s3->material_ = std::make_shared<Diffuse>(glm::vec3(250.0f, 128.0f, 114.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s3));
-	
+	*/
 	//Lights
+    /*
     Sphere *s4 = new Sphere(glm::vec3(0.0f, 4.0f, 1.0f), 1.5f);
     s4->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s4));
-
+    */
     Sphere *s5 = new Sphere(glm::vec3(0.0f, 4.0f, -0.75f), 1.5f);
     s5->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s5));
@@ -68,8 +69,8 @@ void Scene::load() {
     s7->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s7));
 	
-    TriangleMesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\scene.obj");
-    TriangleMesh cat("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\cat.obj");
+    TriangleMesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\scene.obj", glm::vec3 (0.4f,0.4f,0.4f ));
+    TriangleMesh cat("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\cat.obj", glm::vec3(250.0f, 128.0f, 114.0f) / 255.0f);
     //TriangleMesh mesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/scene.obj");
 
     for (auto &t : mesh.getTriangles()) {

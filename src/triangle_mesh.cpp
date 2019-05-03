@@ -24,7 +24,7 @@ double drand48() {
 const float KINFINITY = std::numeric_limits<float>::max();
 const float EPSILON = 1e-8;
 
-bool TriangleMesh::loadMesh(const std::string &filename) {
+bool TriangleMesh::loadMesh(const std::string &filename, glm::vec3 color) {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(filename,
 					     aiProcess_CalcTangentSpace |
@@ -61,7 +61,7 @@ bool TriangleMesh::loadMesh(const std::string &filename) {
             if (mesh->HasNormals())
                 t->normal_ = normal;
 
-            glm::vec3 c = glm::vec3(0.4f,0.4f,0.4f);
+            glm::vec3 c = color;
             t->material_ = std::make_shared<Diffuse>(c, glm::vec3(0, 0, 0));
 	    triangles_.push_back(std::move(t));
 	}
@@ -70,8 +70,8 @@ bool TriangleMesh::loadMesh(const std::string &filename) {
     return true;
 }
 
-TriangleMesh::TriangleMesh(const std::string &filename) {
-    loadMesh(filename);
+TriangleMesh::TriangleMesh(const std::string &filename, glm::vec3 color) {
+    loadMesh(filename, color);
 }
 
 TriangleMesh::TriangleMesh() = default;

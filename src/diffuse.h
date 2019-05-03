@@ -11,6 +11,7 @@ public:
     virtual ~Diffuse();
 
     glm::vec3 fr();
+    float p();
 
     glm::vec3 getDirection(Ray r);
 };

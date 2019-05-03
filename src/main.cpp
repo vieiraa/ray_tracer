@@ -19,9 +19,9 @@ int main( void )
 			  2.5f,
 			  5.0f,
 			  glm::ivec2{ x_resolution, y_resolution },
-			  glm::vec3{ 0.0f, 0.0f, 5.0f },     // position
+			  glm::vec3{ 0.0f, -0.75f, 1.0f },     // position
 			  glm::vec3{ 0.0f, -1.0f,  0.0f },     // up
-			  glm::vec3{ 0.0f, 0.0f, -1.0f } );   // look at
+			  glm::vec3{ 0.0f, -0.75f, -3.0f } );   // look at
 
     Scene scene;
     
@@ -48,7 +48,7 @@ int main( void )
     
 
     rt.integrate(); // Renders the final image.
-    std::cout << "ola mundo\n";
+
 
 #if __cplusplus < 201103L
     clock_t duration = (float)(clock() - start) * 1000.0 / CLOCKS_PER_SEC;
