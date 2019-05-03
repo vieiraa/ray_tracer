@@ -8,7 +8,7 @@
 #include <thread>
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 100;
+const int NUM_SAMPLES = 40;
 
 float schlick(const Ray &r, const glm::vec3 &normal, float ni, float nt) {
     float R0 = (ni - nt)/(ni + nt);

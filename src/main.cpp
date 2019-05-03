@@ -10,8 +10,8 @@
 
 int main( void )
 {
-    unsigned int x_resolution = 256;
-    unsigned int y_resolution = 256;
+    unsigned int x_resolution = 512;
+    unsigned int y_resolution = 512;
 
     PinholeCamera camera( -2.5f,
 			  2.5f,
@@ -27,7 +27,13 @@ int main( void )
 
 
     scene.load();
+
+    clock_t start1 = clock();
+
     scene.bvh_ = new BVH(scene.primitives_);
+
+    clock_t duration1 = (float)(clock() - start1) * 1000.0 / CLOCKS_PER_SEC;
+    std::cout << "BVH construction time: " << duration1 / 1000.0 << "s" << std::endl;
 
     Buffer rendering_buffer( x_resolution, y_resolution );
     glm::vec3 background_color( 1.0f, 1.0f, 1.0f );
@@ -39,7 +45,7 @@ int main( void )
                   rendering_buffer );
 
 #if __cplusplus < 201103L
-    clock_t start = clock();
+    clock_t start2 = clock();
 #else
     auto start = std::chrono::high_resolution_clock::now();
 #endif
@@ -50,13 +56,13 @@ int main( void )
 
 
 #if __cplusplus < 201103L
-    clock_t duration = (float)(clock() - start) * 1000.0 / CLOCKS_PER_SEC;
+    clock_t duration2 = (float)(clock() - start2) * 1000.0 / CLOCKS_PER_SEC;
 #else
     auto duration = std::chrono::
 	duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count();
 #endif
 
-    std::cout << "Elapsed time: " << duration / 1000.0 << "s" << std::endl;
+    std::cout << "Elapsed time: " << duration2 / 1000.0 << "s" << std::endl;
 
     // Save the rendered image to a .ppm file.
     rendering_buffer.save( "teste.ppm" );
