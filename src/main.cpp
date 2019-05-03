@@ -10,8 +10,8 @@
 
 int main( void )
 {
-    unsigned int x_resolution = 512;
-    unsigned int y_resolution = 512;
+    unsigned int x_resolution = 256;
+    unsigned int y_resolution = 256;
 
     PinholeCamera camera( -2.5f,
 			  2.5f,

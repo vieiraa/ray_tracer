@@ -32,6 +32,10 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
             glm::vec3 dir;
             dir = ir.material_.lock()->getDirection(r, ir.normal_);
 
+            ONB onb;
+            onb.setFromV(ir.normal_);
+            wi = glm::transpose(onb.getBasisMatrix()) * -r.direction_;
+
             float dot = glm::dot(dir,ir.normal_);
             if (dot < 0) {
                 dir = -dir;

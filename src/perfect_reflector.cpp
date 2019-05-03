@@ -20,7 +20,7 @@ PerfectReflector::~PerfectReflector() {
 glm::vec3 PerfectReflector::fr(const glm::vec3 &wi,
                                const glm::vec3 &wo)
 {
-    return glm::vec3(1, 1, 1);
+    return glm::vec3(1, 1, 1) / wi.y;
 }
 
 glm::vec3 PerfectReflector::getDirection(const Ray &r, const glm::vec3 &normal) {

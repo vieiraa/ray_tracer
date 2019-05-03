@@ -15,7 +15,7 @@ bool Scene::intersect( const Ray &ray,
     IntersectionRecord tmp_intersection_record;
     std::size_t num_primitives = primitives_.size();
 
-#if 0
+#if 1
     // Loops over the list of primitives, testing the intersection of each primitive against the given ray
     //std::size_t primitive_id = 0;
     for (size_t primitive_id = 0; primitive_id < num_primitives; primitive_id++ ) {
@@ -39,12 +39,12 @@ bool Scene::intersect( const Ray &ray,
 void Scene::load() {
 
     //scene objects
-    /* Sphere *s1 = new Sphere(glm::vec3(-1.0f, 0, 1.5f), 0.75f);
+     Sphere *s1 = new Sphere(glm::vec3(-1.0f, 0, 1.5f), 0.75f);
        s1->material_ = std::make_shared<Diffuse>(glm::vec3(175.0f, 238.0f, 238.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s1));
 
        Sphere *s2 = new Sphere(glm::vec3(0.0f, 0.0f, -1.0f), 0.75f);
-       s2->material_ = std::make_shared<PerfectReflector>(glm::vec3(153.0f, 50.0f, 204.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+       s2->material_ = std::make_shared<PerfectReflector>();
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s2));
 
        Sphere *s3 = new Sphere(glm::vec3(1.0f, 0, 1.5f), 0.75f);
@@ -82,6 +82,6 @@ void Scene::load() {
 
     for (auto &t : cat.getTriangles()) {
         t->material_ = std::make_shared<PerfectReflector>();
-        primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
+        // primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
     }
 }
