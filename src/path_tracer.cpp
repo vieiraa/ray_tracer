@@ -10,6 +10,15 @@
 const float PI = glm::pi<float>();
 const int NUM_SAMPLES = 100;
 
+float schlick(const Ray &r, const glm::vec3 &normal, float ni, float nt) {
+    float R0 = (ni - nt)/(ni + nt);
+    R0 *= R0;
+
+    float cos = glm::dot(r.direction_, normal);
+    cos = 1 - cos;
+    return R0 + (1 - R0) * cos * cos * cos * cos * cos;
+}
+
 PathTracer::PathTracer(Camera &camera,
                        const Scene &scene,
                        const glm::vec3 background_color,

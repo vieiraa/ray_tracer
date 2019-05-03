@@ -6,7 +6,7 @@
 
 const float pi = 3.14159265358979323846;
 
-PerfectReflector::PerfectReflector() : Material(glm::vec3(0), glm::vec3(0)) {
+PerfectReflector::PerfectReflector(const glm::vec3 &r) : Material(r, glm::vec3(0)) {
 
     //ctor
 
@@ -20,7 +20,7 @@ PerfectReflector::~PerfectReflector() {
 glm::vec3 PerfectReflector::fr(const glm::vec3 &wi,
                                const glm::vec3 &wo)
 {
-    return glm::vec3(1, 1, 1) / wi.y;
+    return reflected_ / wi.y;
 }
 
 glm::vec3 PerfectReflector::getDirection(const Ray &r, const glm::vec3 &normal) {
