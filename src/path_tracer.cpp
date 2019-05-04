@@ -8,7 +8,7 @@
 #include <thread>
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 40;
+const int NUM_SAMPLES = 400;
 
 float schlick(const Ray &r, const glm::vec3 &normal, float ni, float nt) {
     float R0 = (ni - nt)/(ni + nt);
@@ -70,7 +70,7 @@ void PathTracer::integrate(void) {
     #pragma omp parallel for schedule(dynamic, 1)
     for (int y = 0; y < buffer_.h_resolution_; y++) {
         std::stringstream progress_stream;
-        progress_stream << "\r  progress .........................: "
+        progress_stream << "\rProgress .........................: "
             << std::fixed << std::setw(6)
             << std::setprecision(2)
             << 100.0f * y / (buffer_.v_resolution_ - 1)
@@ -88,7 +88,7 @@ void PathTracer::integrate(void) {
         }
         num_threads = omp_get_num_threads();
     }
-    std::cout << "o num de threads usados eh: " << num_threads;
+    std::cout << "\nO num de threads usados eh: " << num_threads;
     std::clog << std::endl;
 }
 

@@ -7,6 +7,7 @@
 class PerfectReflector : public Material
 {
 public:
+    PerfectReflector();
     PerfectReflector(const glm::vec3 &r);
     ~PerfectReflector();
 
