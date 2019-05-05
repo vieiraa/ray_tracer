@@ -8,16 +8,9 @@
 #include <thread>
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 400;
+const int NUM_SAMPLES = 10000;
 
-float schlick(const Ray &r, const glm::vec3 &normal, float ni, float nt) {
-    float R0 = (ni - nt)/(ni + nt);
-    R0 *= R0;
 
-    float cos = glm::dot(r.direction_, normal);
-    cos = 1 - cos;
-    return R0 + (1 - R0) * cos * cos * cos * cos * cos;
-}
 
 PathTracer::PathTracer(Camera &camera,
                        const Scene &scene,
@@ -51,11 +44,11 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
                 dot = -dot;
             }
 
-            Ray refl_ray(ir.position_ + dir * 0.0001f, dir);
+            Ray next_ray(ir.position_ + dir * 0.0001f, dir);
 
             auto aux = ir.material_.lock();
 
-            Lo = aux->emitted_ + (aux->fr(wi, wo) / aux->p()) * L(refl_ray, ++curr_depth) * dot;
+            Lo = aux->emitted_ + (aux->fr(wi, wo) / aux->p()) * L(next_ray, ++curr_depth) * dot;
         }
     }
 

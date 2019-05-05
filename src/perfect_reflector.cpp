@@ -29,7 +29,7 @@ glm::vec3 PerfectReflector::fr(const glm::vec3 &wi,
     return reflected_ / wi.y;
 }
 
-glm::vec3 PerfectReflector::getDirection(const Ray &r, const glm::vec3 &normal) {
+glm::vec3 PerfectReflector::get_reflected_direction(const Ray &r, const glm::vec3 &normal) {
     // ONB onb;
     // onb.setFromV(normal);
     // glm::vec3 dir = glm::transpose(onb.getBasisMatrix()) * r.direction_;
@@ -39,6 +39,13 @@ glm::vec3 PerfectReflector::getDirection(const Ray &r, const glm::vec3 &normal) 
     //return dir;
     return 2.0f * normal * (glm::dot(r.direction_, normal)) - r.direction_;
 }
+
+glm::vec3 PerfectReflector::getDirection(const Ray &r, IntersectionRecord &ir) {
+
+    return get_reflected_direction(r, ir.normal_);
+}
+
+
 
 float PerfectReflector::p() {
     return 1;

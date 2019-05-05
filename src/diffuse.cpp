@@ -24,7 +24,7 @@ float Diffuse::p() {
     return 1/(2 * pi);
 }
 
-glm::vec3 Diffuse::getDirection(const Ray &r, const glm::vec3 &normal) {
+glm::vec3 Diffuse::get_reflected_direction(const Ray &r, const glm::vec3 &normal) {
     glm::vec3 dir;
 
     do {
@@ -36,4 +36,11 @@ glm::vec3 Diffuse::getDirection(const Ray &r, const glm::vec3 &normal) {
     dir = glm::normalize(dir * onb.getBasisMatrix());
 
     return dir;
+}
+
+
+
+glm::vec3 Diffuse:: getDirection(const Ray &r, IntersectionRecord &ir) {
+
+    return get_reflected_direction(r,ir.normal_);
 }

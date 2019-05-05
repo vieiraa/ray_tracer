@@ -19,7 +19,7 @@ int main( void )
 			  2.5f,
 			  5.0f,
 			  glm::ivec2{ x_resolution, y_resolution },
-			  glm::vec3{ 0.0f, 0.0f, 1.0f },     // position
+			  glm::vec3{ 0.0f, -0.75f, 1.0f },     // position
 			  glm::vec3{ 0.0f, -1.0f,  0.0f },     // up
 			  glm::vec3{ 0.0f, -0.75f, -3.0f } );   // look at
 
@@ -28,6 +28,7 @@ int main( void )
 
     scene.load();
 
+    std::cout << "\n\n######################################################################";
     //construction tree time
     clock_t start1 = clock();
     scene.bvh_ = new BVH(scene.primitives_);
@@ -68,6 +69,8 @@ int main( void )
 #endif
 
     std::cout << "\nElapsed time: " << duration2 / 1000.0 << "s" << std::endl;
+    std::cout << "######################################################################\n\n";
+
 
     // Save the rendered image to a .ppm file.
     rendering_buffer.save( "teste.ppm" );
