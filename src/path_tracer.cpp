@@ -8,7 +8,7 @@
 #include <thread>
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 100;
+const int NUM_SAMPLES = 1000;
 
 
 
@@ -27,7 +27,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
     IntersectionRecord ir;
     ir.t_ = std::numeric_limits<float>::max();
 
-    if (curr_depth < 10) {
+    if (curr_depth < 20) {
         if (scene_.intersect(r, ir)) {
             glm::vec3 wi, wo;
 
