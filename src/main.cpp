@@ -24,15 +24,13 @@ int main( void )
 			  glm::vec3{ 0.0f, -0.75f, -3.0f } );   // look at
 
     Scene scene;
-
-
     scene.load();
 
-    std::cout << "\n\n######################################################################";
     //construction tree time
-    clock_t start1 = clock();
+    auto start1 = std::chrono::high_resolution_clock::now();
     scene.bvh_ = new BVH(scene.primitives_);
-    clock_t duration1 = (float)(clock() - start1) * 1000.0 / CLOCKS_PER_SEC;
+    auto duration1 = std::chrono::
+	duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start1).count();
     std::cout << "\nBVH construction time: " << duration1 / 1000.0 << "s" << std::endl;
 
     Buffer rendering_buffer( x_resolution, y_resolution );
@@ -44,13 +42,7 @@ int main( void )
                   background_color,
                   rendering_buffer );
 
-#if __cplusplus < 201103L
-    clock_t start2 = clock();
-#else
-    auto start = std::chrono::high_resolution_clock::now();
-#endif
-
-
+    auto start2 = std::chrono::high_resolution_clock::now();
 
     rt.integrate(); // Renders the final image.
 
@@ -61,16 +53,10 @@ int main( void )
     auto heigth = scene.bvh_->height(scene.bvh_->getRoot());
     std::cout << "\nProfundidade da arvore: " << heigth;
 
-#if __cplusplus < 201103L
-    clock_t duration2 = (float)(clock() - start2) * 1000.0 / CLOCKS_PER_SEC;
-#else
-    auto duration = std::chrono::
-	duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start).count();
-#endif
+    auto duration2 = std::chrono::
+	duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - start2).count();
 
     std::cout << "\nElapsed time: " << duration2 / 1000.0 << "s" << std::endl;
-    std::cout << "######################################################################\n\n";
-
 
     // Save the rendered image to a .ppm file.
     rendering_buffer.save( "teste.ppm" );
