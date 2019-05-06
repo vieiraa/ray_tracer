@@ -8,7 +8,7 @@
 #include <thread>
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 40;
+const int NUM_SAMPLES = 100;
 
 
 
@@ -40,7 +40,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
             float dot = glm::dot(dir,ir.normal_);
 
-            if (ir.material_.lock()->material_ == 0) {
+            if (ir.material_.lock()->material_ == 0 || ir.material_.lock()->material_ == 1) {
                 if (dot < 0) {
                     dir = -dir;
                     dot = -dot;
@@ -50,15 +50,12 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
                     dot = dot;
                 }
             }
-            else {
-                dir = dir;
-                dot = dot;
-            }
+           
 
             Ray next_ray(ir.position_ + dir * 0.0001f, dir);
 
             auto aux = ir.material_.lock();
-
+  
             Lo = aux->emitted_ + (aux->fr(wi, wo) / aux->p()) * L(next_ray, ++curr_depth) * dot;
         }
     }
