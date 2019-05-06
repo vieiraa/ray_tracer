@@ -1,6 +1,7 @@
 #include "scene.h"
 #include "diffuse.h"
 #include "perfect_reflector.h"
+#include "smooth_dielectric.h"
 
 Scene::Scene( void )
 {}
@@ -44,11 +45,11 @@ void Scene::load() {
        Sphere *s1 = new Sphere(glm::vec3(-0.75f, -0.75, -1.0f), 0.27f);
        s1->material_ = std::make_shared<Diffuse>(glm::vec3(175.0f, 238.0f, 238.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s1));
-
-       Sphere *s2 = new Sphere(glm::vec3(0.0f, 0.0f, -1.0f), 0.75f);
-       s2->material_ = std::make_shared<PerfectReflector>();
+       */
+       Sphere *s2 = new Sphere(glm::vec3(0.0f, -0.9f, -6.0f), 0.3f);
+       s2->material_ = std::make_shared<Diffuse>(glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s2));
-
+       /*
        Sphere *s3 = new Sphere(glm::vec3(0.75f, -0.75, -1.0f), 0.27f);
        s3->material_ = std::make_shared<Diffuse>(glm::vec3(250.0f, 128.0f, 114.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s3));
@@ -83,7 +84,7 @@ void Scene::load() {
     }
 
     for (auto &t : cat.getTriangles()) {
-        t->material_ = std::make_shared<PerfectReflector>();
+        t->material_ = std::make_shared<SmoothDielectric>(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
         primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
     }
 }

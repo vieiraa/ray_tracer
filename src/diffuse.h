@@ -14,7 +14,7 @@ public:
                  const glm::vec3 &wo);
     float p();
 
-    glm::vec3 getDirection(const Ray &r, IntersectionRecord &ir);
-    glm::vec3 get_reflected_direction(const Ray &r, const glm::vec3 &normal);
+    glm::vec3 getDirection(const Ray &r, glm::vec3 &normal);
+    glm::vec3 get_reflected_direction(const Ray &r,  glm::vec3 &normal);
   
 };

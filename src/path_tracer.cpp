@@ -8,7 +8,7 @@
 #include <thread>
 
 const float PI = glm::pi<float>();
-const int NUM_SAMPLES = 10000;
+const int NUM_SAMPLES = 40;
 
 
 
