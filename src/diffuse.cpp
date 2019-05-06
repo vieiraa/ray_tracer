@@ -8,6 +8,7 @@ const float pi = 3.14159265358979323846;
 Diffuse::Diffuse(glm::vec3 r, glm::vec3 e) : Material(r, e)
 {
     //ctor
+    material_ = 0;
 }
 
 Diffuse::~Diffuse()
@@ -34,6 +35,12 @@ glm::vec3 Diffuse::get_reflected_direction(const Ray &r,  glm::vec3 &normal) {
     ONB onb;
     onb.setFromV(normal);
     dir = glm::normalize(dir * onb.getBasisMatrix());
+
+    float dot = glm::dot(dir, normal);
+    if (dot < 0) {
+        dir = -dir;
+        dot = -dot;
+    }
 
     return dir;
 }

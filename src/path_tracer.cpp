@@ -27,7 +27,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
     IntersectionRecord ir;
     ir.t_ = std::numeric_limits<float>::max();
 
-    if (curr_depth < 5) {
+    if (curr_depth < 10) {
         if (scene_.intersect(r, ir)) {
             glm::vec3 wi, wo;
 
@@ -39,9 +39,20 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
             wi = glm::transpose(onb.getBasisMatrix()) * -r.direction_;
 
             float dot = glm::dot(dir,ir.normal_);
-            if (dot < 0) {
-                dir = -dir;
-                dot = -dot;
+
+            if (ir.material_.lock()->material_ == 0) {
+                if (dot < 0) {
+                    dir = -dir;
+                    dot = -dot;
+                }
+                else {
+                    dir = dir;
+                    dot = dot;
+                }
+            }
+            else {
+                dir = dir;
+                dot = dot;
             }
 
             Ray next_ray(ir.position_ + dir * 0.0001f, dir);

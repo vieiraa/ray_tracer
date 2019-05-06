@@ -21,6 +21,7 @@ public:
 
     glm::vec3 reflected_;
     glm::vec3 emitted_;
+    int material_;
 
 protected:
     Random random;

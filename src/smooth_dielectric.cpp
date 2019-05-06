@@ -1,12 +1,14 @@
 #include "smooth_dielectric.h"
 #include "random.h"
 #include "intersection_record.h"
+#include <iostream>
 
 
 const float pi = 3.14159265358979323846;
 
 SmoothDielectric::SmoothDielectric(glm::vec3 &r, glm::vec3 &e): Material(r, e)
 {
+    material_ = 2;
 
 }
 
@@ -14,9 +16,12 @@ float SmoothDielectric::schlick(const Ray &r, glm::vec3 &normal, float ni, float
     float R0 = (ni - nt) / (ni + nt);
     R0 *= R0;
 
-    float cos = glm::dot(r.direction_, normal);
-    cos = 1 - cos;
-    return R0 + (1 - R0) * cos * cos * cos * cos * cos;
+    float cos1 = glm::dot(r.direction_, normal);
+    float n = ni / nt;
+   
+    cos1 = 1-cos1;
+    
+    return R0 + (1.0f - R0) * cos1 * cos1 * cos1 * cos1 * cos1;
 }
 
 glm::vec3 SmoothDielectric::fr(const glm::vec3 &wi, const glm::vec3 &wo) {
@@ -32,53 +37,48 @@ glm::vec3 SmoothDielectric::get_reflected_direction(const Ray &r, glm::vec3 &nor
 glm::vec3 SmoothDielectric::get_refracted_direction(const Ray &r, glm::vec3 &normal) {
 
     float n = n_i_ / n_t_;
-    float cos_i = glm::dot(normal, r.direction_);
+    float cos_i = glm::dot(r.direction_, normal);
     float cos_t = sqrt(1 - (n * n) * (1 - cos_i * cos_i));
 
-    return n * (r.direction_ + cos_i * n) - n * cos_t;
+    return n * (r.direction_ + cos_i * normal) - normal * cos_t;
 
 }
 
 glm::vec3 SmoothDielectric::getDirection(const Ray &r, glm::vec3 &normal) {
 
     float n = n_i_ / n_t_;
-    float cos = glm::dot(r.direction_, normal);
+    float cos = glm::dot(r.direction_,normal);
     float cos2 = sqrt(1 - (n * n) * (1 - cos * cos));
-    int state;
-
-    if (cos < 0) { //entering
-
-        n_i_ = 1.0;
-        n_t_ = 1.5;
-        state = 0;
-    }
-    else {         //getting out
-
-        n_i_ = 1.5;
-        n_t_ = 1.0;
-        state = 1;
-        normal = - normal;
-    }
-
-    float schlick_ = schlick(r,normal, n_i_, n_t_);
+    float schlick_;
     glm::vec3 new_direction;
+    
 
-    if (state == 0) {
+    if (cos < 0.0f) { //entering
+
+        n_i_ = 1.0f;
+        n_t_ = 1.5f;
+
+        schlick_ = schlick(r, normal, n_i_, n_t_);
 
         if (random.get() < schlick_) {
             return new_direction = get_reflected_direction(r, normal);
         }
         else {
-
             return new_direction = get_refracted_direction(r, normal);
         }
+       
     }
-    else {
+    else {         //getting out
 
-        if (cos2 < 0.0f) {
+        n_i_ = 1.5;
+        n_t_ = 1.0;
+        normal = -normal;
+
+        schlick_ = schlick(r, normal, n_i_, n_t_);
+        
+        if (pow(cos2,2) < 0.0f) {
 
             return new_direction = get_reflected_direction(r, normal);
-
         }
         else {
 
@@ -86,15 +86,10 @@ glm::vec3 SmoothDielectric::getDirection(const Ray &r, glm::vec3 &normal) {
                 return new_direction = get_reflected_direction(r, normal);
             }
             else {
-
                 return new_direction = get_refracted_direction(r, normal);
             }
-
         }
     }
-
-
-
     
 }
 

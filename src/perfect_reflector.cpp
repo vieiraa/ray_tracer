@@ -9,6 +9,7 @@ const float pi = 3.14159265358979323846;
 PerfectReflector::PerfectReflector() : Material(glm::vec3(1,1,1), glm::vec3(0,0,0)) {
 
     //reflected_ = { 1.0f, 1.0f, 1.0f };
+    material_ = 1;
 
 }
 

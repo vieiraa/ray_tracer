@@ -41,12 +41,12 @@ void Scene::load() {
 
     //scene objects
 
-        /*
-       Sphere *s1 = new Sphere(glm::vec3(-0.75f, -0.75, -1.0f), 0.27f);
-       s1->material_ = std::make_shared<Diffuse>(glm::vec3(175.0f, 238.0f, 238.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+        
+       Sphere *s1 = new Sphere(glm::vec3(0.0f, -0.9f, -2.0f), 0.6f);
+       s1->material_ = std::make_shared<SmoothDielectric>(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s1));
-       */
-       Sphere *s2 = new Sphere(glm::vec3(0.0f, -0.9f, -6.0f), 0.3f);
+       
+       Sphere *s2 = new Sphere(glm::vec3(0.5f, -0.9f, -4.0f), 0.6f);
        s2->material_ = std::make_shared<Diffuse>(glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s2));
        /*
@@ -83,8 +83,8 @@ void Scene::load() {
         primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
     }
 
-    for (auto &t : cat.getTriangles()) {
-        t->material_ = std::make_shared<SmoothDielectric>(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-        primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
-    }
+    //for (auto &t : cat.getTriangles()) {
+      //  t->material_ = std::make_shared<SmoothDielectric>(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+        //primitives_.push_back(Primitive::PrimitiveUniquePtr(t.release()));
+    //}
 }
