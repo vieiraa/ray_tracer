@@ -25,7 +25,8 @@ PerfectReflector::~PerfectReflector() {
 }
 
 glm::vec3 PerfectReflector::fr(const glm::vec3 &wi,
-                               const glm::vec3 &wo)
+                               const glm::vec3 &wo,
+                               const glm::vec3 &normal)
 {
     return reflected_ / wi.y;
 }

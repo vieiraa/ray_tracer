@@ -17,7 +17,8 @@ Diffuse::~Diffuse()
 }
 
 glm::vec3 Diffuse::fr(const glm::vec3 &wi,
-                      const glm::vec3 &wo) {
+                      const glm::vec3 &wo,
+                      const glm::vec3 &normal) {
     return reflected_ / pi;
 }
 

@@ -2,6 +2,7 @@
 #include "diffuse.h"
 #include "perfect_reflector.h"
 #include "smooth_dielectric.h"
+#include "cook_torrance.h"
 
 Scene::Scene( void )
 {}
@@ -41,40 +42,40 @@ void Scene::load() {
 
     //scene objects
 
-        
-       Sphere *s1 = new Sphere(glm::vec3(-0.8f, -1.1f, 0.5), 0.7f);
+
+    /*Sphere *s1 = new Sphere(glm::vec3(-0.8f, -1.1f, 0.5), 0.7f);
        s1->material_ = std::make_shared<SmoothDielectric>(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s1));
-       
+
        Sphere *s2 = new Sphere(glm::vec3(0.8f, -1.1f, -0.3), 0.7f);
        s2->material_ = std::make_shared<PerfectReflector>();
-       primitives_.push_back(Primitive::PrimitiveUniquePtr(s2));
-       /*
-       Sphere *s3 = new Sphere(glm::vec3(0.75f, -0.75, -1.0f), 0.27f);
-       s3->material_ = std::make_shared<Diffuse>(glm::vec3(250.0f, 128.0f, 114.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+       primitives_.push_back(Primitive::PrimitiveUniquePtr(s2));*/
+
+       Sphere *s3 = new Sphere(glm::vec3(0.0f, -0.75, 2.0f), 0.7f);
+       s3->material_ = std::make_shared<CookTorrance>(glm::vec3(250.0f, 128.0f, 114.0f)/255.0f, 1.0f);
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s3));
-       */ 
+
        //Lights
        /*
        Sphere *s4 = new Sphere(glm::vec3(0.0f, 4.0f, 1.0f), 1.5f);
        s4->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s4));
-        
+
        Sphere *s5 = new Sphere(glm::vec3(0.0f, 4.0f, -0.75f), 1.5f);
        s5->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s5));
-    
+
        Sphere *s6 = new Sphere(glm::vec3(0.0f, 4.0f, -2.5f), 1.5f);
        s6->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s6));
        */
        Sphere *s7 = new Sphere(glm::vec3(0.0f, 4.5f, 0.0f), 2.0f);
-       s7->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(10.0f, 10.0f, 10.0f));
+       s7->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(15.0f, 15.0f, 15.0f));
        primitives_.push_back(Primitive::PrimitiveUniquePtr(s7));
-       
-    TriangleMesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\scene.obj", glm::vec3 (0.4f,0.4f,0.4f ));
-    
-    //TriangleMesh mesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/scene.obj", glm::vec3(0.4f, 0.4f, 0.4f));
+
+       //TriangleMesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\scene.obj", glm::vec3 (0.4f,0.4f,0.4f ));
+
+    TriangleMesh mesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/scene.obj", glm::vec3(0.4f, 0.4f, 0.4f));
     //TriangleMesh cat("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/cat.obj", glm::vec3(0.8f, 0.8f, 0.8f));
 
     for (auto &t : mesh.getTriangles()) {
