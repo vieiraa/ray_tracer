@@ -5,16 +5,11 @@
 
 const float pi = 3.14159265358979323846;
 
-Diffuse::Diffuse(glm::vec3 r, glm::vec3 e) : Material(r, e)
-{
-    //ctor
-    material_ = 0;
-}
+Diffuse::Diffuse(glm::vec3 r, glm::vec3 e) :
+    Material(r, e)
+{}
 
-Diffuse::~Diffuse()
-{
-    //dtor
-}
+Diffuse::~Diffuse() {}
 
 glm::vec3 Diffuse::fr(const glm::vec3 &wi) {
     return reflected_ / pi;
