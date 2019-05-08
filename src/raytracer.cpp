@@ -45,4 +45,3 @@ void RayTracer::integrate( void )
 
     std::clog << std::endl;
 }
-

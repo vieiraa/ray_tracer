@@ -16,9 +16,7 @@ Diffuse::~Diffuse()
     //dtor
 }
 
-glm::vec3 Diffuse::fr(const glm::vec3 &wi,
-                      const glm::vec3 &wo,
-                      const glm::vec3 &normal) {
+glm::vec3 Diffuse::fr(const glm::vec3 &wi) {
     return reflected_ / pi;
 }
 
@@ -26,7 +24,10 @@ float Diffuse::p() {
     return 1/(2 * pi);
 }
 
-glm::vec3 Diffuse::get_reflected_direction(const Ray &r,  glm::vec3 &normal) {
+glm::vec3 Diffuse:: getDirection(const glm::vec3 &d,
+                                 const glm::vec3 &normal,
+                                 float &dot)
+{
     glm::vec3 dir;
 
     do {
@@ -37,18 +38,11 @@ glm::vec3 Diffuse::get_reflected_direction(const Ray &r,  glm::vec3 &normal) {
     onb.setFromV(normal);
     dir = glm::normalize(dir * onb.getBasisMatrix());
 
-    float dot = glm::dot(dir, normal);
+    dot = glm::dot(dir, normal);
     if (dot < 0) {
         dir = -dir;
         dot = -dot;
     }
 
     return dir;
-}
-
-
-
-glm::vec3 Diffuse:: getDirection(const Ray &r, glm::vec3 &normal) {
-
-    return get_reflected_direction(r,normal);
 }

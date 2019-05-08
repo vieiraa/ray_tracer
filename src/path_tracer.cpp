@@ -7,10 +7,7 @@
 #include <iostream>
 #include <thread>
 
-const float PI = glm::pi<float>();
 const int NUM_SAMPLES = 150;
-
-
 
 PathTracer::PathTracer(Camera &camera,
                        const Scene &scene,
@@ -29,36 +26,21 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 
     if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
-            glm::vec3 wi, wo;
+            glm::vec3 wi;
 
             glm::vec3 dir;
-            dir = ir.material_.lock()->getDirection(r, ir.normal_);
+            float dot;
+            dir = ir.material_.lock()->getDirection(r.direction_, ir.normal_, dot);
 
             ONB onb;
             onb.setFromV(ir.normal_);
             wi = glm::transpose(onb.getBasisMatrix()) * -r.direction_;
-            //wo = glm::transpose(onb.getBasisMatrix()) * r.direction_;
-            wo = dir;
-
-            float dot = glm::dot(dir,ir.normal_);
-
-            if (ir.material_.lock()->material_ == 0 || ir.material_.lock()->material_ == 1 || ir.material_.lock()->material_ == 3) {
-                if (dot < 0) {
-                    dir = -dir;
-                    dot = -dot;
-                }
-                else {
-                    dir = dir;
-                    dot = dot;
-                }
-            }
-
 
             Ray next_ray(ir.position_ + dir * 0.0001f, dir);
 
             auto aux = ir.material_.lock();
 
-            Lo = aux->emitted_ + (aux->fr(wi, wo, ir.normal_) / aux->p()) * L(next_ray, ++curr_depth) * dot;
+            Lo = aux->emitted_ + (aux->fr(wi) / aux->p()) * L(next_ray, ++curr_depth) * dot;
         }
     }
 
@@ -66,7 +48,6 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
 }
 
 void PathTracer::integrate(void) {
-
     int num_threads = std::thread::hardware_concurrency();
     omp_set_num_threads(num_threads);
 
@@ -89,10 +70,9 @@ void PathTracer::integrate(void) {
 
             buffer_.buffer_data_[x][y] /= NUM_SAMPLES;
         }
-        num_threads = omp_get_num_threads();
     }
+
     std::cout << "\nO num de threads usados eh: " << num_threads;
-    std::clog << std::endl;
 }
 
 void PathTracer::threads_color(void) {
@@ -137,8 +117,6 @@ void PathTracer::threads_color(void) {
         }
     }
     std::cout << "o num de threads usados eh: " << num_threads;
-
-    std::clog << std::endl;
 }
 
 void PathTracer::normal_color(void) {
