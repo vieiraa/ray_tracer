@@ -115,7 +115,7 @@ void Scene::load() {
         if (m.name_.find("PernaBeje") != std::string::npos)
             mat = std::make_shared<Diffuse>(glm::vec3(222.0f,184.0f,135.0f),glm::vec3(0.0f, 0.0f, 0.0f));
 
-        if (m.name_.find("FioPreto") != std::string::npos) {
+        if (m.name_.find("FioPreto") != std::string::npos)
             mat = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
         if (m.name_.find("BrancoPorta") != std::string::npos)
