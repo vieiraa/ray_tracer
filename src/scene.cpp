@@ -69,130 +69,64 @@ void Scene::load() {
       s6->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
       primitives_.push_back(Primitive::PrimitiveUniquePtr(s6));
     */
-    /*Sphere *s7 = new Sphere(glm::vec3(5.0f, -5.0f, -3.0f), 2.0f);
+    Sphere *s7 = new Sphere(glm::vec3(5.0f, -5.0f, -3.0f), 2.0f);
     s7->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(15.0f, 15.0f, 15.0f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s7));
-    */
+
     //TriangleMesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\scene.obj", glm::vec3 (0.4f,0.4f,0.4f ));
 
-    Mesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\project_objects\\scene_real.obj");
-   
+    //Mesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\project_objects\\scene_real.obj");
+    Mesh mesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/project_objects/scene_real.obj");
+
 
     for (auto &m : mesh.getMeshes()) {
+        std::shared_ptr<Material> mat;
+
+        if (m.name_.find("Glass") != std::string::npos)
+            mat = std::make_shared<SmoothDielectric>(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 0));
+
+        if (m.name_.find("Glass") == std::string::npos)
+            mat = std::make_shared<Diffuse>(glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0, 0, 0));
+
+        if (m.name_.find("Lamp") != std::string::npos)
+            mat = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(17.0f, 17.0f, 17.0f));
+
+        if (m.name_.find("GlasSol") != std::string::npos)
+            mat = std::make_shared<SmoothDielectric>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)*20.0f);
+
+        if (m.name_.find("Metal1") != std::string::npos)
+            mat = std::make_shared<CookTorrance>(glm::vec3(160.0f, 82.0f, 45.0f)/255.0f, 0.2);
+
+        if (m.name_.find("LuzAmarela") != std::string::npos)
+            mat = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(240.0f/255, 230.0f/255, 140.0f/255)*120.0f);
+
+        if (m.name_.find("Metal2") != std::string::npos)
+            mat = std::make_shared<CookTorrance>(glm::vec3(192.0f, 192.0f, 192.0f) / 255.0f, 0.3);
+
+        if (m.name_.find("MetalBranco") != std::string::npos)
+            mat = std::make_shared<CookTorrance>(glm::vec3(255.0f, 250.0f, 250.0f) / 255.0f, 0.3);
+
+        if (m.name_.find("CadeiraVermelha") != std::string::npos)
+            mat = std::make_shared<Diffuse>(glm::vec3(1.0f, 0.0f, 0.0f),glm::vec3(0.0f,0.0f,0.0f));
+
+        if (m.name_.find("PernaBeje") != std::string::npos)
+            mat = std::make_shared<Diffuse>(glm::vec3(222.0f,184.0f,135.0f),glm::vec3(0.0f, 0.0f, 0.0f));
+
+        if (m.name_.find("FioPreto") != std::string::npos)
+            mat = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+
+        if (m.name_.find("BrancoPorta") != std::string::npos)
+            mat = std::make_shared<Diffuse>(glm::vec3(255.0f, 250.0f, 250.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+
+        if (m.name_.find("MarromGlass") != std::string::npos)
+            mat = std::make_shared<SmoothDielectric>(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+
+        if (m.name_.find("MarromDifuso") != std::string::npos)
+            mat = std::make_shared<Diffuse>(glm::vec3(205.0f, 133.0f, 63.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+
         for (auto &t : m.getTriangles()) {
-            if (m.name_.find("Glass") != std::string::npos) {
-                t->material_ = std::make_shared<SmoothDielectric>(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0, 0, 0));
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
+            t->material_ = mat;
+            primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
         }
     }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("Glass") == std::string::npos) {
-                t->material_ = std::make_shared<Diffuse>(glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0, 0, 0));
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("Lamp") != std::string::npos) {
-                t->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(17.0f, 17.0f, 17.0f));
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("GlasSol") != std::string::npos) {
-                t->material_ = std::make_shared<SmoothDielectric>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)*20.0f);
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("LuzAmarela") != std::string::npos) {
-                t->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(240.0f/255, 230.0f/255, 140.0f/255)*120.0f);
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("Metal1") != std::string::npos) {
-                t->material_ = std::make_shared<CookTorrance>(glm::vec3(160.0f, 82.0f, 45.0f)/255.0f, 0.2);
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("Metal2") != std::string::npos) {
-                t->material_ = std::make_shared<CookTorrance>(glm::vec3(192.0f, 192.0f, 192.0f) / 255.0f, 0.3);
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("MetalBranco") != std::string::npos) {
-                t->material_ = std::make_shared<CookTorrance>(glm::vec3(255.0f, 250.0f, 250.0f) / 255.0f, 0.3);
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("CadeiraVermelha") != std::string::npos) {
-                t->material_ = std::make_shared<Diffuse>(glm::vec3(1.0f, 0.0f, 0.0f),glm::vec3(0.0f,0.0f,0.0f));
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("Marrom") != std::string::npos) {
-                t->material_ = std::make_shared<Diffuse>(glm::vec3(205.0f, 133.0f, 63.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("PernaBeje") != std::string::npos) {
-                t->material_ = std::make_shared<Diffuse>(glm::vec3(222.0f,184.0f,135.0f),glm::vec3(0.0f, 0.0f, 0.0f));
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("FioPreto") != std::string::npos) {
-                t->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
-    for (auto &m : mesh.getMeshes()) {
-        for (auto &t : m.getTriangles()) {
-            if (m.name_.find("BrancoPorta") != std::string::npos) {
-                t->material_ = std::make_shared<Diffuse>(glm::vec3(255.0f, 250.0f, 250.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
-                primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
-            }
-        }
-    }
-
 }
