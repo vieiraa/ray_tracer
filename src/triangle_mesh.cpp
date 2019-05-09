@@ -25,7 +25,15 @@ double drand48() {
 const float KINFINITY = std::numeric_limits<float>::max();
 const float EPSILON = 1e-8;
 
-bool TriangleMesh::loadMesh(const std::string &filename, glm::vec3 color) {
+Mesh::Mesh(const std::string &filename) {
+    loadMesh(filename);
+}
+
+std::vector<TriangleMesh> Mesh::getMeshes() {
+    return meshes_;
+}
+
+bool Mesh::loadMesh(const std::string &filename) {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(filename,
 					     aiProcess_CalcTangentSpace |
@@ -40,6 +48,7 @@ bool TriangleMesh::loadMesh(const std::string &filename, glm::vec3 color) {
 
     for (int i = 0; i < scene->mNumMeshes; i++) {
 	aiMesh *mesh = scene->mMeshes[i];
+        std::vector<Triangle*> triangles;
 
 	for (int j = 0; j < mesh->mNumFaces; j++) {
 	    aiFace face = mesh->mFaces[j];
@@ -57,26 +66,26 @@ bool TriangleMesh::loadMesh(const std::string &filename, glm::vec3 color) {
                                    mesh->mNormals[index[k]].z);
 	    }
 
-            std::unique_ptr<Triangle> t = std::make_unique<FastTriangle>(v[0].first, v[1].first, v[2].first);
+            Triangle *t = new FastTriangle(v[0].first, v[1].first, v[2].first);
 
             if (mesh->HasNormals())
                 t->normal_ = normal;
 
-            glm::vec3 c = color;
-            //t->material_ = std::make_shared<>(c, glm::vec3(0, 0, 0));
-	    triangles_.push_back(std::move(t));
+	    triangles.push_back(t);
 	}
+
+        meshes_.push_back(TriangleMesh(triangles, mesh->mName.C_Str()));
     }
+
+
 
     return true;
 }
 
-TriangleMesh::TriangleMesh(const std::string &filename, glm::vec3 color) {
-    loadMesh(filename, color);
-}
+TriangleMesh::TriangleMesh(std::vector<Triangle*> &tr, const char *name) :
+    triangles_(std::move(tr)), name_(name)
+{}
 
-TriangleMesh::TriangleMesh() = default;
-
-std::vector<std::unique_ptr<Triangle>>& TriangleMesh::getTriangles() {
+std::vector<Triangle*>& TriangleMesh::getTriangles() {
     return triangles_;
 }

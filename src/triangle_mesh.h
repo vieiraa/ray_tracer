@@ -6,13 +6,20 @@
 
 class TriangleMesh
 {
-    std::vector<std::unique_ptr<Triangle>> triangles_;
-    
+    std::vector<Triangle*> triangles_;
+
 public:
-    TriangleMesh();
-    std::vector<std::unique_ptr<Triangle>>& getTriangles();
-    explicit TriangleMesh(const std::string &filename, glm::vec3 color);
-    bool loadMesh(const std::string &filename, glm::vec3 color);
-    bool intersect(const Ray &ray, IntersectionRecord &ir) const;
+    explicit TriangleMesh(std::vector<Triangle*> &t, const char *name);
+    std::vector<Triangle*>& getTriangles();
+
+    std::string name_;
 };
 
+class Mesh {
+    std::vector<TriangleMesh> meshes_;
+
+public:
+    explicit Mesh(const std::string &filename);
+    bool loadMesh(const std::string &filename);
+    std::vector<TriangleMesh> getMeshes();
+};
