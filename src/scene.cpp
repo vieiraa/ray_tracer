@@ -109,9 +109,6 @@ void Scene::load() {
         if (m.name_.find("CadeiraVermelha") != std::string::npos)
             mat = std::make_shared<Diffuse>(glm::vec3(1.0f, 0.0f, 0.0f),glm::vec3(0.0f,0.0f,0.0f));
 
-        if (m.name_.find("Marrom") != std::string::npos)
-            mat = std::make_shared<Diffuse>(glm::vec3(205.0f, 133.0f, 63.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
-
         if (m.name_.find("PernaBeje") != std::string::npos)
             mat = std::make_shared<Diffuse>(glm::vec3(222.0f,184.0f,135.0f),glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -120,6 +117,12 @@ void Scene::load() {
 
         if (m.name_.find("BrancoPorta") != std::string::npos)
             mat = std::make_shared<Diffuse>(glm::vec3(255.0f, 250.0f, 250.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
+
+        if (m.name_.find("MarromGlass") != std::string::npos)
+            mat = std::make_shared<SmoothDielectric>(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+
+        if (m.name_.find("MarromDifuso") != std::string::npos)
+            mat = std::make_shared<Diffuse>(glm::vec3(205.0f, 133.0f, 63.0f)/255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 
         for (auto &t : m.getTriangles()) {
             t->material_ = mat;
