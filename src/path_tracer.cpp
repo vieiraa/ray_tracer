@@ -7,7 +7,7 @@
 #include <iostream>
 #include <thread>
 
-const int NUM_SAMPLES = 1000;
+const int NUM_SAMPLES = 100;
 
 PathTracer::PathTracer(Camera &camera,
                        const Scene &scene,
