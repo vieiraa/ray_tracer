@@ -65,10 +65,11 @@ void Buffer::save( const std::string &filename ) const
             rendering_file << static_cast<int>(clamp(color.g) * 255.0f + 0.5f) << " ";
             rendering_file << static_cast<int>(clamp(color.b) * 255.0f + 0.5f) << " ";
         }
+
+        rendering_file << "\n";
     }
 
     rendering_file.close();
 
     std::clog << "finished!\n";
 }
-
