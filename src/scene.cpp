@@ -69,9 +69,9 @@ void Scene::load() {
       s6->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
       primitives_.push_back(Primitive::PrimitiveUniquePtr(s6));
     */
-    Sphere *s7 = new Sphere(glm::vec3(5.0f, -5.0f, -3.0f), 2.0f);
-    s7->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(15.0f, 15.0f, 15.0f));
-    primitives_.push_back(Primitive::PrimitiveUniquePtr(s7));
+    // Sphere *s7 = new Sphere(glm::vec3(5.0f, -5.0f, -3.0f), 2.0f);
+    // s7->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(15.0f, 15.0f, 15.0f));
+    // primitives_.push_back(Primitive::PrimitiveUniquePtr(s7));
 
     //TriangleMesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\scene.obj", glm::vec3 (0.4f,0.4f,0.4f ));
 
