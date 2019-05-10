@@ -75,8 +75,8 @@ void Scene::load() {
 
     //TriangleMesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\scene.obj", glm::vec3 (0.4f,0.4f,0.4f ));
 
-    //Mesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\project_objects\\scene_real.obj");
-    Mesh mesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/project_objects/scene_real.obj");
+    Mesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\project_objects\\scene_real.obj");
+    //Mesh mesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/project_objects/scene.obj");
 
 
     for (auto &m : mesh.getMeshes()) {
@@ -110,7 +110,7 @@ void Scene::load() {
             mat = std::make_shared<Diffuse>(glm::vec3(1.0f, 0.0f, 0.0f),glm::vec3(0.0f,0.0f,0.0f));
 
         if (m.name_.find("PernaBeje") != std::string::npos)
-            mat = std::make_shared<Diffuse>(glm::vec3(222.0f,184.0f,135.0f),glm::vec3(0.0f, 0.0f, 0.0f));
+            mat = std::make_shared<Diffuse>(glm::vec3(222.0f,184.0f,135.0f) / 255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 
         if (m.name_.find("FioPreto") != std::string::npos)
             mat = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
