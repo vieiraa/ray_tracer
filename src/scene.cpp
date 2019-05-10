@@ -69,14 +69,14 @@ void Scene::load() {
       s6->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
       primitives_.push_back(Primitive::PrimitiveUniquePtr(s6));
     */
-    Sphere *s7 = new Sphere(glm::vec3(5.0f, -5.0f, -3.0f), 2.0f);
-    s7->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(15.0f, 15.0f, 15.0f));
-    primitives_.push_back(Primitive::PrimitiveUniquePtr(s7));
+    // Sphere *s7 = new Sphere(glm::vec3(5.0f, -5.0f, -3.0f), 2.0f);
+    // s7->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(15.0f, 15.0f, 15.0f));
+    // primitives_.push_back(Primitive::PrimitiveUniquePtr(s7));
 
     //TriangleMesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\scene.obj", glm::vec3 (0.4f,0.4f,0.4f ));
 
-    //Mesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\project_objects\\scene_real.obj");
-    Mesh mesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/project_objects/scene_real.obj");
+    Mesh mesh("C:\\Users\\lucca\\Documents\\GitHub\\ray_tracer\\3d_models\\project_objects\\scene_real.obj");
+    //Mesh mesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/project_objects/scene_real.obj");
 
 
     for (auto &m : mesh.getMeshes()) {
@@ -97,8 +97,14 @@ void Scene::load() {
         if (m.name_.find("Metal1") != std::string::npos)
             mat = std::make_shared<CookTorrance>(glm::vec3(160.0f, 82.0f, 45.0f)/255.0f, 0.2);
 
+        if (m.name_.find("LuzAmarela2") != std::string::npos)
+            mat = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(240.0f/255, 230.0f/255, 140.0f/255)*40.0f);
+
         if (m.name_.find("LuzAmarela") != std::string::npos)
             mat = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(240.0f/255, 230.0f/255, 140.0f/255)*120.0f);
+
+        if (m.name_.find("Cafeteira") != std::string::npos)
+            mat = std::make_shared<PerfectReflector>(glm::vec3(0.6f));
 
         if (m.name_.find("Metal2") != std::string::npos)
             mat = std::make_shared<CookTorrance>(glm::vec3(192.0f, 192.0f, 192.0f) / 255.0f, 0.3);
@@ -110,7 +116,7 @@ void Scene::load() {
             mat = std::make_shared<Diffuse>(glm::vec3(1.0f, 0.0f, 0.0f),glm::vec3(0.0f,0.0f,0.0f));
 
         if (m.name_.find("PernaBeje") != std::string::npos)
-            mat = std::make_shared<Diffuse>(glm::vec3(222.0f,184.0f,135.0f),glm::vec3(0.0f, 0.0f, 0.0f));
+            mat = std::make_shared<Diffuse>(glm::vec3(222.0f,184.0f,135.0f) / 255.0f, glm::vec3(0.0f, 0.0f, 0.0f));
 
         if (m.name_.find("FioPreto") != std::string::npos)
             mat = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f));
