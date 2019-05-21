@@ -8,23 +8,6 @@
 #include "perfect_reflector.h"
 #include <iostream>
 
-#ifdef __MINGW32__
-#include <time.h>
-double drand48() {
-    static bool first = true;
-
-    if (first) {
-        srand((long) time(NULL));
-        first = false;
-    }
-
-    return (double)rand() / RAND_MAX;
-}
-#endif
-
-const float KINFINITY = std::numeric_limits<float>::max();
-const float EPSILON = 1e-8;
-
 Mesh::Mesh(const std::string &filename) {
     loadMesh(filename);
 }
@@ -33,7 +16,7 @@ std::vector<TriangleMesh> Mesh::getMeshes() {
     return meshes_;
 }
 
-bool Mesh::loadMesh(const std::string &filename) {
+void Mesh::loadMesh(const std::string &filename) {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(filename,
 					     aiProcess_CalcTangentSpace |
@@ -46,17 +29,17 @@ bool Mesh::loadMesh(const std::string &filename) {
 	std::exit(1);
     }
 
-    for (int i = 0; i < scene->mNumMeshes; i++) {
+    for (unsigned i = 0; i < scene->mNumMeshes; i++) {
 	aiMesh *mesh = scene->mMeshes[i];
         std::vector<Triangle*> triangles;
 
-	for (int j = 0; j < mesh->mNumFaces; j++) {
+	for (unsigned j = 0; j < mesh->mNumFaces; j++) {
 	    aiFace face = mesh->mFaces[j];
 	    unsigned int *index = face.mIndices;
 	    std::vector<std::pair<glm::vec3, unsigned int>> v;
             glm::vec3 normal;
 
-	    for (int k = 0; k < face.mNumIndices; k++) {
+	    for (unsigned k = 0; k < face.mNumIndices; k++) {
 		glm::vec3 aux = glm::vec3(mesh->mVertices[index[k]].x,
 					  mesh->mVertices[index[k]].y,
 					  mesh->mVertices[index[k]].z);
@@ -76,10 +59,6 @@ bool Mesh::loadMesh(const std::string &filename) {
 
         meshes_.push_back(TriangleMesh(triangles, mesh->mName.C_Str()));
     }
-
-
-
-    return true;
 }
 
 TriangleMesh::TriangleMesh(std::vector<Triangle*> &tr, const char *name) :

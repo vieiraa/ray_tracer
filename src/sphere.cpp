@@ -1,17 +1,20 @@
 #include "sphere.h"
 #include "aabb.h"
 
-Sphere::Sphere( void )
+Sphere::Sphere() {
+    aabb_ = AABB(center_ - radius_,
+                 center_ + radius_,
+                 center_);
+}
+
+Sphere::Sphere(const glm::vec3 &center,
+                float radius) :
+    center_(center),
+    radius_(radius)
 {}
 
-Sphere::Sphere( const glm::vec3 &center,
-                float radius ) :
-        center_{ center },
-        radius_{ radius }
-{}
-
-bool Sphere::intersect( const Ray &ray,
-                        IntersectionRecord &intersection_record ) const
+bool Sphere::intersect(const Ray &ray,
+                        IntersectionRecord &ir) const
 {
     /* Ray-sphere intersection test adapted from the very efficient algorithm presented in the article:
      *
@@ -39,22 +42,10 @@ bool Sphere::intersect( const Ray &ray,
     }
 
     // Set the intersection record
-    intersection_record.t_ =  ( t1 > 0.00001f ) ? t1 : t2;
-    intersection_record.position_ = ray.origin_ + intersection_record.t_ * ray.direction_;
-    intersection_record.normal_ = glm::normalize( intersection_record.position_ - center_ );
-    intersection_record.material_ = material_;
+    ir.t_ =  ( t1 > 0.00001f ) ? t1 : t2;
+    ir.position_ = ray.origin_ + ir.t_ * ray.direction_;
+    ir.normal_ = glm::normalize( ir.position_ - center_ );
+    ir.material_ = material_;
 
     return true;
 }
-
-AABB Sphere::getAABB(void) const
-{
-    AABB aabb;
-
-    aabb.min_ = center_ - radius_;
-    aabb.max_ = center_ + radius_;
-    aabb.centroid_ = center_;
-
-    return aabb;
-}
-

@@ -17,7 +17,7 @@ float schlick(const glm::vec3 &r_dir, const glm::vec3 &normal, float ni, float n
             return 1.0f;
     }
 
-    float aux = 1-cos1;
+    float aux = 1 - cos1;
 
     return R0 + (1.0f - R0) * aux * aux * aux * aux * aux;
 }
@@ -26,7 +26,7 @@ SmoothDielectric::SmoothDielectric(const glm::vec3 &r, const glm::vec3 &e) :
     Material(r, e)
 {}
 
-glm::vec3 SmoothDielectric::fr(const glm::vec3 &wi) {
+inline glm::vec3 SmoothDielectric::fr(const glm::vec3 &wi) {
     return reflected_ / wi.y;
 }
 
@@ -47,7 +47,7 @@ glm::vec3 SmoothDielectric::getDirection(const glm::vec3 &dir, const glm::vec3 &
     cos = glm::dot(dir, normal);
     float schlick_;
 
-    if (cos < 0.0f) { //entering
+    if (cos < 0.0f) { // entering
         n_i_ = 1.0f;
         n_t_ = 1.5f;
 
@@ -60,7 +60,7 @@ glm::vec3 SmoothDielectric::getDirection(const glm::vec3 &dir, const glm::vec3 &
             return getRefracted(dir, normal, n_i_, n_t_);
     }
 
-    else { //getting out
+    else { // leaving
         n_i_ = 1.5;
         n_t_ = 1.0;
         glm::vec3 aux_normal = -normal;
@@ -75,6 +75,6 @@ glm::vec3 SmoothDielectric::getDirection(const glm::vec3 &dir, const glm::vec3 &
     }
 }
 
-float SmoothDielectric::p() {
+inline float SmoothDielectric::p() {
     return 1.0f;
 }

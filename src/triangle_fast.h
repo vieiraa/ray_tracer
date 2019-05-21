@@ -6,15 +6,12 @@
 #include "intersection_record.h"
 #include "aabb.h"
 
-class FastTriangle : public Triangle
-{
+class FastTriangle : public Triangle {
 public:
     FastTriangle();
     FastTriangle(const glm::vec3 &v1,
-                  const glm::vec3 &v2,
-                  const glm::vec3 &v3);
+                 const glm::vec3 &v2,
+                 const glm::vec3 &v3);
 
     bool intersect(const Ray &ray, IntersectionRecord &ir) const;
-
 };
-

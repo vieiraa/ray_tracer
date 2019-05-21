@@ -1,18 +1,21 @@
 #include "aabb.h"
 #include "ray.h"
-#include <algorithm>    // std::min
 
-AABB::AABB(void) {};
+AABB::AABB() {};
 
 AABB::AABB(const glm::vec3 &p1, const glm::vec3 &p2) {
-    min_ = glm::vec3{ std::min(p1.x, p2.x), std::min(p1.y, p2.y), std::min(p1.z, p2.z) };
-    max_ = glm::vec3{ std::max(p1.x, p2.x), std::max(p1.y, p2.y), std::max(p1.z, p2.z) };
-
+    min_ = glm::vec3(glm::min(p1.x, p2.x), glm::min(p1.y, p2.y), glm::min(p1.z, p2.z));
+    max_ = glm::vec3(glm::max(p1.x, p2.x), glm::max(p1.y, p2.y), glm::max(p1.z, p2.z));
 };
+
+AABB::AABB(const glm::vec3 &min, const glm::vec3 &max, const glm::vec3 &centroid) :
+    min_(min),
+    max_(max),
+    centroid_(centroid)
+{}
 
 glm::vec3 AABB::diagonal() const {
     return max_ - min_;
-
 }
 
 double AABB::getArea() {
@@ -26,9 +29,6 @@ double AABB::getVolume() {
 }
 
 bool AABB::intersect(const Ray &ray) const {
-    // An Efficient and Robust RayBox Intersection Algorithm,
-    // Peter Shirley
-
     float txmin;
     float txmax;
     float tymin;
@@ -40,27 +40,21 @@ bool AABB::intersect(const Ray &ray) const {
     float divz;
 
     divx = 1.0f / ray.direction_.x;
-    if (divx >= 0.0f)
-    {
-            txmin = (min_.x - ray.origin_.x) * divx;
-            txmax = (max_.x - ray.origin_.x) * divx;
-    }
-    else
-    {
-            txmin = (max_.x - ray.origin_.x) * divx;
-            txmax = (min_.x - ray.origin_.x) * divx;
+    if (divx >= 0.0f) {
+        txmin = (min_.x - ray.origin_.x) * divx;
+        txmax = (max_.x - ray.origin_.x) * divx;
+    } else {
+        txmin = (max_.x - ray.origin_.x) * divx;
+        txmax = (min_.x - ray.origin_.x) * divx;
     }
 
     divy = 1.0f / ray.direction_.y;
-    if (divy >= 0.0f)
-    {
-            tymin = (min_.y - ray.origin_.y) * divy;
-            tymax = (max_.y - ray.origin_.y) * divy;
-    }
-    else
-    {
-            tymin = (max_.y - ray.origin_.y) * divy;
-            tymax = (min_.y - ray.origin_.y) * divy;
+    if (divy >= 0.0f) {
+        tymin = (min_.y - ray.origin_.y) * divy;
+        tymax = (max_.y - ray.origin_.y) * divy;
+    } else {
+        tymin = (max_.y - ray.origin_.y) * divy;
+        tymax = (min_.y - ray.origin_.y) * divy;
     }
 
     if ((txmin > tymax) || (tymin > txmax))
@@ -73,15 +67,12 @@ bool AABB::intersect(const Ray &ray) const {
         txmax = tymax;
 
     divz = 1.0f / ray.direction_.z;
-    if (divz >= 0.0f)
-    {
-            tzmin = (min_.z - ray.origin_.z) * divz;
-            tzmax = (max_.z - ray.origin_.z) * divz;
-    }
-    else
-    {
-            tzmin = (max_.z - ray.origin_.z) * divz;
-            tzmax = (min_.z - ray.origin_.z) * divz;
+    if (divz >= 0.0f) {
+        tzmin = (min_.z - ray.origin_.z) * divz;
+        tzmax = (max_.z - ray.origin_.z) * divz;
+    } else {
+        tzmin = (max_.z - ray.origin_.z) * divz;
+        tzmax = (min_.z - ray.origin_.z) * divz;
     }
 
     if ((txmin > tzmax) || (tzmin > txmax))
@@ -93,7 +84,7 @@ bool AABB::intersect(const Ray &ray) const {
     if (tzmax < txmax)
         txmax = tzmax;
 
-    return true;//tmax > 0.00001f;
+    return true;
 };
 
 AABB AABB::operator+(AABB &other) const {

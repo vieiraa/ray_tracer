@@ -1,13 +1,12 @@
 #include "perfect_reflector.h"
 #include <math.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
 #include "intersection_record.h"
 #include "onb.h"
 
-const float pi = 3.14159265358979323846;
-
 PerfectReflector::PerfectReflector() :
-    Material(glm::vec3(1,1,1), glm::vec3(0,0,0))
+    Material(glm::vec3(1.0f), glm::vec3(0.0f))
 {}
 
 PerfectReflector::PerfectReflector(const glm::vec3 &r) :
@@ -16,7 +15,7 @@ PerfectReflector::PerfectReflector(const glm::vec3 &r) :
 
 PerfectReflector::~PerfectReflector() {}
 
-glm::vec3 PerfectReflector::fr(const glm::vec3 &wi) {
+inline glm::vec3 PerfectReflector::fr(const glm::vec3 &wi) {
     return reflected_ / wi.y;
 }
 

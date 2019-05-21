@@ -8,14 +8,15 @@
 #include <algorithm>
 
 #include "primitive.h"
+#include "acceleration_structure.h"
 
-class BVH
+class BVH_SAH : public AccelerationStructure
 {
 public:
 
     struct BVHNode
     {
-        ~BVHNode(void)
+        ~BVHNode()
         {
             if (left_)
             {
@@ -50,9 +51,9 @@ public:
 
     };
 
-    BVH(const std::vector< Primitive::PrimitiveUniquePtr > &primitives);
+    explicit BVH_SAH(const std::vector< Primitive::PrimitiveUniquePtr > &primitives);
 
-    ~BVH(void);
+    ~BVH_SAH();
 
     bool intersect(const Ray &ray,
                    IntersectionRecord &intersection_record,
@@ -64,7 +65,6 @@ public:
     BVHNode* getRoot() const;
 
 private:
-
     struct Comparator
     {
         static bool sortInX(const PrimitiveAABBArea &lhs, const PrimitiveAABBArea &rhs)
@@ -107,9 +107,9 @@ private:
 
     float cost_intersec_aabb_ = 0.2f;
 
-    std::deque< unsigned int > primitive_id_;
+    std::deque<unsigned> primitive_id_;
 
-    const std::vector< Primitive::PrimitiveUniquePtr > &primitives_;
+    const std::vector<Primitive::PrimitiveUniquePtr> &primitives_;
 
     std::size_t primitives_inserted_ = 0;
 };

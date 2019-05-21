@@ -1,11 +1,8 @@
 #include "onb.h"
 
-ONB::ONB( void )
-{}
+ONB::ONB() {}
 
-void ONB::setFromUW( const glm::vec3 &u,
-                     const glm::vec3 &w )
-{
+void ONB::setFromUW(const glm::vec3 &u, const glm::vec3 &w) {
     u_ = u;
     w_ = w;
     v_ = glm::cross( w_, u_ );
@@ -13,24 +10,25 @@ void ONB::setFromUW( const glm::vec3 &u,
     setBasisMatrix();
 }
 
-void ONB::setFromV( const glm::vec3 &v )
-{
+void ONB::setFromV(const glm::vec3 &v) {
     v_ = v;
 
-    if( fabs( v_.x ) > fabs( v_.y ) )
-        w_ = glm::normalize( glm::vec3{ v_.z, 0.0, -v_.x } );
+    if(glm::abs(v_.x) > fabs(v_.y))
+        w_ = glm::normalize(glm::vec3(v_.z, 0.0f, -v_.x));
     else
-        w_ =  glm::normalize( glm::vec3{ 0.0, -v_.z, v_.y } );
+        w_ =  glm::normalize(glm::vec3(0.0f, -v_.z, v_.y));
 
-    u_ = glm::cross( v_, w_ );
+    u_ = glm::cross(v_, w_);
 
     setBasisMatrix();
 }
 
-void ONB::setBasisMatrix( void )
-{
-    m_[0] = u_; // sets the column 0 of m_.
-    m_[1] = v_; // sets the column 1 of m_.
-    m_[2] = w_; // sets the column 2 of m_.
-}
+glm::mat3x3 ONB::getBasisMatrix() const {
+    return matrix_;
+};
 
+void ONB::setBasisMatrix() {
+    matrix_[0] = u_;
+    matrix_[1] = v_;
+    matrix_[2] = w_;
+}

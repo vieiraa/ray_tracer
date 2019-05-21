@@ -1,8 +1,11 @@
 #include "primitive.h"
 
-Primitive::Primitive( void )
-{}
+Primitive::Primitive() {}
 
-Primitive::~Primitive( void )
-{}
+Primitive::Primitive(const AABB &aabb) : aabb_(aabb) {}
 
+Primitive::~Primitive() {}
+
+AABB Primitive::getAABB() const {
+    return aabb_;
+}

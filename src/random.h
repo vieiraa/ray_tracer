@@ -1,7 +1,6 @@
 #pragma once
 
 #include <random>
-#include <chrono>
 
 class Random {
     std::random_device device;

@@ -4,8 +4,7 @@
 #include <vector>
 #include <memory>
 
-class TriangleMesh
-{
+class TriangleMesh {
     std::vector<Triangle*> triangles_;
 
 public:
@@ -20,6 +19,6 @@ class Mesh {
 
 public:
     explicit Mesh(const std::string &filename);
-    bool loadMesh(const std::string &filename);
+    void loadMesh(const std::string &filename);
     std::vector<TriangleMesh> getMeshes();
 };

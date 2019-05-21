@@ -17,9 +17,6 @@ public:
     Triangle(const glm::vec3 &v1,
 	     const glm::vec3 &v2,
 	     const glm::vec3 &v3);
-    
+
     virtual bool intersect(const Ray &ray, IntersectionRecord &ir) const = 0;
-
-    AABB getAABB(void) const;
 };
-

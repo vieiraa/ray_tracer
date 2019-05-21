@@ -6,30 +6,17 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-class Buffer
-{
+class Buffer {
 public:
+    Buffer();
+    Buffer(unsigned w, unsigned h);
+    ~Buffer();
 
-    Buffer( void );
+    void save(const std::string &filename) const;
 
-    Buffer( unsigned int h_resolution,
-            unsigned int v_resolution );
+    unsigned int width_ = 512;
 
-    ~Buffer( void );
+    unsigned int height_ = 512;
 
-    void save( const std::string &filename ) const;
-
-    unsigned int h_resolution_ = 512;
-
-    unsigned int v_resolution_ = 512;
-
-    std::vector< std::vector< glm::vec3 > > buffer_data_;
-
-private:
-
-    float clamp( float x ) const
-    {
-        return ( x < 0.0f ) ? 0.0f : ( x > 1.0f ) ? 1.0f : x;
-    }
+    std::vector<std::vector<glm::vec3>> buffer_data_;
 };
-

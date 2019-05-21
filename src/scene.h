@@ -11,23 +11,17 @@
 #include "triangle_naive.h"
 #include "triangle_fast.h"
 #include "triangle_mesh.h"
-#include "bvh.h"
+#include "acceleration_structure.h"
 
-class Scene
-{
+class Scene {
 public:
+    Scene();
+    ~Scene();
 
-    Scene( void );
+    bool intersect(const Ray &ray,
+                   IntersectionRecord &intersection_record) const;
+    void load();
 
-    ~Scene( void );
-
-    bool intersect( const Ray &ray,
-                    IntersectionRecord &intersection_record ) const;
-
-    void load( void );
-
-    std::vector< Primitive::PrimitiveUniquePtr > primitives_;
-
-    BVH *bvh_;
+    std::vector<Primitive::PrimitiveUniquePtr> primitives_;
+    std::unique_ptr<AccelerationStructure> acc_;
 };
-

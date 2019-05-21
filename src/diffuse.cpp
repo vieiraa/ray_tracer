@@ -1,9 +1,10 @@
+#include <glm/gtc/constants.hpp>
 #include "diffuse.h"
 #include "random.h"
 #include "ray.h"
 #include "onb.h"
 
-const float pi = 3.14159265358979323846;
+const float PI = glm::pi<float>();
 
 Diffuse::Diffuse(glm::vec3 r, glm::vec3 e) :
     Material(r, e)
@@ -12,11 +13,11 @@ Diffuse::Diffuse(glm::vec3 r, glm::vec3 e) :
 Diffuse::~Diffuse() {}
 
 glm::vec3 Diffuse::fr(const glm::vec3 &wi) {
-    return reflected_ / pi;
+    return reflected_ / PI;
 }
 
 float Diffuse::p() {
-    return 1/(2 * pi);
+    return 1/(2 * PI);
 }
 
 glm::vec3 Diffuse:: getDirection(const glm::vec3 &d,

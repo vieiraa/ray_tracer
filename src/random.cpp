@@ -1,3 +1,4 @@
+#include <chrono>
 #include "random.h"
 
 Random::Random() {
@@ -7,6 +8,5 @@ Random::Random() {
 }
 
 float Random::get() {
-    auto ret = dist(rng);
-    return ret;
+    return dist(rng);
 }

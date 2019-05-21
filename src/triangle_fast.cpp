@@ -5,12 +5,9 @@ FastTriangle::FastTriangle(const glm::vec3 &v1,
 			     const glm::vec3 &v2,
 			     const glm::vec3 &v3)
     : Triangle(v1,v2,v3)
-{
+{}
 
-}
-
-bool FastTriangle::intersect(const Ray &ray, IntersectionRecord &ir) const
-{
+bool FastTriangle::intersect(const Ray &ray, IntersectionRecord &ir) const {
     glm::vec3 aux, p, q;
     float det;
     float u, v, t;
@@ -44,5 +41,3 @@ bool FastTriangle::intersect(const Ray &ray, IntersectionRecord &ir) const
 
     return true;
 }
-
-

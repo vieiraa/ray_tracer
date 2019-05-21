@@ -7,37 +7,24 @@
 #include "onb.h"
 #include "ray.h"
 
-class Camera
-{
+class Camera {
 public:
+    Camera();
+    Camera(const glm::ivec2 &resolution,
+           const glm::vec3 &position,
+           const glm::vec3 &up,
+           const glm::vec3 &look_at);
+    virtual ~Camera();
 
-    Camera( void );
-
-    Camera( const glm::ivec2 &resolution,
-            const glm::vec3 &position,
-            const glm::vec3 &up,
-            const glm::vec3 &look_at );
-
-    virtual ~Camera( void );
-
-    void setPosition( const glm::vec3 &position );
-
-    void setUp( const glm::vec3 &up );
-
-    void setLookAt( const glm::vec3 &look_at );
-
-    virtual Ray getWorldSpaceRay( const glm::vec2 &pixel_coord )  = 0;
+    void setPosition(const glm::vec3 &position);
+    void setUp(const glm::vec3 &up);
+    void setLookAt(const glm::vec3 &look_at);
+    virtual Ray getWorldSpaceRay(const glm::vec2 &pixel_coord) = 0;
 
     glm::ivec2 resolution_;
-
-    glm::vec3 up_{ 0.0f, 1.0f, 0.0f };   // up vector (usually equal to universe Y axis: [0, 1, 0]).
-
-    glm::vec3 look_at_{ 0.0f, 0.0f, -1.0f };    // point the camera is looking at.
-
-    glm::vec3 position_{ 0.0f, 0.0f, 0.0f };    // position of the camera in the universe space.
-
-    glm::vec3 direction_{ 0.0f, 0.0f, -1.0f };  // direction the camera is looking.
-
-    ONB onb_;                                   //  orthonormal RHS basis
+    glm::vec3 up_{ 0.0f, 1.0f, 0.0f };
+    glm::vec3 look_at_{ 0.0f, 0.0f, -1.0f };
+    glm::vec3 position_{ 0.0f, 0.0f, 0.0f };
+    glm::vec3 direction_{ 0.0f, 0.0f, -1.0f };
+    ONB onb_;
 };
-

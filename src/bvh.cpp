@@ -1,7 +1,7 @@
 #include "bvh.h"
 #include "aabb.h"
 
-BVH::BVH(const std::vector< Primitive::PrimitiveUniquePtr > &primitives) :
+BVH_SAH::BVH_SAH(const std::vector< Primitive::PrimitiveUniquePtr > &primitives) :
     primitives_(primitives)
 {
 
@@ -31,7 +31,7 @@ BVH::BVH(const std::vector< Primitive::PrimitiveUniquePtr > &primitives) :
     }
 }
 
-BVH::~BVH(void)
+BVH_SAH::~BVH_SAH(void)
 {
     if (root_node_)
     {
@@ -40,7 +40,7 @@ BVH::~BVH(void)
     }
 }
 
-bool BVH::intersect(const Ray &ray,
+bool BVH_SAH::intersect(const Ray &ray,
                     IntersectionRecord &intersection_record,
                     unsigned int &num_intersection_tests_,
                     unsigned int &num_intersections_) const
@@ -48,7 +48,7 @@ bool BVH::intersect(const Ray &ray,
     return traverse(root_node_, ray, intersection_record, num_intersection_tests_, num_intersections_);
 }
 
-float BVH::SAH(std::size_t s1_size,
+float BVH_SAH::SAH(std::size_t s1_size,
                float s1_area,
                std::size_t s2_size,
                float s2_area,
@@ -68,7 +68,7 @@ float BVH::SAH(std::size_t s1_size,
  *     ACM Transactions on Graphics.
  *     Volume 26 Issue 1, 2007.
  */
-void BVH::splitNode(BVHNode **node,
+void BVH_SAH::splitNode(BVHNode **node,
                     std::deque< PrimitiveAABBArea > &s,
                     std::size_t first,
                     std::size_t last,
@@ -186,7 +186,7 @@ void BVH::splitNode(BVHNode **node,
 }
 
 // TODO: test for null child before recursive call.
-bool BVH::traverse(const BVHNode *node,
+bool BVH_SAH::traverse(const BVHNode *node,
                    const Ray &ray,
                    IntersectionRecord &intersection_record,
                    unsigned int &num_intersection_tests_,
@@ -236,13 +236,13 @@ bool BVH::traverse(const BVHNode *node,
     return primitive_intersect;
 }
 
-unsigned BVH::height(BVHNode *node) const {
+unsigned BVH_SAH::height(BVHNode *node) const {
     if (!node)
         return 0;
 
     return 1 + glm::max(height(node->left_), height(node->right_));
 }
 
-BVH::BVHNode* BVH::getRoot() const {
+BVH_SAH::BVHNode* BVH_SAH::getRoot() const {
     return root_node_;
 }

@@ -1,44 +1,36 @@
 #include "raytracer.h"
 #include "material.h"
 
-RayTracer::RayTracer( Camera &camera,
+RayTracer::RayTracer(Camera &camera,
                       const Scene &scene,
                       const glm::vec3 background_color,
-                      Buffer &buffer ) :
-        camera_( camera ),
-        scene_( scene ),
-        background_color_{ background_color },
-        buffer_( buffer )
+                      Buffer &buffer) :
+        camera_(camera),
+        scene_(scene),
+        background_color_(background_color),
+        buffer_(buffer)
 {}
 
-void RayTracer::integrate( void )
-{
+void RayTracer::integrate() {
     IntersectionRecord intersection_record;
 
-    // Image space origin (i.e. x = 0 and y = 0) at the top left corner.
-
-    // Loops over image rows
-    for ( std::size_t y = 0; y < buffer_.v_resolution_; y++ )
-    {
+    for (unsigned y = 0; y < buffer_.height_; y++) {
         std::stringstream progress_stream;
         progress_stream << "\r  progress .........................: "
                         << std::fixed << std::setw( 6 )
                         << std::setprecision( 2 )
-                        << 100.0 * y / ( buffer_.v_resolution_ - 1 )
+                        << 100.0 * y / ( buffer_.height_ - 1 )
                         << "%";
 
         std::clog << progress_stream.str();
 
-        // Loops over image columns
-        for ( std::size_t x = 0; x < buffer_.h_resolution_; x++ )
-        {
+        for (unsigned x = 0; x < buffer_.width_; x++) {
             intersection_record.t_ = std::numeric_limits< double >::max();
 
-            Ray ray( camera_.getWorldSpaceRay( glm::vec2{ x, y } ) );
+            Ray ray( camera_.getWorldSpaceRay(glm::vec2(x, y)));
             auto aux = intersection_record.material_.lock();
 
-            if ( scene_.intersect( ray, intersection_record ) )
-                //buffer_.buffer_data_[x][y] = glm::vec3{ 1.0f, 0.0f, 0.0f };
+            if (scene_.intersect(ray, intersection_record))
                 buffer_.buffer_data_[x][y] = aux->reflected_;
         }
     }

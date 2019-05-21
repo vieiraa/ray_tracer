@@ -7,7 +7,7 @@
 #include <iostream>
 #include <thread>
 
-const int NUM_SAMPLES = 100;
+const int NUM_SAMPLES = 10;
 
 PathTracer::PathTracer(Camera &camera,
                        const Scene &scene,
@@ -24,7 +24,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
     IntersectionRecord ir;
     ir.t_ = std::numeric_limits<float>::max();
 
-    if (curr_depth < 15) {
+    if (curr_depth < 5) {
         if (scene_.intersect(r, ir)) {
             glm::vec3 wi;
 
@@ -51,17 +51,17 @@ void PathTracer::integrate(void) {
     int num_threads = std::thread::hardware_concurrency();
     omp_set_num_threads(num_threads);
 
-    #pragma omp parallel for schedule(dynamic, 1)
-    for (int y = 0; y < buffer_.h_resolution_; y++) {
+#pragma omp parallel for schedule(dynamic, 1)
+    for (unsigned y = 0; y < buffer_.height_; y++) {
         std::stringstream progress_stream;
         progress_stream << "\rProgress .........................: "
-            << std::fixed << std::setw(6)
-            << std::setprecision(2)
-            << 100.0f * y / (buffer_.v_resolution_ - 1)
-            << "%";
+                        << std::fixed << std::setw(6)
+                        << std::setprecision(2)
+                        << 100.0f * y / (buffer_.height_ - 1)
+                        << "%";
         std::clog << progress_stream.str();
 
-        for (unsigned x = 0; x < buffer_.h_resolution_; x++) {
+        for (unsigned x = 0; x < buffer_.width_; x++) {
             for (int sample = 0; sample < NUM_SAMPLES; sample++) {
 
                 Ray ray(camera_.getWorldSpaceRay(glm::vec2{ x, y }));
@@ -72,67 +72,6 @@ void PathTracer::integrate(void) {
         }
     }
 
-    std::cout << "\nO num de threads usados eh: " << num_threads;
-}
-
-void PathTracer::threads_color(void) {
-    int num_threads;
-
-    omp_set_num_threads(8);
-#pragma omp parallel for schedule( dynamic, 1 )
-    for (auto y = 0; y < buffer_.h_resolution_; ++y) {
-        for (auto x = 0; x < buffer_.h_resolution_; ++x) {
-
-            switch (int thread_num = omp_get_thread_num())
-            {
-            case(0):
-                buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 0.0f, 0.0f);
-                break;
-            case(1):
-                buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 0.5f, 0.0f);
-                break;
-            case(2):
-                buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 1.0f, 0.0f);
-                break;
-            case(3):
-                buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 1.0f, 0.0f);
-                break;
-            case(4):
-                buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 1.0f, 0.5f);
-                break;
-            case(5):
-                buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 1.0f, 1.0f);
-                break;
-            case(6):
-                buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 0.0f, 1.0f);
-                break;
-            case(7):
-                buffer_.buffer_data_[x][y] = glm::vec3(1.0f, 1.0f, 1.0f);
-                break;
-            default:
-                buffer_.buffer_data_[x][y] = glm::vec3(0.0f, 0.0f, 0.0f);
-                break;
-            }
-            num_threads = omp_get_num_threads();
-        }
-    }
-    std::cout << "o num de threads usados eh: " << num_threads;
-}
-
-void PathTracer::normal_color(void) {
-    IntersectionRecord intersection_record;
-
-    for (std::size_t y = 0; y < buffer_.v_resolution_; y++){
-        for (std::size_t x = 0; x < buffer_.h_resolution_; x++){
-
-            intersection_record.t_ = std::numeric_limits< double >::max();
-            Ray ray(camera_.getWorldSpaceRay(glm::vec2{ x, y }));
-            if (scene_.intersect(ray, intersection_record))
-
-                buffer_.buffer_data_[x][y] = (glm::vec3(1.0f,0.0f,0.0f) + 1.0f)/2.0f * abs(intersection_record.normal_);
-            //std::cout <<  "normal:"  << intersection_record.normal_.x <<","<<intersection_record.normal_.y<<","<<intersection_record.normal_.z;
-        }
-    }
-
-    std::clog << std::endl;
+    std::clog << "\n";
+    std::cout << "\nNumber of threads: " << num_threads << "\n";
 }
