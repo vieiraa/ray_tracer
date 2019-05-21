@@ -66,7 +66,7 @@ float CookTorrance::p() {
 
 glm::vec3 CookTorrance::getDirection(const glm::vec3 &dir, const glm::vec3 &normal, float &dot) {
     dot = glm::dot(dir, normal);
-    glm::vec3 ret = 2.0f * normal * (glm::dot(dir, normal)) - dir;
+    glm::vec3 ret = glm::normalize(2.0f * normal * (glm::dot(dir, normal)) - dir);
 
     if (dot < 0.0f) {
         dot = -dot;

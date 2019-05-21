@@ -31,7 +31,7 @@ inline glm::vec3 SmoothDielectric::fr(const glm::vec3 &wi) {
 }
 
 glm::vec3 getReflected(const glm::vec3 &dir, const glm::vec3 &normal) {
-    return 2.0f * normal * (glm::dot(dir, normal)) - dir;
+    return glm::normalize(2.0f * normal * (glm::dot(dir, normal)) - dir);
 }
 
 glm::vec3 getRefracted(const glm::vec3 &dir, const glm::vec3 &normal, float ni, float nt) {
@@ -39,7 +39,7 @@ glm::vec3 getRefracted(const glm::vec3 &dir, const glm::vec3 &normal, float ni, 
     float cos_i = -glm::dot(dir, normal);
     float cos_t = sqrt(1 - (n * n) * (1.0f - cos_i * cos_i));
 
-    return n * (dir + cos_i * normal) - normal * cos_t;
+    return glm::normalize(n * (dir + cos_i * normal) - normal * cos_t);
 }
 
 glm::vec3 SmoothDielectric::getDirection(const glm::vec3 &dir, const glm::vec3 &normal, float &cos) {

@@ -15,7 +15,7 @@ bool Scene::intersect(const Ray &ray,
     IntersectionRecord tmp_intersection_record;
     std::size_t num_primitives = primitives_.size();
 
-#if 0
+#if 1
     // Loops over the list of primitives, testing the intersection of each primitive against the given ray
     //std::size_t primitive_id = 0;
     for (size_t primitive_id = 0; primitive_id < num_primitives; primitive_id++ ) {
@@ -51,6 +51,10 @@ void Scene::load() {
     s6->material_ = std::make_shared<Diffuse>(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(7.5f, 7.5f, 7.5f));
     primitives_.push_back(Primitive::PrimitiveUniquePtr(s6));
 
+    Sphere *glass = new Sphere(glm::vec3(0, -0.9f, -6.0f), 1.5f);
+    glass->material_ = std::make_shared<SmoothDielectric>(glm::vec3(1), glm::vec3(0));
+    primitives_.push_back(Primitive::PrimitiveUniquePtr(glass));
+
     Mesh mesh("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/scene.obj");
     Mesh cat("/home/jordy/Documentos/cg/trabalho 2/ray_tracer/3d_models/cat.obj");
 
@@ -64,7 +68,8 @@ void Scene::load() {
     for (auto &m : cat.getMeshes()) {
         for (auto &t : m.getTriangles()) {
             t->material_ = std::make_shared<Diffuse>(glm::vec3(0.5f), glm::vec3(0.0f));
-            primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
+            //t->material_ = std::make_shared<SmoothDielectric>(glm::vec3(1), glm::vec3(0));
+            //primitives_.push_back(Primitive::PrimitiveUniquePtr(t));
         }
     }
 }

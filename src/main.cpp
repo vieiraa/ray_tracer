@@ -11,8 +11,8 @@
 #include "bvh.h"
 
 int main() {
-    unsigned int width = 512;
-    unsigned int height = 512;
+    unsigned int width = 256;
+    unsigned int height = 256;
 
     PinholeCamera camera(-2.5f,
                          2.5f,

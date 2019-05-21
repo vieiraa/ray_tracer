@@ -15,7 +15,7 @@ public:
     virtual ~Primitive();
     virtual bool intersect(const Ray &ray,
                            IntersectionRecord &intersection_record ) const = 0;
-    AABB getAABB() const;
+    AABB& getAABB();
 
     std::shared_ptr<Material> material_;
 

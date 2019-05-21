@@ -6,6 +6,6 @@ Primitive::Primitive(const AABB &aabb) : aabb_(aabb) {}
 
 Primitive::~Primitive() {}
 
-AABB Primitive::getAABB() const {
+AABB& Primitive::getAABB() {
     return aabb_;
 }

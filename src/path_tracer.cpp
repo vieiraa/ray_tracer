@@ -7,7 +7,7 @@
 #include <iostream>
 #include <thread>
 
-const int NUM_SAMPLES = 10;
+const int NUM_SAMPLES = 100;
 
 PathTracer::PathTracer(Camera &camera,
                        const Scene &scene,
@@ -24,7 +24,7 @@ glm::vec3 PathTracer::L(const Ray &r, int curr_depth) {
     IntersectionRecord ir;
     ir.t_ = std::numeric_limits<float>::max();
 
-    if (curr_depth < 5) {
+    if (curr_depth < 15) {
         if (scene_.intersect(r, ir)) {
             glm::vec3 wi;
 
