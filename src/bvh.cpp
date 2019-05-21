@@ -1,19 +1,16 @@
 #include "bvh.h"
 #include "aabb.h"
 
-BVH_SAH::BVH_SAH(const std::vector< Primitive::PrimitiveUniquePtr > &primitives) :
+BVH_SAH::BVH_SAH(const std::vector<Primitive::PrimitiveUniquePtr> &primitives) :
     primitives_(primitives)
 {
-
-    if (primitives_.size() > 0)
-    {
+    if (primitives_.size() > 0) {
         std::deque< PrimitiveAABBArea > s(primitives_.size());
         primitive_id_.resize(primitives_.size());
 
         AABB root_aabb;
 
-        for (std::size_t i = 0; i < primitives_.size(); i++)
-        {
+        for (std::size_t i = 0; i < primitives_.size(); i++) {
             AABB aabb = primitives_[i]->getAABB();
 
             // compute the AABB area for the root node
@@ -31,28 +28,26 @@ BVH_SAH::BVH_SAH(const std::vector< Primitive::PrimitiveUniquePtr > &primitives)
     }
 }
 
-BVH_SAH::~BVH_SAH(void)
-{
-    if (root_node_)
-    {
+BVH_SAH::~BVH_SAH() {
+    if (root_node_) {
         delete root_node_;
         root_node_ = nullptr;
     }
 }
 
 bool BVH_SAH::intersect(const Ray &ray,
-                    IntersectionRecord &intersection_record,
-                    unsigned int &num_intersection_tests_,
-                    unsigned int &num_intersections_) const
+                        IntersectionRecord &ir,
+                        unsigned int &num_intersection_tests_,
+                        unsigned int &num_intersections_) const
 {
-    return traverse(root_node_, ray, intersection_record, num_intersection_tests_, num_intersections_);
+    return traverse(root_node_, ray, ir, num_intersection_tests_, num_intersections_);
 }
 
 float BVH_SAH::SAH(std::size_t s1_size,
-               float s1_area,
-               std::size_t s2_size,
-               float s2_area,
-               float s_area)
+                   float s1_area,
+                   std::size_t s2_size,
+                   float s2_area,
+                   float s_area)
 {
     if ((s2_area == std::numeric_limits< float >::infinity()) && (s2_size == 0))
         return std::numeric_limits< float >::infinity();
@@ -69,10 +64,10 @@ float BVH_SAH::SAH(std::size_t s1_size,
  *     Volume 26 Issue 1, 2007.
  */
 void BVH_SAH::splitNode(BVHNode **node,
-                    std::deque< PrimitiveAABBArea > &s,
-                    std::size_t first,
-                    std::size_t last,
-                    float s_area)
+                        std::deque< PrimitiveAABBArea > &s,
+                        std::size_t first,
+                        std::size_t last,
+                        float s_area)
 {
     (*node) = new BVHNode();
     (*node)->first_ = first;
@@ -86,10 +81,8 @@ void BVH_SAH::splitNode(BVHNode **node,
     int best_axis = -1;
     int best_event = -1;
 
-    for (int axis = 1; axis <= 3; axis++)
-    {
-        switch (axis)
-        {
+    for (int axis = 1; axis <= 3; axis++) {
+        switch (axis) {
         case 1:
             std::sort(s.begin() + first, s.begin() + last + 1, Comparator::sortInX);
             break;
@@ -103,29 +96,21 @@ void BVH_SAH::splitNode(BVHNode **node,
 
         s_aux = std::deque< PrimitiveAABBArea >(s.begin() + first, s.begin() + last + 1);
 
-        for (std::size_t i = first; i <= last; i++)
-        {
-            if (i == first)
-            {
+        for (unsigned i = first; i <= last; i++) {
+            if (i == first) {
                 s[i].left_area_ = std::numeric_limits< float >::infinity();
                 s_aux[0].left_aabb_ = s_aux[0].aabb_;
-            }
-            else
-            {
+            } else {
                 s[i].left_area_ = s_aux[i - first - 1].left_aabb_.getArea();
                 s_aux[i - first].left_aabb_ = s_aux[i - first].aabb_ + s_aux[i - first - 1].left_aabb_;
             }
         }
 
-        for ( int i = last; i >= static_cast< int>(first); i--)
-        {
-            if (i == static_cast< int>(last))
-            {
+        for (int i = last; i >= static_cast<int>(first); i--) {
+            if (i == static_cast<int>(last)) {
                 s[i].right_area_ = std::numeric_limits< float >::infinity();
                 s_aux[last - first].right_aabb_ = s_aux[last - first].aabb_;
-            }
-            else
-            {
+            } else {
                 s[i].right_area_ = s_aux[i - first + 1].right_aabb_.getArea();
                 s_aux[i - first].right_aabb_ = s_aux[i - first].aabb_ + s_aux[i - first + 1].right_aabb_;
             }
@@ -136,8 +121,7 @@ void BVH_SAH::splitNode(BVHNode **node,
                                   s[i].right_area_,
                                   s_area);
 
-            if (this_cost < best_cost)
-            {
+            if (this_cost < best_cost) {
                 best_cost = this_cost;
                 best_event = i;
                 best_axis = axis;
@@ -145,15 +129,10 @@ void BVH_SAH::splitNode(BVHNode **node,
         }
     }
 
-    if (best_axis == -1) // This is a leaf node
-    {
+    if (best_axis == -1) { // This is a leaf node
         primitives_inserted_ += last - first + 1;
 
-        //if ( last == first )
-        //    std::clog << "One primitive node!\n";
-
-        for ( unsigned int i = first; i <= last; i++)
-        {
+        for (unsigned i = first; i <= last; i++) {
             primitive_id_[i] = s[i].primitive_id_;
 
             if (i == first)
@@ -161,12 +140,9 @@ void BVH_SAH::splitNode(BVHNode **node,
             else
                 (*node)->aabb_ = (*node)->aabb_ + s[i].aabb_;
         }
-    }
-    else // This is an inner node
-    {
+    } else { // This is an inner node
         // Make inner node with best_axis / best_event
-        switch (best_axis)
-        {
+        switch (best_axis) {
         case 1:
             std::sort(s.begin() + first, s.begin() + last + 1, Comparator::sortInX);
             break;
@@ -185,49 +161,40 @@ void BVH_SAH::splitNode(BVHNode **node,
     }
 }
 
-// TODO: test for null child before recursive call.
 bool BVH_SAH::traverse(const BVHNode *node,
-                   const Ray &ray,
-                   IntersectionRecord &intersection_record,
-                   unsigned int &num_intersection_tests_,
-                   unsigned int &num_intersections_) const
+                       const Ray &ray,
+                       IntersectionRecord &ir,
+                       unsigned int &num_intersection_tests_,
+                       unsigned int &num_intersections_) const
 {
     bool primitive_intersect = false;
 
-    if (node)
-    {
+    if (node) {
         num_intersection_tests_++;
 
-        if (node->aabb_.intersect(ray))
-        {
+        if (node->aabb_.intersect(ray)) {
             num_intersections_++;
 
-            if ((!node->left_) && (!node->right_)) // is a leaf node
-            {
-                IntersectionRecord tmp_intersection_record;
+            if ((!node->left_) && (!node->right_)) { // is a leaf node
+                IntersectionRecord tmp_ir;
 
-                for (std::size_t primitive_id = node->first_; primitive_id <= node->last_; primitive_id++)
-                {
+                for (unsigned i = node->first_; i <= node->last_; i++) {
                     num_intersection_tests_++;
 
-                    if (primitives_[primitive_id_[primitive_id]]->intersect(ray, tmp_intersection_record))
-                    {
+                    if (primitives_[primitive_id_[i]]->intersect(ray, tmp_ir)) {
                         num_intersections_++;
 
-                        if ((tmp_intersection_record.t_ < intersection_record.t_) && (tmp_intersection_record.t_ > 0.0f))
-                        {
-                            intersection_record = tmp_intersection_record;
+                        if ((tmp_ir.t_ < ir.t_) && (tmp_ir.t_ > 0.0f)) {
+                            ir = tmp_ir;
                             primitive_intersect = true;
                         }
                     }
                 }
-            }
-            else
-            {
-                if (traverse(node->left_, ray, intersection_record, num_intersection_tests_, num_intersections_))
+            } else {
+                if (traverse(node->left_, ray, ir, num_intersection_tests_, num_intersections_))
                     primitive_intersect = true;
 
-                if (traverse(node->right_, ray, intersection_record, num_intersection_tests_, num_intersections_))
+                if (traverse(node->right_, ray, ir, num_intersection_tests_, num_intersections_))
                     primitive_intersect = true;
             }
         }
